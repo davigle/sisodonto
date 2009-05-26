@@ -1,0 +1,104 @@
+<?
+   /**
+    * Gerenciador Clínico Odontológico
+    * Copyright (C) 2006 - 2008
+    * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
+    *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
+    *
+    * Este arquivo é parte do programa Gerenciador Clínico Odontológico
+    *
+    * Gerenciador Clínico Odontológico é um software livre; você pode
+    * redistribuí-lo e/ou modificá-lo dentro dos termos da Licença
+    * Pública Geral GNU como publicada pela Fundação do Software Livre
+    * (FSF); na versão 2 da Licença invariavelmente.
+    *
+    * Este programa é distribuído na esperança que possa ser útil,
+    * mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÂO
+    * a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+    * Licença Pública Geral GNU para maiores detalhes.
+    *
+    * Você recebeu uma cópia da Licença Pública Geral GNU,
+    * que está localizada na raíz do programa no arquivo COPYING ou COPYING.TXT
+    * junto com este programa. Se não, visite o endereço para maiores informações:
+    * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html (Inglês)
+    * http://www.magnux.org/doc/GPL-pt_BR.txt (Português - Brasil)
+    *
+    * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
+    * endereço eletrônico ou envie-nos um e-mail:
+    *
+    * http://www.smileprev.com/gco
+    * smileprev@smileprev.com
+    *
+    * Ou envie sua carta para o endereço:
+    *
+    * SmilePrev Clínicas Odontológicas
+    * Rua Laudemira Maria de Jesus, 51 - Lourdes
+    * Arcos - MG - CEP 35588-000
+    *
+    * Ou nos contate pelo telefone:
+    *
+    * Tel.: 0800-285-8787
+    *
+    *
+    */
+	include "../lib/config.inc.php";
+	include "../lib/func.inc.php";
+	include "../lib/classes.inc.php";
+	header("Content-type: text/html; charset=ISO-8859-1", true);
+	if(!checklog()) {
+		die($frase_log);
+	}
+	include "../timbre_head.php";
+	$sql = "SELECT nome FROM pacientes WHERE codigo = ".$_GET['codigo'];
+	$query = mysql_query($sql) or die('Line 40: '.mysql_error());
+	$row = mysql_fetch_array($query);
+?>
+<font size="3">Consultas agendadas de <b><?=$row['nome']?> [<?=$_GET['codigo']?>]</b></font><br /><br />
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
+  <tr>
+    <th width="15%" align="left">Data
+    </th>
+    <th width="15%" align="left">Hora
+    </th>
+    <th width="25%" align="left">Procedimento
+    </th>
+    <th width="30%" align="left">Dentista
+    </th>
+    <th width="15%" align="left">Faltou
+    </th>
+  </tr>
+<?
+    $i = 0;
+    $sql = "SELECT * FROM v_agenda WHERE codigo_paciente = ".$_GET['codigo']." ORDER BY data ASC";
+    $query = mysql_query($sql) or die('Line 60: '.mysql_error());
+    while($row = mysql_fetch_array($query)) {
+        if($i % 2 === 0) {
+            $td_class = 'td_even';
+        } else {
+            $td_class = 'td_odd';
+        }
+?>
+  <tr class="<?=$td_class?>" style="font-size: 12px">
+    <td><?=converte_data($row['data'], 2)?>
+    </td>
+    <td><?=substr($row['hora'], 0, 5)?>
+    </td>
+    <td><?=$row['procedimento']?>
+    </td>
+    <td><?=(($row['sexo_dentista'] == 'Masculino')?'Dr.':'Dra.').' '.$row['nome_dentista']?>
+    </td>
+    <td><?=(($row['faltou'] == 'Sim')?'Sim':'')?>
+    </td>
+  </tr>
+<?
+        $i++;
+    }
+?>
+</table>
+<script>
+alert("Para imprimir o relatório, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
+window.print();
+</script>
+<?
+    include "../timbre_foot.php";
+?>
