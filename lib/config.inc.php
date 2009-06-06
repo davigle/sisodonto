@@ -55,7 +55,7 @@
   $server = 'localhost';
   $user = 'root';
   $pass = 'root';
-  $bd = 'gerenciador';
+  $bd = 'sisodonto';
   
   // Quantidade de páginas exibidas nas paginações
   define('PG_MAX', 30);
