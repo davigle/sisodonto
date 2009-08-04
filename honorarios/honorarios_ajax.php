@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,27 +26,25 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
-		die($frase_log);
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
 	}
 	if($_GET['confirm_del'] == "delete") {
 		mysql_query("DELETE FROM `honorarios` WHERE `codigo` = '".$_GET['codigo']."'") or die(mysql_error());
@@ -74,7 +72,6 @@
             $caixa->SetDados('valor_convenio', $_POST['valor_convenio']);
             $caixa->SalvarNovo();
             $caixa->Salvar();
-            echo '<script>alert("Procedimento cadastrado com sucesso!")</script>';
         }
     }
     $disabled = 'disabled';
@@ -101,16 +98,16 @@ function esconde(campo) {
 <div class="conteudo" id="conteudo_central">
   <table width="98%" border="0" cellpadding="0" cellspacing="0" align="center">
     <tr>
-      <td width="55%">&nbsp;&nbsp;&nbsp;<img src="honorarios/img/honorarios.png" alt="Tabela de Honorários"> <span class="h3">Tabela de Honorários </span></td>
+      <td width="55%">&nbsp;&nbsp;&nbsp;<img src="honorarios/img/honorarios.png" alt="<?=$LANG['fee_table']['fee_table']?>"> <span class="h3"><?=$LANG['fee_table']['fee_table']?> </span></td>
       <td width="45%" valign="bottom">
       	<table width="98%" border="0" cellpadding="0" cellspacing="0" align="right">
       	  <tr>
       	    <td width="50%">
-      	      Pesquisar por<br>
+      	      <?=$LANG['fee_table']['search_for']?><br>
       	      <select name="campo" id="campo" class="forms" onchange="esconde(this)">
-      	        <option value="procedimento">Procedimento</option>
-      	        <option value="codigo">Código</option>
-      	        <option value="area">Área</option>
+      	        <option value="procedimento"><?=$LANG['fee_table']['procedure']?></option>
+      	        <option value="codigo"><?=$LANG['fee_table']['code']?></option>
+      	        <option value="area"><?=$LANG['fee_table']['area']?></option>
       	      </select>
       	      <input type="hidden" id="id_procurar" value="procurar">
       	    </td>
@@ -119,18 +116,18 @@ function esconde(campo) {
       	      <input name="procurar" id="procurar" type="text" class="forms" size="40" maxlength="40" onkeyup="javascript:Ajax('honorarios/pesquisa', 'pesquisa', 'pesquisa='%2Bthis.value%2B'&campo='%2BgetElementById('campo').options[getElementById('campo').selectedIndex].value)">
       	      <select name="procurar1" id="procurar1" style="display:none" class="forms" onchange="javascript:Ajax('honorarios/pesquisa', 'pesquisa', 'pesquisa='%2Bthis.options[this.selectedIndex].value%2B'&campo='%2BgetElementById('campo').options[getElementById('campo').selectedIndex].value)">
                 <option></option>
-                <option value="CO">Cirurgia Oral</option>
-                <option value="DE">Dentística</option>
-                <option value="EN">Endodontia</option>
-                <option value="EX">Exame Clínico</option>
-                <option value="IM">Implantodontia</option>
-                <option value="OD">Odontopediatria</option>
-                <option value="OR">Ortodontia</option>
-                <option value="RA">Radiologia</option>
-                <option value="PE">Periodontia</option>
-                <option value="PR">Prevenção</option>
-                <option value="PO">Prótese</option>
-                <option value="TE">Testes e Exames de Laboratório</option>
+                <option value="CO"><?=$LANG['fee_table']['oral_surgery']?></option>
+                <option value="DE"><?=$LANG['fee_table']['dentistic']?></option>
+                <option value="EN"><?=$LANG['fee_table']['endodonty']?></option>
+                <option value="EX"><?=$LANG['fee_table']['clinic_examination']?></option>
+                <option value="IM"><?=$LANG['fee_table']['implantodonty']?></option>
+                <option value="OD"><?=$LANG['fee_table']['odontopediatry']?></option>
+                <option value="OR"><?=$LANG['fee_table']['orthodonty']?></option>
+                <option value="RA"><?=$LANG['fee_table']['radiology']?></option>
+                <option value="PE"><?=$LANG['fee_table']['periodonty']?></option>
+                <option value="PR"><?=$LANG['fee_table']['prevention']?></option>
+                <option value="PO"><?=$LANG['fee_table']['prosthesis']?></option>
+                <option value="TE"><?=$LANG['fee_table']['laboratory_test_and_examination']?></option>
       	      </select>
       	    </td>
       	  </tr>
@@ -143,31 +140,31 @@ function esconde(campo) {
     <tr>
       <td width="29%">Área <br />
         <select name="area" class="forms" id="area" <?=$disabled?>>
-          <option value="CO">Cirurgia Oral</option>
-          <option value="DE">Dentística</option>
-          <option value="EN">Endodontia</option>
-          <option value="EX">Exame Clínico</option>
-          <option value="IM">Implantodontia</option>
-          <option value="OD">Odontopediatria</option>
-          <option value="OR">Ortodontia</option>
-          <option value="RA">Radiologia</option>
-          <option value="PE">Periodontia</option>
-          <option value="PR">Prevenção</option>
-          <option value="PO">Prótese</option>
-          <option value="TE">Testes e Exames de Laboratório</option>
+          <option value="CO"><?=$LANG['fee_table']['oral_surgery']?></option>
+          <option value="DE"><?=$LANG['fee_table']['dentistic']?></option>
+          <option value="EN"><?=$LANG['fee_table']['endodonty']?></option>
+          <option value="EX"><?=$LANG['fee_table']['clinic_examination']?></option>
+          <option value="IM"><?=$LANG['fee_table']['implantodonty']?></option>
+          <option value="OD"><?=$LANG['fee_table']['odontopediatry']?></option>
+          <option value="OR"><?=$LANG['fee_table']['orthodonty']?></option>
+          <option value="RA"><?=$LANG['fee_table']['radiology']?></option>
+          <option value="PE"><?=$LANG['fee_table']['periodonty']?></option>
+          <option value="PR"><?=$LANG['fee_table']['prevention']?></option>
+          <option value="PO"><?=$LANG['fee_table']['prosthesis']?></option>
+          <option value="TE"><?=$LANG['fee_table']['laboratory_test_and_examination']?></option>
         </select>
       </td>
-      <td width="37%">Procedimento <br />
+      <td width="37%"><?=$LANG['fee_table']['procedure']?> <br />
         <input type="text" size="50" name="procedimento" id="procedimento" class="forms" <?=$disabled?>>
       </td>
-      <td width="13%">Valor Particular <br />
+      <td width="13%"><?=$LANG['fee_table']['private_value']?><br />
         <input type="text" size="15" name="valor_particular" id="valor_particular" class="forms" <?=$disabled?> onKeypress="return Ajusta_Valor(this, event);">
       </td>
-      <td width="13%">Valor Convênio <br />
+      <td width="13%"><?=$LANG['fee_table']['plan_value']?> <br />
         <input type="text" size="15" name="valor_convenio" id="valor_convenio" class="forms" <?=$disabled?> onKeypress="return Ajusta_Valor(this, event);">
       </td>
       <td width="8%" align="right">&nbsp; <br />
-        <input type="submit" name="Salvar" id="Salvar" value="Salvar" class="forms" <?=$disabled?>>
+        <input type="submit" name="Salvar" id="Salvar" value="<?=$LANG['fee_table']['save']?>" class="forms" <?=$disabled?>>
       </td>
     </tr>
   </table>
@@ -178,13 +175,12 @@ function esconde(campo) {
       <td bgcolor="#009BE6" colspan="7">&nbsp;</td>
     </tr>
     <tr>
-      <td width="7%" height="23" align="left">Código</td>
-      <td width="50%" align="center">Procedimento</td>
-      <td width="9%" align="center">Particular</td>
-      <td width="9%" align="center">Convênio</td>
-      <td width="9%" align="center">Diferença</td>
-      <td width="9%" align="center">Diferença</td>
-      <td width="7%" align="center">Apagar</td>
+      <td width="7%" height="23" align="left"><?=$LANG['fee_table']['code']?></td>
+      <td width="50%" align="center"><?=$LANG['fee_table']['procedure']?></td>
+      <td width="9%" align="center"><?=$LANG['fee_table']['private']?></td>
+      <td width="9%" align="center"><?=$LANG['fee_table']['plan']?></td>
+      <td width="18%" colspan="2" align="center"><?=$LANG['fee_table']['difference']?></td>
+      <td width="7%" align="center"><?=$LANG['fee_table']['delete']?></td>
     </tr>
   </table>
   <div id="pesquisa"></div>

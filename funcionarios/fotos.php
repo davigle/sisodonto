@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,32 +26,29 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
-	$caminho = "fotos/".$_GET[cpf].".jpg";
-	if($_GET[confirm_del] == "delete')") {
-        $sql = "UPDATE `funcionarios` SET `foto` = '' WHERE `cpf` = '".$_GET['cpf']."'";
+	$caminho = "fotos/".$_GET[codigo].".jpg";
+	if($_GET[confirm_del] == "delete\')") {
+        $sql = "UPDATE `funcionarios` SET `foto` = '' WHERE `codigo` = '".$_GET['codigo']."'";
         mysql_query($sql) or die(mysql_error());
 	}
 	if(isset($_POST[send])) {
-		if($_FILES['foto']['name'] != "") {
+		if($_FILES['foto']['name'] != "" && ($_FILES['foto']['type'] == 'image/gif' || $_FILES['foto']['type'] == 'image/pjpeg' || $_FILES['foto']['type'] == 'image/jpeg' || $_FILES['foto']['type'] == 'image/png')) {
             //$caminho = $_FILES['foto']['name'];
 			//move_uploaded_file($_FILES['foto']['tmp_name'], $caminho);
 			$foto = imagecreatefromall($_FILES['foto']['tmp_name'], $_FILES['foto']['name']);
@@ -62,7 +59,7 @@
 			imagecopyresized($imagem, $foto, 0, 0, 0, 0, $siz_x, $siz_y, imagesx($foto), imagesy($foto));
             imagejpeg($imagem, 'teste.jpg');
             $img_data = addslashes(file_get_contents('teste.jpg'));
-            $sql = "UPDATE `funcionarios` SET `foto` = '".$img_data."' WHERE `cpf` = '".$_GET['cpf']."'";
+            $sql = "UPDATE `funcionarios` SET `foto` = '".$img_data."' WHERE `codigo` = '".$_GET['codigo']."'";
             unlink('teste.jpg');
             mysql_query($sql) or die(mysql_error());
 		}
@@ -82,24 +79,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Gerenciador Clínico SmilePrev - Administração Odontológica Em Suas Mãos</title>
 <link href="../css/smileprev.css" rel="stylesheet" type="text/css" />
-<script language="javascript" type="text/javascript" src="../lib/script.js"></script>
+<script language="javascript" type="text/javascript" src="../lib/script.js.php"></script>
 </head>
 <body style="background-color: #F0F0F0"><center>
 <?
-    $sql = "SELECT `foto` FROM `funcionarios` WHERE `cpf` = '".$_GET['cpf']."'";
+    $sql = "SELECT `foto` FROM `funcionarios` WHERE `codigo` = '".$_GET['codigo']."'";
     $query = mysql_query($sql) or die('Erro: '. mysql_error());
     $row = mysql_fetch_array($query);
 	if($row['foto'] != '') {
-		echo '<img src="verfoto_p.php?cpf='.$_GET['cpf'].'" border="0">';
+		echo '<img src="verfoto_p.php?codigo='.$_GET['codigo'].'" border="0">';
 	}  else {
 		echo '<img src="verfoto_p.php?codigo='.$_GET['codigo'].'&padrao=no_photo" border="0">';
 	}
 ?><br><br>
-<form action="fotos.php?cpf=<?=$_GET[cpf]?>" method="POST" enctype="multipart/form-data" target="_self">
+<form action="fotos.php?codigo=<?=$_GET[codigo]?>" method="POST" enctype="multipart/form-data" target="_self">
 <input type="file" <?=$disable?> name="foto" size="5" class="forms"><br>
-<input type="submit" <?=$disable?> class="forms" value="Enviar" name="send">
+<input type="submit" <?=$disable?> class="forms" value="<?=$LANG['employee']['send']?>" name="send">
 </form>
 <br>
-<a <?=$href?>"fotos.php?cpf=<?=$_GET[cpf]?>" <?=$onclick?>"return confirmLink(this)">Excluir foto</a>
+<a <?=$href?>"fotos.php?codigo=<?=$_GET[codigo]?>" <?=$onclick?>"return confirmLink(this)"><?=$LANG['employee']['delete_photo']?></a>
 </body>
 </html>
