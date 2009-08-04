@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -57,9 +54,9 @@
 		$limit = 0;
 		$_GET[pg] = 1;
 	}
-		$sql = "SELECT * FROM `estoque_dent` WHERE `cpf_dentista` = '".$_SESSION[cpf]."' AND `descricao` LIKE '%".$_GET['pesquisa']."%' ORDER BY `descricao` ASC";
+		$sql = "SELECT * FROM `estoque_dent` WHERE `codigo_dentista` = '".$_SESSION[codigo]."' AND `descricao` LIKE '%".$_GET['pesquisa']."%' ORDER BY `descricao` ASC";
 		$conta = new TEstoque('dentista');
-		$cpf_dentista = $_SESSION[cpf];
+		$codigo_dentista = $_SESSION[codigo];
 		$lista = $conta->ListConta($sql.' LIMIT '.$limit.', '.PG_MAX_MEN);
 		$total_regs = $conta->ListConta($sql);
 		$par = "F0F0F0";
@@ -92,7 +89,7 @@
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
       <td width="160">
-      Total de estoques: <b><?=count($total_regs)?></b>
+      <?=$LANG['stock']['total_stock']?>: <b><?=count($total_regs)?></b>
       </td>
       <td width="450" align="center">
 <?
@@ -123,7 +120,7 @@
 	echo $retf;
 ?>
       </td>
-      <td width="140" align="right"><img src="imagens/icones/imprimir.gif" border="0"> <a href="relatorios/estoque_dent.php?sql=<?=$sql?>" target="_blank">Imprimir Relatório</a></td>
+      <td width="140" align="right"><img src="imagens/icones/imprimir.gif" border="0"> <a href="relatorios/estoque_dent.php?sql=<?=$sql?>" target="_blank"><?=$LANG['stock']['print_report']?></a></td>
     </tr>
   </table>
   <div id="conta_atualiza"></div>

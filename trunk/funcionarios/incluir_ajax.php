@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,31 +26,27 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
 	}
 	$funcionario = new TFuncionarios();
-	if(isset($_POST[Salvar])) {	
-        $_POST['cpf'] = ajusta_cpf($_POST['cpf'], 1);
+	if(isset($_POST[Salvar])) {
 		if($_POST[sosenha] == 'true') {
 			if($_POST[senha] != '') {
 				if($_POST[senha] != $_POST[confsenha]) {
@@ -58,14 +54,14 @@
 					$r[29] = '<font color="#FF0000">';
 					$r[30] = '<font color="#FF0000">';
 				}
-				$senha = mysql_fetch_array(mysql_query("SELECT * FROM `funcionarios` WHERE `cpf` = '".$_POST[cpf]."'"));
-				if(md5($_POST[senhaatual]) != $senha[senha]) {
+				$senha = mysql_fetch_array(mysql_query("SELECT * FROM `funcionarios` WHERE `codigo` = '".$_GET[codigo]."'"));
+				if(md5($_POST[senhaatual]) != $senha[senha] && (checknivel('Dentista') || checknivel('Funcionario'))) {
 					$j++;
 					$r[28] = '<font color="#FF0000">';
 				}
 			}
 			if($j == 0) {
-				$funcionario->LoadFuncionario($_GET[cpf]);
+				$funcionario->LoadFuncionario($_GET[codigo]);
 				$strScrp = "Ajax('funcionarios/gerenciar', 'conteudo', '');";	
 				if($_POST[senha] != "") {
 					$funcionario->SetDados('senha', md5($_POST[senha]));
@@ -74,7 +70,6 @@
 			}
 		} else {
 			$obrigatorios[1] = 'nom';
-			$obrigatorios[] = 'cpf';
 			$obrigatorios[] = 'funcao1';
 			$obrigatorios[] = 'login';
 			$i = $j = 0;
@@ -84,10 +79,6 @@
 				    $j++;
 					$r[$i] = '<font color="#FF0000">';
 				}
-			}
-			if($_GET[acao] != "editar" && !is_valid_cpf($_POST[cpf], 'funcionarios')) {
-				$j++;
-				$r[2] = '<font color="#FF0000">';
 			}
 			if($_POST[senha] != $_POST[confsenha] || $_POST[senha] == "" && $_GET[acao] != "editar") {
 				$j++;
@@ -100,15 +91,15 @@
 					$r[29] = '<font color="#FF0000">';
 					$r[30] = '<font color="#FF0000">';
 				}
-				$senha = mysql_fetch_array(mysql_query("SELECT * FROM `funcionarios` WHERE `cpf` = '".$_POST[cpf]."'"));
-				if(md5($_POST[senhaatual]) != $senha[senha]) {
+				$senha = mysql_fetch_array(mysql_query("SELECT * FROM `funcionarios` WHERE `codigo` = '".$_GET[codigo]."'"));
+				if(md5($_POST[senhaatual]) != $senha[senha] && (checknivel('Dentista') || checknivel('Funcionario'))) {
 					$j++;
 					$r[28] = '<font color="#FF0000">';
 				}
 			}
 			if($j == 0) {
 				if($_GET[acao] == "editar") {
-					$funcionario->LoadFuncionario($_GET['cpf']);
+					$funcionario->LoadFuncionario($_GET['codigo']);
 					$strScrp = "Ajax('funcionarios/gerenciar', 'conteudo', '');";
 				}
 				$funcionario->SetDados('nome', htmlspecialchars($_POST[nom], ENT_QUOTES));
@@ -123,6 +114,7 @@
 				$funcionario->SetDados('bairro', $_POST[bairro]);
 				$funcionario->SetDados('cidade', $_POST[cidade]);
 				$funcionario->SetDados('estado', $_POST[estado]);
+				$funcionario->SetDados('pais', $_POST[pais]);
 				$funcionario->SetDados('cep', $_POST[cep]);
 				$funcionario->SetDados('nascimento', converte_data($_POST[nascimento], 1));
 				$funcionario->SetDados('telefone1', $_POST[telefone1]);
@@ -144,17 +136,16 @@
 				$funcionario->SetDados('usuario', $_POST[usuario]);
 				if($_GET[acao] != "editar") {
 					$funcionario->SalvarNovo();
-					$strScrp = "alert('Cadastro realizado com sucesso!'); Ajax('funcionarios/gerenciar', 'conteudo', 'cpf=".$_POST['cpf']."&acao=editar');";
 				}
 				$funcionario->Salvar();
+				$strScrp = "Ajax('funcionarios/gerenciar', 'conteudo', 'codigo=".$_POST['codigo']."&acao=editar');";
 			}
 		}
 	}
 	if($_GET[acao] == "editar") {
-		$strUpCase = "ALTERAÇÂO";
-		$strLoCase = "alteração";
-		$frmActEdt = "?acao=editar&cpf=".$_GET[cpf];
-		$funcionario->LoadFuncionario($_GET[cpf]);
+		$strLoCase = $LANG['employee']['editing'];
+		$frmActEdt = "?acao=editar&codigo=".$_GET[codigo];
+		$funcionario->LoadFuncionario($_GET[codigo]);
 		$row = $funcionario->RetornaTodosDados();
 		$row[nascimento] = converte_data($row[nascimento], 2);
 		$row[nascimentomae] = converte_data($row[nascimentomae], 2);
@@ -171,8 +162,7 @@
 			$row = $_POST;
 			$row[nome] = $_POST[nom];
 		}
-		$strUpCase = "INCLUSÂO";
-		$strLoCase = "inclusão";
+		$strLoCase = $LANG['employee']['including'];
 	}
 	if(isset($strScrp)) {
 		echo '<scr'.'ipt>'.$strScrp.'</scr'.'ipt>';
@@ -181,7 +171,7 @@
 	if(checknivel('Dentista') || checknivel('Funcionario')) {
 		$disable = 'disabled';
 		$disable2 = $disable;
-		if($row[cpf] == $_SESSION[cpf]) {
+		if($row[codigo] == $_SESSION[codigo]) {
 			$disable2 = '';
 		}
 	}
@@ -189,7 +179,7 @@
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="funcionarios/img/funcionario.png" alt="Gerenciar Funcionários" width="21" height="31"> <span class="h3">GERENCIAR FUNCION&Aacute;RIOS [<?=$strLoCase?>] </span></td>
+      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="funcionarios/img/funcionario.png" alt="<?=$LANG['employee']['manage_employee']?>" width="21" height="31"> <span class="h3"><?=$LANG['employee']['manage_employee']?> [<?=$strLoCase?>] </span></td>
       <td width="6%" valign="bottom"><a href="#"></a></td>
       <td width="36%" valign="bottom" align="right">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
@@ -198,7 +188,7 @@
 <div class="conteudo" id="table dados"><br>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td width="243" height="26"><?=$strUpCase?> DE FUNCION&Aacute;RIOS </td>
+      <td width="243" height="26"><?=$strLoCase.' '.$LANG['employee']['employee']?></td>
       <td width="381">&nbsp;</td>
     </tr>
   </table>
@@ -206,106 +196,93 @@
     <tr>
       <td>
       <form id="form2" name="form2" method="POST" action="funcionarios/incluir_ajax.php<?=$frmActEdt?>" onsubmit="formSender(this, 'conteudo'); return false;"><fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es Pessoais</span></legend>
+        <legend><span class="style1"><?=$LANG['employee']['personal_information']?></span></legend>
         <table width="592" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
             <td colspan="2">&nbsp;</td>
           </tr>
           <tr>
-            <td width="280"><?=$r[1]?>* Nome<br />
+            <td width="280"><?=$r[1]?>* <?=$LANG['employee']['name']?><br />
                 <label>
                   <input name="nom" value="<?=$row[nome]?>" <?=$disable?> type="text" class="forms" id="nom" size="50" maxlength="80" />
                 </label>
                 <br />
                 <label></label></td>
-            <td width="156"><?=$r[2]?>* CPF<br />
-<?
-	if($_GET[acao] == "editar") {
-?>
-              <input name="cpf_anterior" disabled value="<?=ajusta_cpf($row[cpf], 2)?>" type="text" class="forms" id="cpf_anterior" maxlength="14"/>
-              <input name="cpf" value="<?=ajusta_cpf($row[cpf], 2)?>" <?=$disable?> type="hidden" class="forms" id="cpf" maxlength="14"/>
-<?
-	} else {
-?>
-			  <input name="cpf" value="<?=ajusta_cpf($row[cpf], 2)?>" type="text" class="forms" id="cpf" maxlength="14" onKeypress="return Ajusta_CPF(this, event);" />
-<?
-	}
-?>
+            <td width="156"><?=$LANG['employee']['document1']?><br />
+			  <input name="cpf" value="<?=$row[cpf]?>" type="text" class="forms" id="cpf" maxlength="50" />
             </td>
             <td width="156" rowspan="10" valign="top"><br />
-    		<iframe height="300" scrolling="No" name="foto_frame" id="foto_frame" width="150" src="funcionarios/fotos.php?cpf=<?=$row[cpf]?><?=(($_GET[acao] != "editar")?'&disabled=yes':'')?>" frameborder="0"></iframe>
+    		<iframe height="300" scrolling="No" name="foto_frame" id="foto_frame" width="150" src="funcionarios/fotos.php?codigo=<?=$row[codigo]?><?=(($_GET[acao] != "editar")?'&disabled=yes':'')?>" frameborder="0"></iframe>
             </td>
    		  </tr>
           <tr>
-            <td>RG<br />
+            <td><?=$LANG['employee']['document2']?><br />
               <input name="rg" value="<?=$row[rg]?>" <?=$disable?> type="text" class="forms" id="rg" /></td>
-            <td>Estado Civil<br /><select name="estadocivil" <?=$disable?> class="forms" id="estadocivil">
+            <td><?=$LANG['employee']['relationship_status']?><br /><select name="estadocivil" <?=$disable?> class="forms" id="estadocivil">
 <?
-	$estados = array('Solteiro(a)', 'Casado(a)', 'Separado(a)', 'Divorciado(a)', 'Amasiado(a)', 'Viúvo(a)');
-	foreach($estados as $uf) {
-		if($row[estadocivil] == $uf) {
-			echo '<option value="'.$uf.'" selected>'.$uf.'</option>';
+	$valores = array('solteiro' => $LANG['employee']['single'], 'casado' => $LANG['employee']['married'], 'divorciado' => $LANG['employee']['divorced'], 'viuvo' => $LANG['employee']['widowed']);
+	foreach($valores as $chave => $valor) {
+		if($row[estadocivil] == $chave) {
+			echo '<option value="'.$chave.'" selected>'.$valor.'</option>';
 		} else {
-			echo '<option value="'.$uf.'">'.$uf.'</option>';
+			echo '<option value="'.$chave.'">'.$valor.'</option>';
 		}
 	}
 ?>       
 			 </select></td>
           </tr>
           <tr>
-            <td>Endere&ccedil;o<br />
+            <td><?=$LANG['employee']['address1']?><br />
               <input name="endereco" value="<?=$row[endereco]?>" <?=$disable?> type="text" class="forms" id="endereco" size="50" maxlength="150" /></td>
-            <td>Bairro<br />
+            <td><?=$LANG['employee']['address2']?><br />
               <input name="bairro" value="<?=$row[bairro]?>" <?=$disable?> type="text" class="forms" id="bairro" /></td>
           </tr>
           <tr>
-            <td>Cidade<br />
+            <td><?=$LANG['employee']['city']?><br />
                 <input name="cidade" value="<?=$row[cidade]?>" <?=$disable?> type="text" class="forms" id="cidade" size="30" maxlength="50" />
               <br /></td>
-            <td>Estado<br /><select name="estado" <?=$disable?> class="forms" id="estado">
-<?
-	$estados = array('AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO');
-	foreach($estados as $uf) {
-		if($row[estado] == $uf || ($row[estado] == '' && $uf == 'MG')) {
-			echo '<option value="'.$uf.'" selected>'.$uf.'</option>';
-		} else {
-			echo '<option value="'.$uf.'">'.$uf.'</option>';
-		}
-	}
-?>       
-			 </select>  </td>
+            <td><?=$LANG['employee']['state']?><br />
+                <input name="estado" value="<?=$row[estado]?>" <?=$disable?> type="text" class="forms" id="estado" maxlength="50" />
+            </td>
           </tr>
           <tr>
-            <td>CEP<br />
+            <td><?=$LANG['employee']['country']?><br />
+                <input name="pais" value="<?=$row[pais]?>" <?=$disable?> type="text" class="forms" id="pais" size="30" maxlength="50" />
+              <br /></td>
+            <td>&nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td><?=$LANG['employee']['zip']?><br />
               <input name="cep" value="<?=$row[cep]?>" <?=$disable?> type="text" class="forms" id="cep" size="10" maxlength="9" onKeypress="return Ajusta_CEP(this, event);" /></td>
-            <td>Nascimento<br />
+            <td><?=$LANG['employee']['birthdate']?><br />
               <input name="nascimento" value="<?=$row[nascimento]?>" <?=$disable?> type="text" class="forms" id="nascimento" maxlength="10" onKeypress="return Ajusta_Data(this, event);" /></td>
           </tr>
           <tr>
-            <td>Telefone 1<br />
+            <td><?=$LANG['employee']['phone1']?><br />
               <input name="telefone1" value="<?=$row[telefone1]?>" <?=$disable?> type="text" class="forms" id="telefone1" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
-            <td>Telefone 2<br />
+            <td><?=$LANG['employee']['phone2']?><br />
               <input name="telefone2" value="<?=$row[telefone2]?>" <?=$disable?> type="text" class="forms" id="telefone2" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
           </tr>
           <tr>
-            <td>Celular<br />
+            <td><?=$LANG['employee']['cellphone']?><br />
               <input name="celular" value="<?=$row[celular]?>" <?=$disable?> type="text" class="forms" id="celular" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
-            <td>Sexo<br /><select name="sexo" <?=$disable?> class="forms" id="sexo">
+            <td><?=$LANG['employee']['gender']?><br /><select name="sexo" <?=$disable?> class="forms" id="sexo">
 <?
-	$estados = array('Masculino', 'Feminino');
-	foreach($estados as $uf) {
-		if($row[sexo] == $uf) {
-			echo '<option value="'.$uf.'" selected>'.$uf.'</option>';
+	$valores = array('Masculino' => $LANG['employee']['male'], 'Feminino' => $LANG['employee']['female']);
+	foreach($valores as $chave => $valor) {
+		if($row[sexo] == $chave) {
+			echo '<option value="'.$chave.'" selected>'.$valor.'</option>';
 		} else {
-			echo '<option value="'.$uf.'">'.$uf.'</option>';
+			echo '<option value="'.$chave.'">'.$valor.'</option>';
 		}
 	}
 ?>       
 			 </select></td>
           </tr>
           <tr>
-            <td>E-mail<br />
+            <td><?=$LANG['employee']['email']?><br />
               <input name="email" value="<?=$row[email]?>" <?=$disable?> type="text" class="forms" id="email" size="50" /></td>
             <td></td>
           </tr>
@@ -317,7 +294,7 @@
         </fieldset>
         <br />
          <fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es Familiares </span></legend>
+        <legend><span class="style1"><?=$LANG['employee']['familiar_information']?></span></legend>
 
         <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
@@ -325,30 +302,30 @@
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td width="287">Nome da M&atilde;e <br />
+            <td width="287"><?=$LANG['employee']['mothers_name']?><br />
                 <label>
                 <input name="nomemae" value="<?=$row[nomemae]?>" <?=$disable?> type="text" class="forms" id="nome_mae" size="50" maxlength="80" />
                 </label>
                 <br />
                 <label></label></td>
-            <td width="210">Nascimento<br />
+            <td width="210"><?=$LANG['employee']['birthdate']?><br />
                 <input name="nascimentomae" value="<?=$row[nascimentomae]?>" <?=$disable?> type="text" class="forms" id="nascimento_mae" size="20" maxlength="10" onKeypress="return Ajusta_Data(this, event);" /></td>
           </tr>
           <tr>
-            <td>Nome do Pai <br />
+            <td><?=$LANG['employee']['fathers_name']?><br />
               <input name="nomepai" value="<?=$row[nomepai]?>" <?=$disable?> type="text" class="forms" id="nome_pai" size="50" maxlength="80" /></td>
-            <td>Nascimento<br />
+            <td><?=$LANG['employee']['birthdate']?><br />
                 <input name="nascimentopai" value="<?=$row[nascimentopai]?>" <?=$disable?> type="text" class="forms" id="nascimento_pai" size="20" maxlength="10" onKeypress="return Ajusta_Data(this, event);" /></td>
           </tr>
           <tr>
-            <td colspan="2">Endere&ccedil;o Completo (caso seja diferente do pessoal) <br />
+            <td colspan="2"><?=$LANG['employee']['complete_address_in_case_of_be_different_from_personal']?><br />
                 <input name="enderecofamiliar" value="<?=$row[enderecofamiliar]?>" <?=$disable?> type="text" class="forms" id="endereco_familiar" size="78" maxlength="220" />                <br /></td>
             </tr>
         </table>
         </fieldset>
 
          <fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es Profissionais </span></legend>
+        <legend><span class="style1"><?=$LANG['employee']['professional_information']?> </span></legend>
 
         <table width="519" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
@@ -356,14 +333,14 @@
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td width="264"><?=$r[21]?>* Fun&ccedil;&atilde;o Exercida - Principal <br />
+            <td width="264"><?=$r[21]?>* <?=$LANG['employee']['main_function']?> <br />
                 <label>
                 <input name="funcao1" value="<?=$row[funcao1]?>" <?=$disable?> type="text" class="forms" id="funcao1" size="40" maxlength="80" />
                 </label>
                 <br />
                 <br />
                 <label></label></td>
-            <td width="255">Fun&ccedil;&atilde;o Exercida - Secund&aacute;ria <br />
+            <td width="255"><?=$LANG['employee']['secondary_function']?><br />
               <label>
               <input name="funcao2" value="<?=$row[funcao2]?>" <?=$disable?> type="text" class="forms" id="funcao2" size="40" maxlength="80" />
               <br />
@@ -371,28 +348,28 @@
               </label></td>
           </tr>
           <tr>
-            <td><label>Data da Admiss&atilde;o <br />
+            <td><label><?=$LANG['employee']['admission_date']?><br />
                 <input name="admissao" value="<?=$row[admissao]?>" <?=$disable?> type="text" class="forms" id="data_admissao" size="20" maxlength="10" onKeypress="return Ajusta_Data(this, event);" />
                 <br />
               </label></td>
-            <td>Data da Demiss&atilde;o<br />
+            <td><?=$LANG['employee']['resignation_date']?><br />
               <input name="demissao" value="<?=$row[demissao]?>" <?=$disable?> type="text" class="forms" id="data_demissao" size="20" maxlength="10" onKeypress="return Ajusta_Data(this, event);" /></td>
           </tr>
           <tr>
-            <td><br />Observações<br />
+            <td><br /><?=$LANG['employee']['comments']?><br />
               <label>
               <textarea name="observacoes" <?=$disable?> cols="25" rows="4"><?=$row[observacoes]?></textarea>
               </label></td>
-            <td valign="top"><br />Ativo na clínica?<br />
+            <td valign="top"><br /><?=$LANG['employee']['active_on_clinic']?>?<br />
               <label>
               <select name="ativo" <?=$disable?> class="forms" id="ativo">
 <?
-	$estados = array('Sim', 'Não');
-	foreach($estados as $uf) {
-		if($row[ativo] == $uf) {
-			echo '<option value="'.$uf.'" selected>'.$uf.'</option>';
+	$valores = array('Sim' => $LANG['employee']['yes'], 'Não' => $LANG['employee']['no']);
+	foreach($valores as $chave => $valor) {
+		if($row[ativo] == $chave) {
+			echo '<option value="'.$chave.'" selected>'.$valor.'</option>';
 		} else {
-			echo '<option value="'.$uf.'">'.$uf.'</option>';
+			echo '<option value="'.$chave.'">'.$valor.'</option>';
 		}
 	}
 ?>       
@@ -407,13 +384,13 @@
         </fieldset>	
 	    <br />
         <fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es de Acesso Pessoal </span></legend>
+        <legend><span class="style1"><?=$LANG['employee']['personal_access_information']?></span></legend>
         <table width="287" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
             </tr>
           <tr>
-            <td><?=$r[27]?>Login <br />
+            <td><?=$r[27]?><?=$LANG['employee']['login']?> <br />
               <input name="usuario" value="<?=$row[usuario]?>" <?=$disable?> type="text" class="forms" id="usuario" maxlength="15" />
               <br />
               <br /></td>
@@ -423,11 +400,11 @@
 	if($disable == 'disabled' && $disable2 == '') {
 		echo '<input type="hidden" name="sosenha" value="true">';
 	}
-	if($_GET[acao] == 'editar') {
+	if($_GET[acao] == 'editar' && (checknivel('Dentista') || checknivel('Funcionario'))) {
 		$nova = "Nova ";
 ?>
           <tr>
-            <td width="287"><?=$r[28]?>Senha atual <br />
+            <td width="287"><?=$r[28]?><?=$LANG['employee']['current_password']?> <br />
               <input name="senhaatual" value="" <?=$disable2?> type="password" class="forms" id="senhaatual" maxlength="32" /> 
               <br />
               <br />              </td>
@@ -437,13 +414,13 @@
 	}
 ?>
           <tr>
-            <td><?=$r[$x]?><?=$nova?>Senha <br />
+            <td><?=$r[$x]?><?=$LANG['employee']['new_password']?> <br />
               <input name="senha" value="" <?=$disable2?> type="password" class="forms" id="senha" maxlength="32" />
               <br />
               <br /></td>
           </tr>
           <tr>
-            <td><?=$r[($x+1)]?>Confirmação da <?=$nova?>Senha<br />
+            <td><?=$r[($x+1)]?><?=$LANG['employee']['retype_new_password']?><br />
               <input name="confsenha" value="" <?=$disable2?> type="password" class="forms" id="confsenha" maxlength="32" />
               <br />
               <br /></td>
@@ -454,13 +431,13 @@
         </table>
         </fieldset>
         <div align="center"><br />
-          <input name="Salvar" type="submit" <?=$disable2?> class="forms" id="Salvar" value="Salvar" />
+          <input name="Salvar" type="submit" <?=$disable2?> class="forms" id="Salvar" value="<?=$LANG['employee']['save']?>" />
         </div>
       </form>      </td>
     </tr>
     <tr>
       <td align="right">
-        <img src="imagens/icones/imprimir.gif"> <a href="relatorios/funcionario.php?cpf=<?=$row['cpf']?>" target="_blank">Imprimir Ficha</a>&nbsp;
+        <img src="imagens/icones/imprimir.gif"> <a href="relatorios/funcionario.php?codigo=<?=$row['codigo']?>" target="_blank"><?=$LANG['employee']['print_sheet']?></a>&nbsp;
       </td>
     </tr>
   </table>

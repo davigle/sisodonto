@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,27 +26,25 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
-		die($frase_log);
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
 	}
 	if($_GET[confirm_del] == "delete") {
 		mysql_query("DELETE FROM `estoque` WHERE `codigo` = '".$_GET[codigo]."'") or die(mysql_error());
@@ -74,12 +72,12 @@
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="60%">&nbsp;&nbsp;&nbsp;<img src="estoque/img/estoque.png" alt="Controle de Estoques da Clínica"> <span class="h3">Controle de estoque da Clínica </span></td>
+      <td width="60%">&nbsp;&nbsp;&nbsp;<img src="estoque/img/estoque.png" alt="<?=$LANG['stock']['clinic_stock_control']?>"> <span class="h3"><?=$LANG['stock']['clinic_stock_control']?></span></td>
       <td width="38%" valign="bottom">
       	<table width="100%" border="0">
       	  <tr>
       	    <td>
-      	      Pesquisar por descrição:
+      	      <?=$LANG['stock']['search_by_description']?>:
       	    </td>
       	    <td>
       	      <br>
@@ -96,14 +94,14 @@
     <tr>
       <td width="4%">
       </td>
-      <td width="60%">Descrição <br />
+      <td width="60%"><?=$LANG['stock']['description']?> <br />
         <input type="text" size="80" name="descricao" id="descricao" class="forms">
       </td>
-      <td width="19%">Quantidade <br />
+      <td width="19%"><?=$LANG['stock']['quantity']?> <br />
         <input type="text" size="20" name="quantidade" id="quantidade" class="forms"">
       </td>
       <td width="14%" align="right"> <br />
-        <input type="submit" name="Salvar" id="Salvar" value="Salvar" class="forms"> &nbsp;&nbsp;
+        <input type="submit" name="Salvar" id="Salvar" value="<?=$LANG['stock']['save']?>" class="forms"> &nbsp;&nbsp;
       </td>
       <td width="3%">
       </td>
@@ -116,9 +114,9 @@
       <td bgcolor="#009BE6" colspan="5">&nbsp;</td>
     </tr>
     <tr>
-      <td width="75%" height="23" align="left">Descrição</td>
-      <td width="15%" align="center">Quantidade</td>
-      <td width="10%" align="center">Apagar</td>
+      <td width="75%" height="23" align="left"><?=$LANG['stock']['description']?></td>
+      <td width="15%" align="center"><?=$LANG['stock']['quantity']?></td>
+      <td width="10%" align="center"><?=$LANG['stock']['delete']?></td>
     </tr>
   </table>
   <div id="pesquisa"></div>

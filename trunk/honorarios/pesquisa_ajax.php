@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -90,7 +87,7 @@
       <td width="50%" align="center"><input type="text" <?=$disabled?> class="forms" size="70" name="procedimento" id="procedimento" value="<?=$conta->RetornaDados('procedimento')?>" onblur="Ajax('honorarios/atualiza', 'conta_atualiza', 'codigo=<?=$conta->RetornaDados('codigo')?>&procedimento='%2Bthis.value)"></td>
       <td width="9%" align="center"><input type="text" <?=$disabled?> class="forms" size="8" name="valor_particular" id="valor_particular" value="<?=number_format($conta->RetornaDados('valor_particular'), 2, '.', '')?>" onblur="Ajax('honorarios/atualiza', 'conta_atualiza', 'codigo=<?=$conta->RetornaDados('codigo')?>&valor_particular='%2Bthis.value)" onKeypress="return Ajusta_Valor(this, event);"></td>
       <td width="9%" align="center"><input type="text" <?=$disabled?> class="forms" size="8" name="valor_convenio" id="valor_convenio" value="<?=number_format($conta->RetornaDados('valor_convenio'), 2, '.', '')?>" onblur="Ajax('honorarios/atualiza', 'conta_atualiza', 'codigo=<?=$conta->RetornaDados('codigo')?>&valor_convenio='%2Bthis.value)" onKeypress="return Ajusta_Valor(this, event);"></td>
-      <td width="9%" align="right">R$ <?=@number_format($conta->RetornaDados('valor_particular')-$conta->RetornaDados('valor_convenio'), 2, ',', '.')?></td>
+      <td width="9%" align="right"> <?=$LANG['general']['currency'].' '.@number_format($conta->RetornaDados('valor_particular')-$conta->RetornaDados('valor_convenio'), 2, ',', '.')?></td>
       <td width="9%" align="right"><?=@number_format(round(100-($conta->RetornaDados('valor_convenio')/$conta->RetornaDados('valor_particular')*100), 2), 2, ',', '.')?> %</td>
       <td width="7%" align="center"><a <?=$href?>="javascript:Ajax('honorarios/honorarios', 'conteudo', 'codigo=<?=$conta->RetornaDados('codigo')?>" <?=$onclick?>="return confirmLink(this)"><img src="imagens/icones/excluir.gif" alt="Excluir" width="19" height="19" border="0"></a></td>
     </tr>
@@ -102,7 +99,7 @@
   <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
       <td width="25%">
-      Total de procedimentos: <b><?=count($total_regs)?></b>
+      <?=$LANG['fee_table']['total_procedures']?>: <b><?=count($total_regs)?></b>
       </td>
       <td width="56%" align="center">
 <?
@@ -133,7 +130,7 @@
 	echo $retf;
 ?>
       </td>
-      <td width="19%" align="right"><img src="imagens/icones/imprimir.gif" border="0"> <a href="relatorios/honorarios.php?sql=<?=$sql?>" target="_blank">Imprimir Relatório</a></td>
+      <td width="19%" align="right"><img src="imagens/icones/imprimir.gif" border="0"> <a href="relatorios/honorarios.php?sql=<?=$sql?>" target="_blank"><?=$LANG['fee_table']['print_report']?></a></td>
     </tr>
   </table>
   <div id="conta_atualiza"></div>
