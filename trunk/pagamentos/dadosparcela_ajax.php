@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -66,14 +63,14 @@ function atualiza_valor() {
     } else {
         valor.value = <?=$row['valor']?> - parseFloat(dc_valor.value);
     }
-    valor_total.innerHTML = 'R$ '%2Bvalor.value;
+    valor_total.innerHTML = '<?=$LANG['general']['currency']?> '%2Bvalor.value;
 }
 </script>
   <br />
   <table width="58%" border="0" cellpadding="0" cellspacing="0">
     <tr align="left">
       <td width="40%">
-        Paciente:
+        <?=$LANG['payment']['patient']?>:
       </td>
       <td width="60%">
         <b><?=$row['paciente']?></b>
@@ -81,7 +78,7 @@ function atualiza_valor() {
     </tr>
     <tr align="left">
       <td>
-        Profissional:
+        <?=$LANG['payment']['professional']?>:
       </td>
       <td>
         <b><?=$row['dentista']?></b>
@@ -89,10 +86,10 @@ function atualiza_valor() {
     </tr>
     <tr align="left">
       <td>
-        Valor da Parcela:
+        <?=$LANG['payment']['plot_value']?>:
       </td>
       <td>
-        <b>R$ <?=money_form($row['valor'])?></b>
+        <b><?=$LANG['general']['currency'].' '.money_form($row['valor'])?></b>
       </td>
     </tr>
 <?
@@ -100,8 +97,8 @@ function atualiza_valor() {
 ?>
     <tr align="left">
       <td colspan="2">
-        <input type="radio" id="dc_p" name="dcc" value="%2B" checked onclick="document.getElementById('dc').value=this.value; javascript:atualiza_valor();" /> Acréscimo
-        <input type="radio" id="dc_m" name="dcc" value="-" onclick="document.getElementById('dc').value=this.value; javascript:atualiza_valor();" /> Desconto
+        <input type="radio" id="dc_p" name="dcc" value="%2B" checked onclick="document.getElementById('dc').value=this.value; javascript:atualiza_valor();" /> <?=$LANG['payment']['increase']?>
+        <input type="radio" id="dc_m" name="dcc" value="-" onclick="document.getElementById('dc').value=this.value; javascript:atualiza_valor();" /> <?=$LANG['payment']['decrease']?>
         <input type="hidden" id="dc" name="dc" value="%2B" />
         <input type="text" id="dc_valor" name="dc_valor" value="0" class="forms" size="8" onKeypress="return Ajusta_Valor(this, event);"
         onblur="if(this.value=='') { this.value='0' }; javascript:atualiza_valor()" />
@@ -109,10 +106,10 @@ function atualiza_valor() {
     </tr>
     <tr align="left">
       <td>
-        Total a Pagar:
+        <?=$LANG['payment']['total_to_pay']?>:
       </td>
       <td>
-        <b><div id="valor_total">R$ <?=money_form($row['valor'])?></div></b>
+        <b><div id="valor_total"><?=$LANG['general']['currency']?> <?=money_form($row['valor'])?></div></b>
         <input type="hidden" name="valor" id="valor" value="<?=$row['valor']?>">
       </td>
     </tr>
@@ -121,7 +118,7 @@ function atualiza_valor() {
 ?>
     <tr align="left">
       <td>
-        Data:
+        <?=$LANG['payment']['date']?>:
       </td>
       <td>
         <b><?=converte_data($row['data'], 2)?></b>
@@ -137,7 +134,7 @@ function atualiza_valor() {
 ?>
     <tr>
       <td colspan="2" align="center">
-        <b><font color="#CC0000">PARCELA CANCELADA</font></b>
+        <b><font color="#CC0000"><?=$LANG['payment']['canceled_plot']?></font></b>
       </td>
     </tr>
     <tr>
@@ -150,7 +147,7 @@ function atualiza_valor() {
 ?>
     <tr>
       <td colspan="2" align="center">
-        <b><font color="#CC0000">ORÇAMENTO NÃO CONFIRMADO</font></b>
+        <b><font color="#CC0000"><?=$LANG['payment']['not_confirmed_budget']?></font></b>
       </td>
     </tr>
     <tr>
@@ -164,7 +161,7 @@ function atualiza_valor() {
 ?>
     <tr>
       <td colspan="2" align="center">
-        <input <?=(($row['pago'] == 'Sim' || $row['baixa'] == 'Sim' || $row['confirmado'] == 'Não')?'disabled':'')?> type="submit" name="Salvar" value="Confirmar pagamento" class="forms">
+        <input <?=(($row['pago'] == 'Sim' || $row['baixa'] == 'Sim' || $row['confirmado'] == 'Não')?'disabled':'')?> type="submit" name="Salvar" value="<?=$LANG['payment']['confirm_payment']?>" class="forms">
       </td>
     </tr>
 <?
@@ -177,7 +174,7 @@ function atualiza_valor() {
     </tr>
     <tr>
       <td colspan="2" align="center">
-        <a href="javascript:;" onclick="window.open('relatorios/recibo.php?codigo_parcela=<?=$_GET['parcela']?>', 'Recibo', 'height=350,width=320,status=yes,toolbar=no,menubar=no,location=no')">Imprimir 2ª via do Recibo</a>
+        <a href="javascript:;" onclick="window.open('relatorios/recibo.php?codigo_parcela=<?=$_GET['parcela']?>', 'Recibo', 'height=350,width=320,status=yes,toolbar=no,menubar=no,location=no')"><?=$LANG['payment']['reprint_the_receipt']?></a>
       </td>
     </tr>
 <?

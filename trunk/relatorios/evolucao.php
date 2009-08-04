@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -53,16 +50,16 @@
 	$query = mysql_query($sql) or die('Line 40: '.mysql_error());
 	$row = mysql_fetch_array($query);
 ?>
-<font size="3">Evolução do tratamento de <b><?=$row['nome']?> [<?=$_GET['codigo']?>]</b></font><br /><br />
+<font size="3"><?=$LANG['reports']['treatment_evolution_of']?> <b><?=$row['nome']?> [<?=$_GET['codigo']?>]</b></font><br /><br />
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
   <tr>
-    <th width="30%" align="left">Procedimento Executado
+    <th width="30%" align="left"><?=$LANG['reports']['executed_procedure']?>
     </th>
-    <th width="30%" align="left">Procedimento Previsto
+    <th width="30%" align="left"><?=$LANG['reports']['previwed_procedure']?>
     </th>
-    <th width="30%" align="left">Dentista
+    <th width="30%" align="left"><?=$LANG['reports']['professional']?>
     </th>
-    <th width="10%" align="left">Data
+    <th width="10%" align="left"><?=$LANG['reports']['date']?>
     </th>
   </tr>
 <?
@@ -92,7 +89,6 @@
 ?>
 </table>
 <script>
-alert("Para imprimir o relatório, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>
 <?

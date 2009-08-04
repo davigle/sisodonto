@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -56,18 +53,17 @@
 	$row = mysql_fetch_array($query);
 ?>
 <br />
-<font size="3" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><b>R E C I B O</b></u></font><br />
-<font size="1" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEM VALIDADE FISCAL</font><br /><br />
-<font size="2" face="Courier New">&nbsp;&nbsp;Paciente: <b><?=$row['paciente']?></b><br />
-&nbsp;&nbsp;Profissional: <b><?=(($row['sexo_dentista'] == 'Masculino')?'Dr. ':'Dra. ').$row['dentista']?></b><br />
-&nbsp;&nbsp;Valor: <b>R$ <?=money_form($row['valor'])?></b><br />
-&nbsp;&nbsp;Data de vencimento: <b><?=converte_data($row['data'], 2)?></b><br />
-&nbsp;&nbsp;Data de Pagamento: <b><?=converte_data($row['datapgto'], 2)?></b><br /><br /><br /><br />
+<font size="3" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<u><b><?=$LANG['reports']['receipt']?></b></u></font><br />
+<font size="1" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$LANG['reports']['no_fiscal_validity']?></font><br /><br />
+<font size="2" face="Courier New">&nbsp;&nbsp;<?=$LANG['reports']['patient']?>: <b><?=$row['paciente']?></b><br />
+&nbsp;&nbsp;<?=$LANG['reports']['professional']?>: <b><?=(($row['sexo_dentista'] == 'Masculino')?'Dr. ':'Dra. ').$row['dentista']?></b><br />
+&nbsp;&nbsp;<?=$LANG['reports']['value']?>: <b><?=$LANG['general']['currency'].' '.money_form($row['valor'])?></b><br />
+&nbsp;&nbsp;<?=$LANG['reports']['due_date']?>: <b><?=converte_data($row['data'], 2)?></b><br />
+&nbsp;&nbsp;<?=$LANG['reports']['payment_date']?>: <b><?=converte_data($row['datapgto'], 2)?></b><br /><br /><br /><br />
 &nbsp;&nbsp;&nbsp;&nbsp;______________________________</font><br />
-<font size="1" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assinatura do Funcionário/Dentista</font><br />
+<font size="1" face="Courier New">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?=$LANG['reports']['employee_signature']?></font><br />
 
 <script>
-alert("Para imprimir o recibo, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>
 </body>

@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,27 +26,25 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
-		die($frase_log);
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
 	}
 	if($_GET[confirm_del] == "delete") {
 		mysql_query("DELETE FROM `telefones` WHERE `codigo` = '".$_GET[codigo]."'") or die(mysql_error());
@@ -55,12 +53,12 @@
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="telefones/img/telefones.png" alt="Telefones Úteis" height="40"> <span class="h3">TELEFONES ÚTEIS </span></td>
+      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="telefones/img/telefones.png" alt="Telefones Úteis" height="40"> <span class="h3"><?=$LANG['useful_telephones']['useful_telephones']?></span></td>
       <td width="27%" valign="bottom">
-Pesquisar 
+<?=$LANG['useful_telephones']['search_for']?>
   <input name="procurar" id="procurar" type="text" class="forms" size="20" maxlength="40" onkeyup="javascript:Ajax('telefones/pesquisa', 'pesquisa', 'pesquisa='%2Bthis.value)">
 </td>
-      <td width="23%" align="right" valign="bottom"><img src="imagens/icones/novo.gif" alt="Incluir" width="19" height="22" border="0"><a href="javascript:Ajax('telefones/incluir', 'conteudo', '')">Incluir novo contato </a></td>
+      <td width="23%" align="right" valign="bottom"><img src="imagens/icones/novo.gif" width="19" height="22" border="0"><a href="javascript:Ajax('telefones/incluir', 'conteudo', '')"><?=$LANG['useful_telephones']['include_new_contact']?></a></td>
       <td width="2%" valign="bottom">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
     </tr>
@@ -74,10 +72,10 @@ Pesquisar
       <td bgcolor="#009BE6">&nbsp;</td>
     </tr>
     <tr>
-      <td width="475" height="23" align="left">NOME</td>
-      <td width="150" align="left">TELEFONE</td>
-      <td width="59" align="center">Editar/Ver</td>
-      <td width="66" align="center">Excluir</td>
+      <td width="475" height="23" align="left"><?=$LANG['useful_telephones']['name']?></td>
+      <td width="150" align="left"><?=$LANG['useful_telephones']['telephone']?></td>
+      <td width="59" align="center"><?=$LANG['useful_telephones']['edit_view']?></td>
+      <td width="66" align="center"><?=$LANG['useful_telephones']['delete']?></td>
     </tr>
   </table>
   <div id="pesquisa"></div>

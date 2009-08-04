@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
     *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
-    *
     *
     */
-    include "../lib/config.inc.php";
-    include "../lib/func.inc.php";
-    include "../lib/classes.inc.php";
+	include "../lib/config.inc.php";
+	include "../lib/func.inc.php";
+	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
     header("Content-type: text/html; charset=ISO-8859-1", true);
     if(!checklog()) {
         die($frase_log);
@@ -66,8 +63,8 @@
 	$laudo->LoadInfo();
 ?>
 <br />
-<div align="center"><font size="4"><b>L A U D O &nbsp; / &nbsp; P A R E C E R</b></font></div><br /><br />
-<font size="2">Paciente:<br />
+<div align="center"><font size="4"><b><?=$LANG['reports']['dental_opinion']?></b></font></div><br /><br />
+<font size="2"><?=$LANG['reports']['patient']?>:<br />
 <b><?=$paciente->RetornaDados('nome')?></b><br /></font><br /><br />
 <br />
 <?
@@ -77,7 +74,7 @@
 <form action="laudo.php?codigo=<?=$_GET['codigo']?>" method="POST">
 <textarea name="laudo" class="forms" cols="130" rows="30"><?=$laudo->Laudo?></textarea><br />
 <br />
-<input type="submit" name="send" value="Enviar" class="forms">
+<input type="submit" name="send" value="<?=$LANG['reports']['send']?>" class="forms">
 </form>
 </div>
 <?
@@ -87,7 +84,6 @@
 <?=nl2br($laudo->Laudo)?>
 </div>
 <script>
-alert("Para imprimir o laudo, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>
 <?
@@ -95,7 +91,7 @@ window.print();
 ?>
 <div align="center">
 <br /><br /><br /><br /><br /><br /><br /><br />
-<?=$clinica->Cidade.'/'.$clinica->Estado.', '.date('d').' de '.nome_mes(date('m')).' de '.date('Y')?>
+<?=$clinica->Cidade.'/'.$clinica->Estado.', '.date('d').' '.$LANG['reports']['of'].' '.nome_mes(date('m')).' '.$LANG['reports']['of'].' '.date('Y')?>
 <br /><br /><br /><br /><br /><br />
 <?=(($_SESSION['sexo'] == 'Masculino')?'Dr.':'Dra.').' '.$_SESSION['nome']?><br />
 <?=$_SESSION['conselho_tipo'].'/'.$_SESSION['conselho_estado'].' '.$_SESSION['conselho_numero']?>

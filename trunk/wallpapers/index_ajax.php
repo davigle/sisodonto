@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,36 +26,31 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(checklog()) {
 		$handle = opendir('../imagens/wallpapers');
 		while ($file = readdir($handle)) {
-			if($file != "." && $file != "..") {
-				$nome_file = explode('.', $file);
-				$papel[] = substr($nome_file[0], 9);
+			if(strpos($file, ".") !== 0 && $file != 'Thumbs.db') {
+				$papel[] = $file;
 			}
 		}
 		closedir($handle);
-		array_pop($papel);
-		$rand = rand(1, (count($papel) - 1));
+		$rand = rand(0, (count($papel) - 1));
 		$prim_nome = explode(' ', $_SESSION[nome_user]);
 		$prim_nome = $prim_nome[0].' '.$prim_nome[count($prim_nome)-1];
 		$titulo = $_SESSION[titulo];
@@ -64,14 +59,23 @@
 			$prim_nome = 'Administrador(a)';
 		}
 ?>
-<center><img src="imagens/wallpapers/smileprev<?=$papel[$rand]?>.png" border="0" width="753" height="230"></center>
-<script>document.getElementById('saudacao').innerHTML='<font size=\"1\"><?=saudacao()?>, <?=$titulo.' '.$prim_nome?>&nbsp;&nbsp;'</script>
+<center><img src="imagens/wallpapers/<?=$papel[$rand]?>" border="0" width="753" height="230"></center>
+<script>document.getElementById('saudacao').innerHTML='<font size=\"1\"><?php
+  	if(date('H') >= 0 && date('H') < 12) {
+  		echo $LANG['func']['good_morning'];
+  	} elseif(date('H') >= 12 && date('H') < 18) {
+  		echo $LANG['func']['good_afternoon'];
+  	} elseif(date('H') >= 18 && date('H') <= 23) {
+  		echo $LANG['func']['good_night'];
+  	}
+    echo ', '.$titulo.' '.$prim_nome;
+?>&nbsp;&nbsp;'</script>
 <?
 	} elseif(!isset($_POST[login])) {
 ?>
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="wallpapers/img/login.png" alt="Login de acesso"> <span class="h3">ACESSAR SISTEMA </span></td>
+      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="wallpapers/img/login.png"> <span class="h3"><?=$LANG['wallpaper']['access_system']?></span></td>
       <td width="6%" valign="bottom"><a href="#"></a></td>
       <td width="36%" valign="bottom" align="right">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
@@ -80,7 +84,7 @@
 <div class="conteudo" id="table dados"><br>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td width="243" height="23">LOGIN DE ACESSO </td>
+      <td width="243" height="23"><?=$LANG['wallpaper']['access_login']?></td>
       <td width="381">&nbsp;</td>
     </tr>
   </table>
@@ -89,19 +93,19 @@
       <td>
       <form id="form2" name="form2" method="POST" action="wallpapers/index_ajax.php<?=$frmActEdt?>" onsubmit="formSender(this, 'conteudo'); return false;">
         <fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es de Acesso Pessoal </span></legend>
+        <legend><span class="style1"><?=$LANG['wallpaper']['personal_access_information']?></span></legend>
         <table width="287" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td>Login:<br />
+            <td><?=$LANG['wallpaper']['login']?>:<br />
               <input name="usuario" value="" type="text" class="forms" id="usuario" maxlength="11" />
               <br />
               <br /></td>
           </tr>
           <tr>
-            <td>Senha<br />
+            <td><?=$LANG['wallpaper']['password']?>:<br />
               <input name="senha" value="" type="password" class="forms" id="senha" maxlength="32" />
               <br />
               <br /></td>
@@ -115,7 +119,7 @@
         </table>
         </fieldset>
         <div align="center"><br>
-          <input name="login" type="submit" class="forms" id="login" value="Entrar" />
+          <input name="login" type="submit" class="forms" id="login" value="<?=$LANG['wallpaper']['btn_login']?>" />
         </div>
       </form>
       </td>
@@ -138,7 +142,7 @@
 		switch($nivel) {
 			case 'Administrador': {
 				$usuario = new TFuncionarios();
-				$usuario->LoadFuncionario($row[cpf]);
+				$usuario->LoadFuncionario($row[codigo]);
 				$dados = $usuario->RetornaTodosDados();
 				$senha = $usuario->RetornaDados('senha');
 				$ativo = $usuario->RetornaDados('ativo');
@@ -146,7 +150,7 @@
 			break;
 			case 'Funcionario': {
 				$usuario = new TFuncionarios();
-				$usuario->LoadFuncionario($row[cpf]);
+				$usuario->LoadFuncionario($row[codigo]);
 				$dados = $usuario->RetornaTodosDados();
 				$senha = $usuario->RetornaDados('senha');
 				$ativo = $usuario->RetornaDados('ativo');
@@ -154,16 +158,16 @@
 			break;
 			case 'Dentista': {
 				$usuario = new TDentistas();
-				$usuario->LoadDentista($row[cpf]);
+				$usuario->LoadDentista($row[codigo]);
 				$dados = $usuario->RetornaTodosDados();
 				$senha = $usuario->RetornaDados('senha');
 				$ativo = $usuario->RetornaDados('ativo');
 			}
 		}
 		if($senha != md5($_POST[senha])) {
-			echo "<scr"."ipt>alert('Login ou senha inválidos!!'); Ajax('wallpapers/index', 'conteudo', '')</scr"."ipt>";
+			echo "<scr"."ipt>alert('".$LANG['wallpaper']['invalid_login']."'); Ajax('wallpapers/index', 'conteudo', '')</scr"."ipt>";
 		} elseif($ativo == 'Não') { 			
-			echo "<scr"."ipt>alert('Login inativo neste sistema!'); Ajax('wallpapers/index', 'conteudo', '')</scr"."ipt>";
+			echo "<scr"."ipt>alert('".$LANG['wallpaper']['login_inactive']."'); Ajax('wallpapers/index', 'conteudo', '')</scr"."ipt>";
 		} else {
 			foreach($dados as $chave => $valor) {
 				$_SESSION[$chave] = $valor;

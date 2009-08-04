@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,33 +26,30 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
 	}
 	include "../timbre_head.php";
-    $nome_dentista = encontra_valor('dentistas', 'cpf', $_GET['cpf_dentista'], 'nome');
-    $sexo_dentista = encontra_valor('dentistas', 'cpf', $_GET['cpf_dentista'], 'sexo');
+    $nome_dentista = encontra_valor('dentistas', 'codigo', $_GET['codigo_dentista'], 'nome');
+    $sexo_dentista = encontra_valor('dentistas', 'codigo', $_GET['codigo_dentista'], 'sexo');
 ?>
-<font size="3">Agenda <?=(($sexo_dentista == 'Masculino')?'do <b>Dr.':'da <b>Dra.').' '.$nome_dentista?></b> para o dia <b><?=converte_data($_GET['data'], 2).' ('.ucwords(nome_semana($_GET['data'])).')'?></font><br /><br />
+<font size="3"><?=$LANG['reports']['schedule_of'].' '.(($sexo_dentista == 'Masculino')?'<b>Dr.':'<b>Dra.').' '.$nome_dentista?></b> <?=$LANG['reports']['for_the_date']?> <b><?=converte_data($_GET['data'], 2).' ('.ucwords(nome_semana($_GET['data'])).')'?></font><br /><br />
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="0">
     <tr style="font-size: 11px">
       <th width="8%" align="left" style="font-size: 11px">&nbsp;Horario</td>
@@ -64,7 +61,7 @@
     </tr>
     <tr class="td_even">
 <?
-	if(is_date($_GET[data]) && $_GET[cpf_dentista] != "") {
+	if(is_date($_GET[data]) && $_GET[codigo_dentista] != "") {
 		$agenda = new TAgendas();
 		for($i = 7; $i <= 22; $i++) {
 			if(strlen($i) < 2) {
@@ -95,7 +92,7 @@
 			} else {
                 $styles = '';
 			}
-			$agenda->LoadAgenda($_GET[data], $horario[$i], $_GET[cpf_dentista]);
+			$agenda->LoadAgenda($_GET[data], $horario[$i], $_GET[codigo_dentista]);
 			if(!$agenda->ExistHorario()) {
 				$agenda->SalvarNovo();
 			}
@@ -111,7 +108,6 @@
   </tr>
 </table>
 <script>
-alert("Para imprimir o relatório, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>
 <?

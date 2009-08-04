@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,25 +26,27 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
     *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
-    *
     *
     */
-?><div class="conteudo" id="conteudo_central">
+	include "../lib/config.inc.php";
+	include "../lib/func.inc.php";
+	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
+	header("Content-type: text/html; charset=ISO-8859-1", true);
+?>
+<div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="74%">&nbsp;&nbsp;<img src="sobre/img/gpl.png" alt="Sobre"> <span class="h3">LICEN&Ccedil;A GPL </span></td>
+      <td width="74%">&nbsp;&nbsp;<img src="sobre/img/gpl.png" alt="Sobre"> <span class="h3"><?=$LANG['gpl']['']?></span></td>
       <td width="7%" valign="bottom">&nbsp;</td>
       <td width="19%" valign="bottom">&nbsp;</td>
     </tr>
@@ -55,10 +57,8 @@
     <p align="center"><img src="sobre/img/gnu.png" alt="GNU" width="99" height="97" /><br />
     </p>
     <fieldset>
-  <legend>Prote&ccedil;&otilde;es </legend>
-  <p>o Gerenciador Cl&iacute;nico Odontol&oacute;gico protegido pela licen&ccedil;a GPL. Abaixo encontra-se a vers&atilde;o n&atilde;o-oficial da tradu&ccedil;&atilde;o da GPL. A licen&ccedil;a GPL pode ser vista na &iacute;ntegra, em ingl&ecirc;s, no endere&ccedil;o: <a href="http://www.gnu.org/licenses/gpl.html" target="_blank">http://www.gnu.org/licenses/gpl.html</a><br />
-    <br />
-  </p>
+  <legend><?=$LANG['gpl']['protection']?></legend>
+  <p><?=$LANG['gpl']['gco_is_protected']?></p>
   </fieldset><br />
   <legend><fieldset>
   <legend>Tradu&ccedil;&atilde;o da GPL para o Portugu&ecirc;s do Brasil </legend>

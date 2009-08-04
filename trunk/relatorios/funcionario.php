@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,36 +26,33 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-15", true);
 	if(!checklog()) {
 		die($frase_log);
 	}
 	include "../timbre_head.php";
     $funcionario = new TFuncionarios();
-    $funcionario->LoadFuncionario($_GET['cpf']);
+    $funcionario->LoadFuncionario($_GET['codigo']);
 ?>
-<p align="center"><font size="3"><b>FICHA DE CADASTRO DE FUNCIONÁRIO</b></font></p><br />
+<p align="center"><font size="3"><b><?=$LANG['reports']['employee_sheet']?></b></font></p><br />
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
   <tr>
-    <th align="left">Informações Pessoais
+    <th align="left"><?=$LANG['reports']['personal_information']?>
     </th>
   </tr>
   <tr style="font-size: 12px">
@@ -63,86 +60,94 @@
       <table width="100%" border="0" cellpadding="2" cellspacing="0">
         <tr>
           <td width="51%">
-            Nome:<br />
+            <?=$LANG['reports']['name']?>:<br />
             <b><?=$funcionario->RetornaDados('nome')?></b>&nbsp;
           </td>
           <td width="23%">
-            CPF:<br />
+            <?=$LANG['reports']['document1']?>:<br />
             <b><?=$funcionario->RetornaDados('cpf')?></b>&nbsp;
           </td>
           <td width="26%" rowspan="8" valign="top" align="center">
 <?
     if($funcionario->RetornaDados('foto') != '') {
-		echo '<img src="../funcionarios/verfoto_p.php?cpf='.$funcionario->RetornaDados('cpf').'" border="0">';
+		echo '<img src="../funcionarios/verfoto_p.php?codigo='.$funcionario->RetornaDados('codigo').'" border="0">';
 	} else {
-		echo '<img src="../funcionarios/verfoto_p.php?cpf='.$funcionario->RetornaDados('cpf').'&padrao=no_photo" border="0">';
+		echo '<img src="../funcionarios/verfoto_p.php?codigo='.$funcionario->RetornaDados('codigo').'&padrao=no_photo" border="0">';
 	}
 ?>
           </td>
         </tr>
         <tr>
           <td>
-            RG:<br />
+            <?=$LANG['reports']['document2']?>:<br />
             <b><?=$funcionario->RetornaDados('rg')?></b>&nbsp;
           </td>
           <td>
-            Estado Civil:<br />
-            <b><?=$funcionario->RetornaDados('estadocivil')?></b>&nbsp;
+            <?=$LANG['reports']['relationship_status']?>:<br />
+            <b>
+<?php
+    switch($funcionario->RetornaDados('estadocivil')) {
+        case 'solteiro': echo $_LANG['reports']['single']; break;
+        case 'casado': echo $_LANG['reports']['married']; break;
+        case 'divorciado': echo $_LANG['reports']['divorced']; break;
+        case 'viuvo': echo $_LANG['reports']['widowed']; break;
+    }
+?></b>&nbsp;
           </td>
         </tr>
         <tr>
           <td>
-            Endereço:<br />
+            <?=$_LANG['reports']['address1']?>:<br />
             <b><?=$funcionario->RetornaDados('endereco')?></b>&nbsp;
           </td>
           <td>
-            Bairro:<br />
+            <?=$_LANG['reports']['address2']?>:<br />
             <b><?=$funcionario->RetornaDados('bairro')?></b>&nbsp;
           </td>
         </tr>
         <tr>
           <td>
-            Cidade:<br />
+            <?=$_LANG['reports']['city']?>:<br />
             <b><?=$funcionario->RetornaDados('cidade')?></b>&nbsp;
           </td>
           <td>
-            Estado:<br />
+            <?=$_LANG['reports']['state']?>:<br />
             <b><?=$funcionario->RetornaDados('estado')?></b>&nbsp;
           </td>
         </tr>
         <tr>
           <td>
-            CEP:<br />
+            <?=$_LANG['reports']['zip']?>:<br />
             <b><?=$funcionario->RetornaDados('cep')?></b>&nbsp;
           </td>
           <td>
-            Nascimento:<br />
+            <?=$_LANG['reports']['birthdate']?>:<br />
             <b><?=converte_data($funcionario->RetornaDados('nascimento'), 2)?></b>&nbsp;
           </td>
         </tr>
         <tr>
           <td>
-            Telefone 1:<br />
+            <?=$_LANG['reports']['phone1']?>:<br />
             <b><?=$funcionario->RetornaDados('telefone1')?></b>&nbsp;
           </td>
           <td>
-            Telefone 2:<br />
+            <?=$_LANG['reports']['phone2']?>:<br />
             <b><?=$funcionario->RetornaDados('telefone2')?></b>&nbsp;
           </td>
         </tr>
         <tr>
           <td>
-            Celular:<br />
+            <?=$_LANG['reports']['cellphone']?>:<br />
             <b><?=$funcionario->RetornaDados('celular')?></b>&nbsp;
           </td>
           <td>
-            Sexo:<br />
-            <b><?=$funcionario->RetornaDados('sexo')?></b>&nbsp;
+            <?=$_LANG['reports']['gender']?>:<br />
+            <b><?=(($funcionario->RetornaDados('sexo') == 'Masculino')?$LANG['reports']['male']:$LANG['reports']['female'])?></b>&nbsp;
           </td>
         </tr>
         <tr>
           <td>
-            E-mail:<br />
+            <?=$_LANG['reports']['email']?>:<br />
             <b><?=$funcionario->RetornaDados('email')?></b>&nbsp;
           </td>
           <td>
@@ -158,30 +163,30 @@
     </td>
   </tr>
   <tr>
-    <th align="left">Informações Familiares
+    <th align="left"><?=$_LANG['reports']['familiar_information']?>
     </th>
   </tr>
   <tr>
     <td>
       <table width="100%" border="0" cellpadding="2" cellspacing="0">
         <tr>
-          <td>Nome da Mâe:<br />
+          <td><?=$_LANG['reports']['mothers_name']?>:<br />
           <b><?=$funcionario->RetornaDados('nomemae')?></b>&nbsp;
           </td>
-          <td>Nascimento:<br />
+          <td><?=$_LANG['reports']['birthdate']?>:<br />
           <b><?=converte_data($funcionario->RetornaDados('nascimentomae'), 2)?></b>&nbsp;
           </td>
         </tr>
         <tr>
-          <td width="60%">Nome do Pai:<br />
+          <td width="60%"><?=$_LANG['reports']['fathers_name']?>:<br />
           <b><?=$funcionario->RetornaDados('nomepai')?></b>&nbsp;
           </td>
-          <td width="40%">Nascimento:<br />
+          <td width="40%"><?=$_LANG['reports']['birthdate']?>:<br />
           <b><?=converte_data($funcionario->RetornaDados('nascimentopai'), 2)?></b>&nbsp;
           </td>
         </tr>
         <tr>
-          <td colspan="2">Endereço completo:<br />
+          <td colspan="2"><?=$_LANG['reports']['complete_address']?>:<br />
           <?=$funcionario->RetornaDados('enderecofamiliar')?>&nbsp;
           </td>
         </tr>
@@ -193,33 +198,33 @@
     </td>
   </tr>
   <tr>
-    <th align="left">Informações Profissionais
+    <th align="left"><?=$LANG['reports']['professional_information']?>
     </th>
   </tr>
   <tr>
     <td>
       <table width="100%" border="0" cellpadding="2" cellspacing="0">
         <tr>
-          <td width="50%">Função Exercida - Principal:<br />
+          <td width="50%"><?=$LANG['reports']['main_function']?>:<br />
           <b><?=$funcionario->RetornaDados('funcao1')?></b>&nbsp;
           </td>
-          <td width="50%">Função Exercida - Secundária:<br />
+          <td width="50%"><?=$LANG['reports']['secondary_function']?>:<br />
           <b><?=$funcionario->RetornaDados('funcao2')?></b>&nbsp;
           </td>
         </tr>
         <tr>
-          <td>Data de Admissão:<br />
+          <td><?=$LANG['reports']['admission_date']?>:<br />
           <b><?=converte_data($funcionario->RetornaDados('admissao'), 2)?></b>&nbsp;
           </td>
-          <td>Data de Demissão:<br />
+          <td><?=$LANG['reports']['resignation_date']?>:<br />
           <b><?=converte_data($funcionario->RetornaDados('demissao'), 2)?></b>&nbsp;
           </td>
         </tr>
         <tr>
-          <td>Observações:<br />
+          <td><?=$LANG['reports']['comments']?>:<br />
           <b><?=nl2br($funcionario->RetornaDados('observacoes'))?></b>&nbsp;
           </td>
-          <td>Ativo na Clínica?<br />
+          <td><?=$LANG['reports']['active_on_clinic']?><br />
           <b><?=nl2br($funcionario->RetornaDados('ativo'))?></b>&nbsp;
           </td>
         </tr>
@@ -228,7 +233,6 @@
   </tr>
 </table>
 <script>
-alert("Para imprimir o relatório, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>
 <?

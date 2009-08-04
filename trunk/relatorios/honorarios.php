@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,42 +26,39 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
 	}
 	include "../timbre_head.php";
 ?>
-<p align="center"><font size="3"><b>Relatório da Tabela de Honorários</b></font></p><br />
+<p align="center"><font size="3"><b><?=$LANG['reports']['fee_table_report']?></b></font></p><br />
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
   <tr style="font-size: 11px">
-    <th width="7%" align="center" style="font-size: 11px">Código
+    <th width="7%" align="center" style="font-size: 11px"><?=$LANG['reports']['code']?>
     </th>
-    <th width="45%" align="center" style="font-size: 11px">Procedimento
+    <th width="45%" align="center" style="font-size: 11px"><?=$LANG['reports']['procedure']?>
     </th>
-    <th width="12%" align="center" style="font-size: 11px">Valor Particular
+    <th width="12%" align="center" style="font-size: 11px"><?=$LANG['reports']['private_value']?>
     </th>
-    <th width="12%" align="center" style="font-size: 11px">Valor Convênio
+    <th width="12%" align="center" style="font-size: 11px"><?=$LANG['reports']['plan_value']?>
     </th>
-    <th width="24%" align="center" style="font-size: 11px" colspan="2">Diferenças
+    <th width="24%" align="center" style="font-size: 11px" colspan="2"><?=$LANG['reports']['differences']?>
     </th>
   </tr>
 <?
@@ -80,13 +77,13 @@
     </td>
     <td><?=$row['procedimento']?>
     </td>
-    <td align="right">R$ <?=number_format($row['valor_particular'], 2, ',', '.')?>
+    <td align="right"><?=$LANG['general']['currency'].' '.number_format($row['valor_particular'], 2, ',', '.')?>
     </td>
-    <td align="right">R$ <?=number_format($row['valor_convenio'], 2, ',', '.')?>
+    <td align="right"><?=$LANG['general']['currency'].' '.number_format($row['valor_convenio'], 2, ',', '.')?>
     </td>
-    <td align="right">R$ <?=number_format(($row['valor_particular']-$row['valor_convenio']), 2, ',', '.')?>
+    <td align="right"><?=$LANG['general']['currency'].' '.number_format(($row['valor_particular']-$row['valor_convenio']), 2, ',', '.')?>
     </td>
-    <td align="right"><?=number_format((100-($row['valor_convenio']/$row['valor_particular']*100)), 2, ',', '.')?> %
+    <td align="right"><?=@number_format((100-($row['valor_convenio']/$row['valor_particular']*100)), 2, ',', '.')?> %
     </td>
   </tr>
 <?
@@ -95,7 +92,6 @@
 ?>
 </table>
 <script>
-alert("Para imprimir o relatório, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>
 <?
