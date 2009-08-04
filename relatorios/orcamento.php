@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -56,17 +53,17 @@
     $query_dentista = mysql_query("SELECT * FROM dentistas WHERE cpf = ".$row_orcamento['cpf_dentista']) or die('Line 43: '.mysql_error());
     $row_dentista = mysql_fetch_assoc($query_dentista);
 ?>
-<font size="3">Orçamento para: <b><?=$row_paciente['nome'].' ['.$row_paciente['codigo'].']'?></b><br /></font><font style="font-size: 3px;">&nbsp;<br /></font>
-<font size="2">Orçamento para o tratamento odontológico com <b><?=(($row_dentista['sexo'] == 'Masculino')?'Dr.':'Dra.').' '.$row_dentista['nome']?></b></font><br /><br />
+<font size="3"><?=$LANG['reports']['budget_to']?>: <b><?=$row_paciente['nome'].' ['.$row_paciente['codigo'].']'?></b><br /></font><font style="font-size: 3px;">&nbsp;<br /></font>
+<font size="2"><?=$LANG['reports']['treatment_with']?> <b><?=(($row_dentista['sexo'] == 'Masculino')?'Dr.':'Dra.').' '.$row_dentista['nome']?></b></font><br /><br />
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
       <tr>
-        <th width="11%">Código</th>
-        <th width="11%">Dente</th>
-        <th width="45%">Descrição do Procedimento</th>
-        <th width="16%" colspan="2">R$ Particular</th>
-        <th width="15%">R$ Convênio</th>
+        <th width="11%"><?=$LANG['reports']['code']?></th>
+        <th width="11%"><?=$LANG['reports']['tooth']?></th>
+        <th width="45%"><?=$LANG['reports']['procedure']?></th>
+        <th width="16%" colspan="2"><?=$LANG['reports']['private_value']?></th>
+        <th width="15%"><?=$LANG['reports']['plan_value']?></th>
       </tr>
 <?
     $i = 0;
@@ -94,39 +91,39 @@
     }
 ?>
       <tr style="font-size: 12px">
-        <td colspan="3" align="center"><b>TOTAL:</b></td>
-        <td align="right"><b>R$ <?=money_form($total_particular)?></b></td>
+        <td colspan="3" align="center"><b><?=$LANG['reports']['total']?>:</b></td>
+        <td align="right"><b><?=$LANG['general']['currency'].' '.money_form($total_particular)?></b></td>
         <td>&nbsp;</td>
-        <td align="right"><b>R$ <?=money_form($total_convenio)?></b></td>
+        <td align="right"><b><?=$LANG['general']['currency'].' '.money_form($total_convenio)?></b></td>
       </tr>
     </table></td>
   </tr>
   <tr>
     <td><br /><table width="100%" border="0" cellspacing="0" cellpadding="2">
       <tr>
-        <th width="33%" align="center">Valor a ser cobrado</th>
-        <th width="33%" align="center">Valor Total</th>
-        <th width="33%" align="center">Forma de Pagamento</th>
+        <th width="33%" align="center"><?=$LANG['reports']['charge']?></th>
+        <th width="33%" align="center"><?=$LANG['reports']['total_value']?></th>
+        <th width="33%" align="center"><?=$LANG['reports']['payment_method']?></th>
       </tr>
       <tr style="font-size: 12px" height="20" class="td_even">
         <td align="center"><?=$row_orcamento['aserpago']?></td>
-        <td align="center">R$ <?=money_form($row_orcamento['valortotal'])?></td>
+        <td align="center"><?=$LANG['general']['currency'].''.money_form($row_orcamento['valortotal'])?></td>
         <td align="center"><?=$row_orcamento['formapagamento']?></td>
       </tr>
       <tr style="font-size: 12px" height="20" class="td_odd">
-        <td align="center">Nº Parcelas: <?=$row_orcamento['parcelas']?></td>
-        <td align="center">Entrada: <?=(($row_orcamento['entrada_tipo'] == '%')?$row_orcamento['entrada'].'%':'R$ '.$row_orcamento['entrada'])?></td>
-        <td align="center">Desconto: <?=$row_orcamento['desconto']?>%</td>
+        <td align="center"><?=$LANG['reports']['number_of_plots']?>: <?=$row_orcamento['parcelas']?></td>
+        <td align="center"><?=$LANG['reports']['first_plot']?>: <?=(($row_orcamento['entrada_tipo'] == '%')?$row_orcamento['entrada'].'%':$LANG['general']['currency'].' '.$row_orcamento['entrada'])?></td>
+        <td align="center"><?=$LANG['reports']['discount']?>: <?=$row_orcamento['desconto']?>%</td>
       </tr>
     </table></td>
   </tr>
   <tr>
     <td><br /><table width="100%" border="0" cellspacing="0" cellpadding="2">
       <tr>
-        <th align="center">Parcelas</th>
-        <th align="center">Data</th>
-        <th align="center">Situação</th>
-        <th align="center">Valor</th>
+        <th align="center"><?=$LANG['reports']['plots']?></th>
+        <th align="center"><?=$LANG['reports']['date']?></th>
+        <th align="center"><?=$LANG['reports']['status']?></th>
+        <th align="center"><?=$LANG['reports']['vlaue']?></th>
       </tr>
 <?
     $i = $total = 0;
@@ -141,18 +138,18 @@
 
 ?>
       <tr style="font-size: 12px" class="<?=$td_class?>">
-        <td align="center">Parcela <?=($i+1)?> (Boleto nº <?=$row_parcelas['codigo']?>)</td>
+        <td align="center"><?=$LANG['reports']['plot'].' '.($i+1)?> (<?=$LANG['reports']['bill_number'].' '.$row_parcelas['codigo']?>)</td>
         <td align="center"><?=converte_data($row_parcelas['datavencimento'], 2)?></td>
-        <td align="center"><?=(($row_parcelas['baixa'] == 'Não')?(($row_parcelas['pago'] == 'Sim')?'PAGO':'ABERTO').((($row_parcelas['datavencimento'] < date('Y-m-d')) && ($row_parcelas['pago'] != 'Sim'))?' (VENCIDO)</a>':'</a>').(($row_parcelas['pago'] == 'Sim')?' ('.converte_data($row_parcelas['datapgto'], 2).')':''):(($row_parcelas['pago'] == 'Sim')?'PAGO ('.converte_data($row_parcelas['datapgto'], 2).')':'CANCELADO'))?></td>
-        <td align="right">R$ <?=money_form($row_parcelas['valor'])?></td>
+        <td align="center"><?=(($row_parcelas['baixa'] == 'Não')?(($row_parcelas['pago'] == 'Sim')?$LANG['reports']['paid']:$LANG['reports']['open']).((($row_parcelas['datavencimento'] < date('Y-m-d')) && ($row_parcelas['pago'] != 'Sim'))?' ('.$LANG['reports']['overdue'].')</a>':'</a>').(($row_parcelas['pago'] == 'Sim')?' ('.converte_data($row_parcelas['datapgto'], 2).')':''):(($row_parcelas['pago'] == 'Sim')?$LANG['reports']['paid'].' ('.converte_data($row_parcelas['datapgto'], 2).')':$LANG['reports']['canceled']))?></td>
+        <td align="right"><?=$LANG['general']['currency'].' '.money_form($row_parcelas['valor'])?></td>
       </tr>
 <?
         $i++;
     }
 ?>
       <tr>
-        <td colspan="3" align="center"><b>TOTAL:</b></td>
-        <td align="right"><b>R$ <?=money_form($total)?></b></td>
+        <td colspan="3" align="center"><b><?=$LANG['reports']['total']?>:</b></td>
+        <td align="right"><b><?=$LANG['reports']['currency'].' '.money_form($total)?></b></td>
       </tr>
     </table></td>
   </tr>
@@ -161,6 +158,5 @@
     include "../timbre_foot.php";
 ?>
 <script>
-alert("Para imprimir o orçamento, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>

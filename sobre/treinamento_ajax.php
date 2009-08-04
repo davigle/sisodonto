@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,25 +26,27 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
     *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
-    *
     *
     */
-?><div class="conteudo" id="conteudo_central">
+	include "../lib/config.inc.php";
+	include "../lib/func.inc.php";
+	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
+	header("Content-type: text/html; charset=ISO-8859-1", true);
+?>
+<div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="74%">&nbsp;&nbsp;&nbsp;<img src="sobre/img/treinamento.png" alt="Sobre"> <span class="h3">TREINAMENTO E SUPORTE </span></td>
+      <td width="74%">&nbsp;&nbsp;&nbsp;<img src="sobre/img/treinamento.png" alt="Sobre"> <span class="h3"><?=$LANG['training_and_support']['training_and_support']?></span></td>
       <td width="7%" valign="bottom">&nbsp;</td>
       <td width="19%" valign="bottom">&nbsp;</td>
     </tr>
@@ -53,14 +55,12 @@
   <div class="sobre" id="sobre">
     <p>&nbsp;</p>
     <fieldset>
-  <legend>Treinamento e Suporte </legend>
-  <p>A equipe de desenvolvimento do Gerenciador Cl&iacute;nico Odontol&oacute;gico  presta total suporte desde a instala&ccedil;&atilde;o b&aacute;sica at&eacute; treinamentos,  workshops e palestras.</p>
-  <p>O desenvolvimento total foi  realizado em parceria com duas empresas, e maiores informa&ccedil;&otilde;es podem  ser obtidas em seus respectivos sites ou pelo formul&aacute;rio de contato  abaixo. </p>
-  <p> <strong>ExpandWEB</strong> [<a href="http://www.expandweb.com" target="_blank">www.expandweb.com</a>]<br />
-      <strong>IkkiNET</strong> [<a href="http://www.ikkinet.com.br" target="_blank">ww.ikkinet.com.br</a>]</p>
-  <p>N&atilde;o perca a oportunidade de gerenciar sua cl&iacute;nica sem nenhum custo mensal.</p>
-  <p>O treinamento &eacute; fundamental para uma utiliza&ccedil;&atilde;o correta do software.</p>
-  <p>Maiores informa&ccedil;&otilde;es sobre a Gerenciador Cl&iacute;nico Odontol&oacute;gico e treinamentos podem ser encontradas em seu web site: <a href="http://www.smileprev.com/gco">www.smileprev.com/gco</a>.<br />
+  <legend><?=$LANG['training_and_support']['training_and_suporte']?></legend>
+  <p><?=$LANG['training_and_support']['the_development_team']?></p>
+  <p><?=$LANG['training_and_support']['all_the_development']?></p>
+  <p><?=$LANG['training_and_support']['dont_lose_the_opportunity']?></p>
+  <p><?=$LANG['training_and_support']['training_is_fudamental']?></p>
+  <p><?=$LANG['training_and_support']['more_information']?><br />
     <br />
   </p>
     </fieldset>

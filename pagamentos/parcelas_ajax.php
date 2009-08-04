@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,39 +26,37 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
-		die($frase_log);
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
 	}
 	if(isset($_POST['Salvar'])) {
         $row = mysql_fetch_array(mysql_query("SELECT * FROM v_orcamento WHERE pago = 'Não' AND codigo_parcela = ".$_POST['parcela']));
         mysql_query("UPDATE parcelas_orcamento SET pago = 'Sim', datapgto = '".date('Y-m-d')."', valor = '".$_POST['valor']."' WHERE codigo = ".$_POST['parcela']);
         mysql_query("INSERT INTO caixa (data, dc, valor, descricao) VALUES ('".date('Y-m-d')."', '+', '".$_POST['valor']."', 'Pagamento da parcela ".$row['codigo_parcela']." - Paciente: ".$row['paciente']." - Dentista: ".$row['dentista']."')");
-        echo '<script>if(confirm("Pagamento efetuado com sucesso!\n\nPaciente: '.$row['paciente'].'\n\nDentista: '.(($row['sexo_dentista'] == 'Masculino')?'Dr. ':'Dra. ').$row['dentista'].'\n\nValor: R$ '.money_form($_POST['valor']).'\n\nData de vencimento: '.converte_data($row['data'], 2).'\n\nData de pagamento: '.date('d/m/Y').'\n\nDeseja imprimir o recibo?")) { window.open("relatorios/recibo.php?codigo_parcela='.$_POST['parcela'].'", "Recibo",  "height=350,width=320,status=yes,toolbar=no,menubar=no,location=no") }</script>';
+        echo '<script>if(confirm("'.$LANG['payment']['payment_successfully_done'].'\n\n'.$LANG['payment']['patient'].': '.$row['paciente'].'\n\n'.$LANG['payment']['professional'].': '.(($row['sexo_dentista'] == 'Masculino')?'Dr. ':'Dra. ').$row['dentista'].'\n\n'.$LANG['payment']['total_to_pay'].': '.$LANG['general']['currency'].' '.money_form($_POST['valor']).'\n\n'.$LANG['payment']['deadline'].': '.converte_data($row['data'], 2).'\n\n'.$LANG['payment']['payment_date'].': '.date('d/m/Y').'\n\n'.$LANG['payment']['do_you_wish_to_print_the_receipt'].'")) { window.open("relatorios/recibo.php?codigo_parcela='.$_POST['parcela'].'", "'.$LANG['payment']['receipt'].'",  "height=350,width=320,status=yes,toolbar=no,menubar=no,location=no") }</script>';
 	}
 ?>
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="pagamentos/img/parcelas.png" alt="Pagamentos de Parcelas"> <span class="h3">PAGAMENTOS DE PARCELAS </span></td>
+      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="pagamentos/img/parcelas.png" alt="<?=$LANG['payment']['payment']?>"> <span class="h3"><?=$LANG['payment']['payment']?> </span></td>
       <td width="6%" valign="bottom"></td>
       <td width="36%" valign="bottom" align="right">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
@@ -67,7 +65,7 @@
 <div class="conteudo" id="table dados"><br>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td width="243" height="26">PAGAMENTO DE PARCELAS </td>
+      <td width="243" height="26"><?=$LANG['payment']['payment']?> </td>
     </tr>
   </table>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela">
@@ -75,13 +73,13 @@
       <td>
       <form id="form2" name="form2" method="POST" action="pagamentos/parcelas_ajax.php" onsubmit="formSender(this, 'conteudo'); return false;">
       <fieldset>
-        <legend><span class="style1">Informações da parcela </span></legend>
+        <legend><span class="style1"><?=$LANG['payment']['plot_information']?> </span></legend>
         <table width="450" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td align="center">PASSE O LEITOR ÓTICO OU<BR>INFORME O CÓDIGO DE BARRAS<BR><br />
+            <td align="center"><?=$LANG['payment']['pass_the_optic_reader_or']?><BR><?=$LANG['payment']['type_the_bar_code']?><BR><br />
                   <input autocomplete="off" name="parcela" value="<?=$_GET['codigo']?>" <?=$disable?> type="text" class="forms" id="parcela" size="50" maxlength="11" onkeypress="return Bloqueia_Caracteres(event);" onkeyup="javascript:Ajax('pagamentos/dadosparcela', 'pagamento', 'parcela='%2Bthis.value)" />
             </td>
           </tr>

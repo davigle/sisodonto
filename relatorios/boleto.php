@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -53,8 +50,8 @@
 	$query = mysql_query($sql) or die('Line 40: '.mysql_error());
 	$row = mysql_fetch_array($query);
 ?>
-<font size="3">Paciente: <b><?=$row['paciente'].' ['.$row['codigo_paciente'].']'?></b><br /></font><font style="font-size: 3px;">&nbsp;<br /></font>
-<font size="2">Parcelas para o pagamento do tratamento odontológico com <b><?=(($row['sexo_dentista'] == 'Masculino')?'Dr.':'Dra.').' '.$row['dentista']?></b></font><br /><br />
+<font size="3"><?=$LANG['reports']['patient']?>: <b><?=$row['paciente'].' ['.$row['codigo_paciente'].']'?></b><br /></font><font style="font-size: 3px;">&nbsp;<br /></font>
+<font size="2"><?=$LANG['reports']['plots_for_odontological_treatment']?> <b><?=(($row['sexo_dentista'] == 'Masculino')?'Dr.':'Dra.').' '.$row['dentista']?></b></font><br /><br />
 <table width="100%" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse">
 <?
     $i = 1;
@@ -73,12 +70,12 @@
             Valor: </font>
           </td>
           <td width="62%" valign="top" align="left"><font style="font-size: 11px;">
-            <b>R$ <?=money_form($row['valor'])?></b>
+            <b><?=$LANG['general']['currency'].' '.money_form($row['valor'])?></b>
           </td>
         </tr>
         <tr>
           <td align="left"><font style="font-size: 11px;">
-            Vencimento: </font>
+            <?=$LANG['reports']['payment_due']?>: </font>
           </td>
           <td align="left"><font style="font-size: 11px;">
             <b><?=converte_data($row['data'], 2)?></b>
@@ -87,7 +84,7 @@
       </table>
     </td>
     <td width="30%" align="center" valign="top">
-      <font style="font-size: 8px;">Assinatura do funcionário e carimbo</font>
+      <font style="font-size: 8px;"><?=$LANG['reports']['employee_signature']?></font>
     </td>
   </tr>
 <?
@@ -97,7 +94,6 @@
 ?>
 </table>
 <script>
-alert("Para imprimir o boleto, você deve configurar a página no Internet Explorer\ncom margens superiores de 0 milímetros.\nAs demais deverão ser de 19,05 milímetros cada.");
 window.print();
 </script>
 <?

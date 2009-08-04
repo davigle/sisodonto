@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -69,6 +66,7 @@
 			$telefones->SetDados('bairro', $_POST[bairro]);
 			$telefones->SetDados('cidade', $_POST[cidade]);
 			$telefones->SetDados('estado', $_POST[estado]);
+			$telefones->SetDados('pais', $_POST[pais]);
 			$telefones->SetDados('cep', $_POST[cep]);
 			$telefones->SetDados('celular', $_POST[celular]);
 			$telefones->SetDados('telefone1', $_POST[telefone1]);
@@ -84,8 +82,7 @@
 		}
 	}
 	if($_GET[acao] == "editar") {
-		$strUpCase = "ALTERAÇÂO";
-		$strLoCase = "alteração";
+		$strLoCase = $LANG['useful_telephones']['editing'];
 		$frmActEdt = "?acao=editar&codigo=".$_GET[codigo];
 		$telefones->LoadTelefones($_GET[codigo]);
 		$row = $telefones->RetornaTodosDados();
@@ -96,8 +93,7 @@
 			$row = $_POST;
 			$row[nome] = $_POST[nom];
 		}
-		$strUpCase = "INCLUSÂO";
-		$strLoCase = "inclusão";
+		$strLoCase = $LANG['useful_telephones']['including'];
 	}
 	if(isset($strScrp)) {
 		echo '<scr'.'ipt>'.$strScrp.'</scr'.'ipt>';
@@ -107,7 +103,7 @@
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="telefones/img/telefones.png" alt="TELEFONES ÚTEIS"> <span class="h3">TELEFONES ÚTEIS [<?=$strLoCase?>] </span></td>
+      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="telefones/img/telefones.png" alt="TELEFONES ÚTEIS"> <span class="h3"><?=$LANG['useful_telephones']['useful_telephones']?> [<?=$strLoCase?>] </span></td>
       <td width="6%" valign="bottom"><a href="#"></a></td>
       <td width="36%" valign="bottom" align="right">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
@@ -116,7 +112,7 @@
 <div class="conteudo" id="table dados"><br>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td width="243" height="26"><?=$strUpCase?> DE CONTATOS </td>
+      <td width="243" height="26"><?=$strLoCase.' '.$LANG['useful_telephones']['contatc']?> </td>
       <td width="381">&nbsp;</td>
     </tr>
   </table>
@@ -124,14 +120,14 @@
     <tr>
       <td>
       <form id="form2" name="form2" method="POST" action="telefones/incluir_ajax.php<?=$frmActEdt?>" onsubmit="formSender(this, 'conteudo'); return false;"><fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es do Contato </span></legend>
+        <legend><span class="style1"><?=$LANG['useful_telephones']['contact_information']?></span></legend>
         <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td width="287"><?=$r[1]?>* Nome <br />
+            <td width="287"><?=$r[1]?>* <?=$LANG['useful_telephones']['name']?> <br />
                 <label>
                   <input name="nom" value="<?=$row[nome]?>" type="text" class="forms" id="nom" size="50" maxlength="80" />
                 </label>
@@ -140,44 +136,42 @@
             <td width="210"></td>
           </tr>
           <tr>
-            <td>Endere&ccedil;o<br />
+            <td><?=$LANG['useful_telephones']['address1']?><br />
               <input name="endereco" value="<?=$row[endereco]?>" type="text" class="forms" id="endereco" size="50" maxlength="150" /></td>
-            <td>Bairro<br />
+            <td><?=$LANG['useful_telephones']['address2']?><br />
               <input name="bairro" value="<?=$row[bairro]?>" type="text" class="forms" id="bairro" /></td>
           </tr>
           <tr>
-            <td>Cidade<br />
-                <input name="cidade" value="<?=$row[cidade]?>" type="text" class="forms" id="cidade" size="30" maxlength="50" />
+            <td><?=$LANG['useful_telephones']['city']?><br />
+                <input name="cidade" value="<?=$row[cidade]?>" <?=$disable?> type="text" class="forms" id="cidade" size="30" maxlength="50" />
               <br /></td>
-            <td>Estado<br /><select name="estado" class="forms" id="estado">
-<?
-	$estados = array('AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO');
-	foreach($estados as $uf) {
-		if($row[estado] == $uf || ($row[estado] == '' && $uf == 'MG')) {
-			echo '<option value="'.$uf.'" selected>'.$uf.'</option>';
-		} else {
-			echo '<option value="'.$uf.'">'.$uf.'</option>';
-		}
-	}
-?>       
-			 </select>   </td>
+            <td><?=$LANG['useful_telephones']['state']?><br />
+                <input name="estado" value="<?=$row[estado]?>" <?=$disable?> type="text" class="forms" id="estado" maxlength="50" />
+            </td>
           </tr>
           <tr>
-            <td>CEP<br />
+            <td><?=$LANG['useful_telephones']['country']?><br />
+                <input name="pais" value="<?=$row[pais]?>" <?=$disable?> type="text" class="forms" id="pais" size="30" maxlength="50" />
+              <br /></td>
+            <td>&nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td><?=$LANG['useful_telephones']['zip']?><br />
               <input name="cep" value="<?=$row[cep]?>" type="text" class="forms" id="cep" size="10" maxlength="9" onKeypress="return Ajusta_CEP(this, event);" /></td>
-            <td>Celular<br />
+            <td><?=$LANG['useful_telephones']['cellphone']?><br />
               <input name="celular" value="<?=$row[celular]?>" type="text" class="forms" id="celular" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
           </tr>
           <tr>
-            <td><?=$r[8]?>* Telefone 1 <br />
+            <td><?=$r[8]?>* <?=$LANG['useful_telephones']['phone1']?><br />
               <input name="telefone1" value="<?=$row[telefone1]?>" type="text" class="forms" id="telefone1" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
-            <td>Telefone 2 <br />
+            <td><?=$LANG['useful_telephones']['phone2']?><br />
               <input name="telefone2" value="<?=$row[telefone2]?>" type="text" class="forms" id="telefone2" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
           </tr>
           <tr>
-            <td>E-mail<br />
+            <td><?=$LANG['useful_telephones']['email']?><br />
               <input name="email" value="<?=$row[email]?>" type="text" class="forms" id="email" size="40" /></td>
-            <td>Web Site <br />
+            <td><?=$LANG['useful_telephones']['website']?> <br />
               <input name="website" value="<?=$row[website]?>" type="text" class="forms" id="site" size="40" /></td>
           </tr>
           <tr>
@@ -188,7 +182,7 @@
         </fieldset>
 		<br />
         <div align="center"><br />
-          <input name="Salvar" type="submit" class="forms" id="Salvar" value="Salvar" />
+          <input name="Salvar" type="submit" class="forms" id="Salvar" value="<?=$LANG['useful_telephones']['save']?>" />
         </div>
       </form>      </td>
     </tr>

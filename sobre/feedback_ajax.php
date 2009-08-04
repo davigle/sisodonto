@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,25 +26,27 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
     *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
-    *
     *
     */
-?><div class="conteudo" id="conteudo_central">
+	include "../lib/config.inc.php";
+	include "../lib/func.inc.php";
+	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
+	header("Content-type: text/html; charset=ISO-8859-1", true);
+?>
+<div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="74%">&nbsp;&nbsp;&nbsp;<img src="sobre/img/reportar.png" alt="Sobre"> <span class="h3">FEEDBACK DO GERENCIADOR CL&Iacute;NICO ODONTOL&Oacute;GICO </span></td>
+      <td width="74%">&nbsp;&nbsp;&nbsp;<img src="sobre/img/reportar.png" alt="Sobre"> <span class="h3"><?=$LANG['feedback']['feedback']?></span></td>
       <td width="7%" valign="bottom">&nbsp;</td>
       <td width="19%" valign="bottom">&nbsp;</td>
     </tr>
@@ -53,10 +55,9 @@
   <div class="sobre" id="sobre">
     <p>&nbsp;</p>
     <fieldset>
-  <legend>Feedback do usu&aacute;rio </legend>
-  <p>Para reportar erros e enviar sugest&otilde;es, por favor acesse o endere&ccedil;o: <a href="http://www.smileprev.com/gco" target="_blank">www.smileprev.com/gco</a>.</p>
-  <p>A SmilePrev e toda equipe de desenvolvimento do Gerenciador Cl&iacute;nico Odontol&oacute;gico agradece sua colabora&ccedil;&atilde;o.<br />
-  </p>
+  <legend><?=$LANG['feedback']['feedback']?></legend>
+  <p><?=$LANG['feedback']['to_report_errors']?></p>
+  <p><?=$LANG['feedback']['smile_and_all_the_team']?></p>
     </fieldset>
   </div>
 </div>
