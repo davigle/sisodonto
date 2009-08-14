@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,18 +26,14 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
@@ -53,9 +49,11 @@
   }
   
   conecta($server, $user, $pass, $bd);
-  
+  $idioma = mysql_fetch_assoc(mysql_query("SELECT idioma FROM dados_clinica"));
+  $idioma = $idioma['idioma'];
+
   //------------------------------------------------------------------------//
-  
+
   function converte_data($data, $op) {
   
     if($op == 1) {
@@ -75,6 +73,14 @@
   }
 
   //------------------------------------------------------------------------//
+
+  function converte_datahora($data, $op) {
+    $data = explode(' ', $data);
+    $data[0] = converte_data($data[0], $op);
+    return(implode(' ', $data));
+  }
+
+  //------------------------------------------------------------------------//
   
   function encontra_valor($table_search, $field_search, $value_search, $field_return) {
   
@@ -90,13 +96,13 @@
 
   function nome_semana($data) {
     switch(date('w', strtotime($data))) {
-        case 0: return 'domingo'; break;
-        case 1: return 'segunda-feira'; break;
-        case 2: return 'terça-feira'; break;
-        case 3: return 'quarta-feira'; break;
-        case 4: return 'quinta-feira'; break;
-        case 5: return 'sexta-feira'; break;
-        case 6: return 'sábado'; break;
+        case 0: return $LANG['func']['sunday']; break;
+        case 1: return $LANG['func']['monday']; break;
+        case 2: return $LANG['func']['tuesday']; break;
+        case 3: return $LANG['func']['wednesday']; break;
+        case 4: return $LANG['func']['thursday']; break;
+        case 5: return $LANG['func']['friday']; break;
+        case 6: return $LANG['func']['saturday']; break;
     }
   }
 
@@ -106,30 +112,18 @@
   
     switch($mes) {
     
-      case 1: $month = "Janeiro";
-        break;
-      case 2: $month = "Fevereiro";
-        break;
-      case 3: $month = "Março";
-        break;
-      case 4: $month = "Abril";
-        break;
-      case 5: $month = "Maio";
-        break;
-      case 6: $month = "Junho";
-        break;
-      case 7: $month = "Julho";
-        break;
-      case 8: $month = "Agosto";
-        break;
-      case 9: $month = "Setembro";
-        break;
-      case 10: $month = "Outubro";
-        break;
-      case 11: $month = "Novembro";
-        break;
-      case 12: $month = "Dezembro";
-        break;
+      case 1: $month = $LANG['func']['january']; break;
+      case 2: $month = $LANG['func']['february']; break;
+      case 3: $month = $LANG['func']['march']; break;
+      case 4: $month = $LANG['func']['april']; break;
+      case 5: $month = $LANG['func']['may']; break;
+      case 6: $month = $LANG['func']['june']; break;
+      case 7: $month = $LANG['func']['july']; break;
+      case 8: $month = $LANG['func']['august']; break;
+      case 9: $month = $LANG['func']['september']; break;
+      case 10: $month = $LANG['func']['october']; break;
+      case 11: $month = $LANG['func']['november']; break;
+      case 12: $month = $LANG['func']['december']; break;
     
     }
     return $month;
@@ -211,11 +205,11 @@
 
   function saudacao() {
   	if(date(H) >= 0 && date(H) < 12) {
-  		return "Bom Dia";
+  		return $LANG['func']['good_morning'];
   	} elseif(date(H) >= 12 && date(H) < 18) {
-  		return "Boa Tarde";
+  		return $LANG['func']['good_afternoon'];
   	} elseif(date(H) >= 18 && date(H) <= 23) {
-  		return "Boa Noite";
+  		return $LANG['func']['good_night'];
   	}
   }
 
@@ -326,7 +320,7 @@
 
   function checklog() {
   	global $_SESSION;
-  	return($_SESSION[cpf] != '');
+  	return($_SESSION[codigo] != '');
   }
 
   //------------------------------------------------------------------------//

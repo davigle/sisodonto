@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,29 +26,26 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
 	}
-	$senha = mysql_fetch_array(mysql_query("SELECT * FROM `dentistas` WHERE `cpf` = '".$_SESSION[cpf]."'"));
+	$senha = mysql_fetch_array(mysql_query("SELECT * FROM `dentistas` WHERE `codigo` = '".$_SESSION[codigo]."'"));
 
 ?>
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -57,18 +54,19 @@
 	$data = converte_data($_GET[pesquisa], 1);
 	switch ($_GET[peri]) {
 		case 'dia': {
-			$lista = $caixa->ListCaixa("SELECT * FROM `caixa_dent` WHERE `cpf_dentista` = '".$_SESSION[cpf]."' AND `data` = '$data' ORDER BY `data` ASC, `codigo` ASC");
+			$sql = "SELECT * FROM `caixa_dent` WHERE `codigo_dentista` = '".$_SESSION[codigo]."' AND `data` = '$data' ORDER BY `data` ASC, `codigo` ASC";
 		} break;
 		case 'mes': {
-			$lista = $caixa->ListCaixa("SELECT * FROM `caixa_dent` WHERE `cpf_dentista` = '".$_SESSION[cpf]."' AND LEFT(`data`, 7) = '$data' ORDER BY `data` ASC, `codigo` ASC");
+			$sql = "SELECT * FROM `caixa_dent` WHERE `codigo_dentista` = '".$_SESSION[codigo]."' AND LEFT(`data`, 7) = '$data' ORDER BY `data` ASC, `codigo` ASC";
 		} break;
 		case 'ano': {
-			$lista = $caixa->ListCaixa("SELECT * FROM `caixa_dent` WHERE `cpf_dentista` = '".$_SESSION[cpf]."' AND LEFT(`data`, 4) = '$data' ORDER BY `data` ASC, `codigo` ASC");
+			$sql = "SELECT * FROM `caixa_dent` WHERE `codigo_dentista` = '".$_SESSION[codigo]."' AND LEFT(`data`, 4) = '$data' ORDER BY `data` ASC, `codigo` ASC";
 		} break;
 		case 'mesatual': {
-			$lista = $caixa->ListCaixa("SELECT * FROM `caixa_dent` WHERE `cpf_dentista` = '".$_SESSION[cpf]."' AND LEFT(`data`, 7) = '".date(Y.'-'.m)."' ORDER BY `data` ASC, `codigo` ASC");
+			$sql = "SELECT * FROM `caixa_dent` WHERE `codigo_dentista` = '".$_SESSION[codigo]."' AND LEFT(`data`, 7) = '".date('Y-m')."' ORDER BY `data` ASC, `codigo` ASC";
 		} break;
 	}
+	$lista = $caixa->ListCaixa($sql);
 	$par = "F0F0F0";
 	$impar = "F8F8F8";
 	$saldo = 0;
@@ -82,11 +80,11 @@
 				$odev = $impar;
 			}
 			if($lista[$i][dc] == "-") {
-				$debito = 'R$ '.money_form($lista[$i][valor]);
+				$debito = $LANG['general']['currency'].' '.money_form($lista[$i][valor]);
 				$credito = '';
 			} else {
 				$debito = '';
-				$credito = 'R$ '.money_form($lista[$i][valor]);
+				$credito = ' '.money_form($lista[$i][valor]);
 			}
 			if($lista[$i][dc] == '-') {
 				$saldo -= $lista[$i][valor];
@@ -103,10 +101,11 @@
 ?>
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
       <td width="11%" height="23" align="left"><?=converte_data($lista[$i][data], 2)?></td>
-      <td width="50%" align="left"><?=$lista[$i][descricao]?></td>
+      <td width="41%" align="left"><?=$lista[$i][descricao]?></td>
       <td width="13%" align="right"><?=$debito?></td>
       <td width="13%" align="right"><?=$credito?></td>
-      <td width="13%" align="right"><font color="#<?=$cor?>">R$ <?=money_form($saldo)?></form></td>
+      <td width="13%" align="right"><font color="#<?=$cor?>"><?=$LANG['general']['currency'].' '.money_form($saldo)?></form></td>
+      <td width="10%" align="center"><a href="javascript:Ajax('caixa_dent/extrato', 'conteudo', 'codigo=<?=$lista[$i]['codigo']?>" onclick="return confirmLink(this)"><img src="imagens/icones/excluir.gif" border="0" /></a></td>
     </tr>
 <?
 		}
@@ -121,9 +120,21 @@
       <td height="23" align="left" colspan="5">&nbsp;</td>
     </tr>
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
-      <td width="61%" colspan="2" height="23" align="left"><b>TOTAL</b></td>
-      <td width="13%" align="right"><b>R$ <?=money_form($saldod)?></b></td>
-      <td width="13%" align="right"><b>R$ <?=money_form($saldoc)?></b></td>
-      <td width="13%" align="right"><font color="#<?=$cor?>"><b>R$ <?=money_form($saldo)?></b></form></td>
+      <td width="51%" colspan="2" height="23" align="left"><b><?=$LANG['cash_flow']['total']?></b></td>
+      <td width="13%" align="right"><b><?=$LANG['general']['currency'].' '.money_form($saldod)?></b></td>
+      <td width="13%" align="right"><b><?=$LANG['general']['currency'].' '.money_form($saldoc)?></b></td>
+      <td width="13%" align="right"><font color="#<?=$cor?>"><b><?=$LANG['general']['currency'].' '.money_form($saldo)?></b></form></td>
+      <td width="10%" align="center"></td>
+    </tr>
+  </table><br />
+  <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
+      <td width="20%">
+      </td>
+      <td width="40%" align="center">
+      </td>
+      <td width="40%" align="right">
+        <img src="imagens/icones/imprimir.gif" border="0" weight="29" height="33"><a href="relatorios/caixa.php?sql=<?=ajaxurlencode($sql)?>" target="_blank"><?=$LANG['patients']['print_report']?></a>
+      </td>
     </tr>
   </table>

@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,33 +26,29 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	$caminho = "logo.jpg";
 	if($_GET[confirm_del] == "delete\')") {
         $sql = "UPDATE `dados_clinica` SET `logomarca` = ''";
         mysql_query($sql) or die(mysql_error());
-        echo '<script>alert("Foto excluída com sucesso!")</script>';
 	}
 	if(isset($_POST[send])) {
-		if($_FILES['foto']['name'] != "") {
+		if($_FILES['foto']['name'] != "" && ($_FILES['foto']['type'] == 'image/gif' || $_FILES['foto']['type'] == 'image/pjpeg' || $_FILES['foto']['type'] == 'image/jpeg' || $_FILES['foto']['type'] == 'image/png')) {
 			$foto = imagecreatefromall($_FILES['foto']['tmp_name'], $_FILES['foto']['name']);
 			$factor = imagesx($foto)/imagesy($foto);
             $siz_x = 100;
@@ -82,7 +78,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Gerenciador Clínico SmilePrev - Administração Odontológica Em Suas Mãos</title>
 <link href="../css/smileprev.css" rel="stylesheet" type="text/css" />
-<script language="javascript" type="text/javascript" src="../lib/script.js"></script>
+<script language="javascript" type="text/javascript" src="../lib/script.js.php"></script>
 </head>
 <body style="background-color: #F0F0F0"><center>
 <?
@@ -95,8 +91,8 @@
 ?><br><br>
 <form action="logo.php" method="POST" enctype="multipart/form-data" target="_self">
 <input type="file" <?=$disable?> name="foto" size="8" class="forms"><br>
-<input type="submit" <?=$disable?> class="forms" value="Enviar" name="send"><BR><BR>
-<a <?=$href?>"logo.php?" <?=$onclick?>"return confirmLink(this)">Excluir foto</a>
+<input type="submit" <?=$disable?> class="forms" value="<?=$LANG['clinic_information']['save']?>" name="send"><BR><BR>
+<a <?=$href?>"logo.php?" <?=$onclick?>"return confirmLink(this)"><?=$LANG['clinic_information']['delete_image']?></a>
 </form>
 </body>
 </html>

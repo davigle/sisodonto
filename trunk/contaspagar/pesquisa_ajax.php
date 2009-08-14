@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -79,7 +76,7 @@
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
       <td width="11%" height="23" align="left"><?=converte_data($conta->RetornaDados('datavencimento'), 2)?></td>
       <td width="50%" align="left"><?=$conta->RetornaDados('descricao')?></td>
-      <td width="13%" align="right">R$ <?=money_form($conta->RetornaDados('valor'))?></td>
+      <td width="13%" align="right"><?=$LANG['general']['currency'].' '.money_form($conta->RetornaDados('valor'))?></td>
       <td width="21%" align="right"><input type="text" size="13" name="datapagamento" id="datapagamento" value="<?=converte_data($conta->RetornaDados('datapagamento'), 2)?>" onblur="Ajax('contaspagar/atualiza', 'conta_atualiza', 'codigo=<?=$conta->RetornaDados('codigo')?>&datapagamento='%2Bthis.value)" onKeypress="return Ajusta_Data(this, event);"></td>
       <td width="5%" align="center"><a href="javascript:Ajax('contaspagar/extrato', 'conteudo', 'codigo=<?=$conta->RetornaDados('codigo')?>" onclick="return confirmLink(this)"><img src="imagens/icones/excluir.gif" alt="Excluir" width="19" height="19" border="0"></a></td>
     </tr>
@@ -95,8 +92,8 @@
       <td height="23" align="left" colspan="5">&nbsp;</td>
     </tr>
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
-      <td width="61%" colspan="2" height="23" align="center"><b>TOTAL</b></td></td>
-      <td width="13%" align="right"><font color="#<?=$cor?>"><b>R$ <?=money_form($saldo)?></b></form></td>
+      <td width="61%" colspan="2" height="23" align="center"><b><?=$LANG['accounts_payable']['total']?></b></td></td>
+      <td width="13%" align="right"><font color="#<?=$cor?>"><b><?=$LANG['general']['currency'].' '.money_form($saldo)?></b></form></td>
       <td width="13%" colspan="2" align="right"></td>
     </tr>
   </table><div id="conta_atualiza"></div>

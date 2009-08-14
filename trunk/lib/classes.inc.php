@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,18 +26,14 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
@@ -87,11 +83,9 @@
 	 */
 	class TDentistas {
 		private $dados;
-		private $cpf_anterior;
-		function LoadDentista($intCPF) {
-			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `dentistas` WHERE `cpf` = '".$intCPF."'"));
+		function LoadDentista($intCodigo) {
+			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `dentistas` WHERE `codigo` = '".$intCodigo."'"));
 			$this->dados = $row;
-			$this->cpf_anterior = $this->dados[cpf];
 			if($this->dados[sexo] == "Masculino") {
 				$this->dados[titulo] = "Dr.";
 			} else {
@@ -109,18 +103,14 @@
 		}
 		function Salvar() {
 			foreach($this->dados as $chave => $valor) {
-				if($chave != 'cpf') {
-					mysql_query("UPDATE `dentistas` SET `".$chave."` = '".$valor."' WHERE `cpf` = '".$this->cpf_anterior."'");
+				if($chave != 'codigo' & $chave != 'titulo') {
+					mysql_query("UPDATE `dentistas` SET `".$chave."` = '".$valor."' WHERE `codigo` = '".$this->dados[codigo]."'");
 				}
-			}
-			if($this->cpf_anterior != $this->dados[cpf]) {
-				mysql_query("UPDATE `dentistas` SET `cpf` = '".$this->dados[cpf]."' WHERE `cpf` = '".$this->cpf_anterior."'");
-				$this->cpf_anterior = $this->dados[cpf];
 			}
 		}
 		function SalvarNovo() {
-			mysql_query("INSERT INTO `dentistas` (`cpf`) VALUES ('".$this->dados[cpf]."')") or die("Erro em SalvarNovo(): ".mysql_error());
-			$this->cpf_anterior = $this->dados[cpf];
+			mysql_query("INSERT INTO `dentistas` (`codigo`) VALUES ('')") or die("Erro em SalvarNovo(): ".mysql_error());
+			$this->dados['codigo'] = mysql_insert_id();
 		}
 		function ListDentistas($sql = "") {
 			$i = 0;
@@ -129,6 +119,7 @@
 			}
 			$query = mysql_query($sql) or die(mysql_error());
 			while($row = mysql_fetch_array($query)) {
+				$lista[$i][codigo] = $row[codigo];
 				$lista[$i][nome] = $row[nome];
 				$lista[$i][cpf] = $row[cpf];
 				$lista[$i][conselho_tipo] = $row[conselho_tipo];
@@ -153,7 +144,6 @@
 	class TPacientes {
 		private $dados;
 		private $codigo_anterior;
-		private $cod_paciente,$cod_cpf;
 		function LoadPaciente($intCodigo) {
 			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `pacientes` WHERE `codigo` = '".$intCodigo."'"));
 			$this->dados = $row;
@@ -196,14 +186,9 @@
 			}
 			return $lista;
 		}
-		
-		
 		function ProximoCodigo() {
 			$row = mysql_fetch_array(mysql_query("SELECT `codigo` FROM `pacientes` ORDER BY `codigo` DESC LIMIT 1"));
 			return($row[codigo] + 1);
-		}
-		function SalvarDentistaProcurado($cod_paciente,$cod_cpf) {
-			mysql_query("INSERT INTO `dentista_procurado` (`cod_dentista`,`cod_paciente`,`cpf_dentista`) VALUES (null,'".$cod_paciente."','".$cod_cpf."')") or die("Erro em SalvarDentistaProcurado(): ".mysql_error());
 		}
 	}
 	/**
@@ -212,11 +197,9 @@
 	 */
 	class TFuncionarios {
 		private $dados;
-		private $cpf_anterior;
-		function LoadFuncionario($intCPF) {
-			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `funcionarios` WHERE `cpf` = '".$intCPF."'"));
+		function LoadFuncionario($intCodigo) {
+			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `funcionarios` WHERE `codigo` = '".$intCodigo."'"));
 			$this->dados = $row;
-			$this->cpf_anterior = $this->dados[cpf];
 			if($this->dados[sexo] == "Masculino") {
 				$this->dados[titulo] = "Sr.";
 			} else {
@@ -234,18 +217,14 @@
 		}
 		function Salvar() {
 			foreach($this->dados as $chave => $valor) {
-				if($chave != 'cpf') {
-					mysql_query("UPDATE `funcionarios` SET `".$chave."` = '".$valor."' WHERE `cpf` = '".$this->cpf_anterior."'");
+				if($chave != 'codigo') {
+					mysql_query("UPDATE `funcionarios` SET `".$chave."` = '".$valor."' WHERE `codigo` = '".$this->dados[codigo]."'");
 				}
-			}
-			if($this->cpf_anterior != $this->dados[cpf]) {
-				mysql_query("UPDATE `funcionarios` SET `cpf` = '".$this->dados[cpf]."' WHERE `cpf` = '".$this->cpf_anterior."'");
-				$this->cpf_anterior = $this->dados[cpf];
 			}
 		}
 		function SalvarNovo() {
-			mysql_query("INSERT INTO `funcionarios` (`cpf`) VALUES ('".$this->dados[cpf]."')") or die("Erro em SalvarNovo(): ".mysql_error());
-			$this->cpf_anterior = $this->dados[cpf];
+			mysql_query("INSERT INTO `funcionarios` (`codigo`) VALUES ('')") or die("Erro em SalvarNovo(): ".mysql_error());
+			$this->dados['codigo'] = mysql_insert_id();
 		}
 		function ListFuncionarios($sql = "") {
 			$i = 0;
@@ -254,6 +233,7 @@
 			}
 			$query = mysql_query($sql) or die(mysql_error());
 			while($row = mysql_fetch_array($query)) {
+				$lista[$i][codigo] = $row[codigo];
 				$lista[$i][nome] = $row[nome];
 				$lista[$i][cpf] = $row[cpf];
 				$lista[$i][funcao1] = $row[funcao1];
@@ -304,7 +284,105 @@
 		function ListFornecedores($sql = "") {
 			$i = 0;
 			if($sql == "") {
-				$sql = "SELECT * FROM `fornecedores` ORDER BY `nome` ASC";
+				$sql = "SELECT * FROM `fornecedores` ORDER BY `nomefantasia` ASC";
+			}
+			$query = mysql_query($sql) or die(mysql_error());
+			while($row = mysql_fetch_array($query)) {
+				$lista[$i][nome] = $row[nomefantasia];
+				$lista[$i][codigo] = $row[codigo];
+				$lista[$i][cidade_uf] = $row[cidade]."/".$row[estado];
+				$lista[$i][telefone] = $row[telefone1];
+				$i++;
+			}
+			return $lista;
+		}
+	}
+	/**
+	 * Classe dos Laboratórios Clínicos
+	 *
+	 */
+	class TLaboratorio {
+		private $dados;
+		private $codigo_anterior;
+		function LoadLaboratorio($intCodigo) {
+			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `laboratorios` WHERE `codigo` = '".$intCodigo."'"));
+			$this->dados = $row;
+			$this->codigo_anterior = $this->dados[codigo];
+		}
+		function RetornaDados($strCampo) {
+			return $this->dados[$strCampo];
+		}
+		function RetornaTodosDados() {
+			return $this->dados;
+		}
+		function SetDados($strCampo, $strValor) {
+			$this->dados[$strCampo] = $strValor;
+		}
+		function Salvar() {
+			foreach($this->dados as $chave => $valor) {
+				if($chave != 'codigo') {
+					mysql_query("UPDATE `laboratorios` SET `".$chave."` = '".$valor."' WHERE `codigo` = '".$this->codigo_anterior."'");
+				}
+			}
+		}
+		function SalvarNovo() {
+			$codigo = next_autoindex('laboratorios');
+			mysql_query("INSERT INTO `laboratorios` (`codigo`) VALUES ('".$codigo."')") or die("Erro em SalvarNovo(): ".mysql_error());
+			$this->codigo_anterior = $codigo;
+		}
+		function ListLaboratorios($sql = "") {
+			$i = 0;
+			if($sql == "") {
+				$sql = "SELECT * FROM `laboratorios` ORDER BY `nomefantasia` ASC";
+			}
+			$query = mysql_query($sql) or die(mysql_error());
+			while($row = mysql_fetch_array($query)) {
+				$lista[$i][nome] = $row[nomefantasia];
+				$lista[$i][codigo] = $row[codigo];
+				$lista[$i][cidade_uf] = $row[cidade]."/".$row[estado];
+				$lista[$i][telefone] = $row[telefone1];
+				$i++;
+			}
+			return $lista;
+		}
+	}
+	/**
+	 * Classe dos Convênios
+	 *
+	 */
+	class TConvenio {
+		private $dados;
+		private $codigo_anterior;
+		function LoadConvenio($intCodigo) {
+			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `convenios` WHERE `codigo` = '".$intCodigo."'"));
+			$this->dados = $row;
+			$this->codigo_anterior = $this->dados[codigo];
+		}
+		function RetornaDados($strCampo) {
+			return $this->dados[$strCampo];
+		}
+		function RetornaTodosDados() {
+			return $this->dados;
+		}
+		function SetDados($strCampo, $strValor) {
+			$this->dados[$strCampo] = $strValor;
+		}
+		function Salvar() {
+			foreach($this->dados as $chave => $valor) {
+				if($chave != 'codigo') {
+					mysql_query("UPDATE `convenios` SET `".$chave."` = '".$valor."' WHERE `codigo` = '".$this->codigo_anterior."'");
+				}
+			}
+		}
+		function SalvarNovo() {
+			$codigo = next_autoindex('convenios');
+			mysql_query("INSERT INTO `convenios` (`codigo`) VALUES ('".$codigo."')") or die("Erro em SalvarNovo(): ".mysql_error());
+			$this->codigo_anterior = $codigo;
+		}
+		function ListConvenios($sql = "") {
+			$i = 0;
+			if($sql == "") {
+				$sql = "SELECT * FROM `convenios` ORDER BY `nomefantasia` ASC";
 			}
 			$query = mysql_query($sql) or die(mysql_error());
 			while($row = mysql_fetch_array($query)) {
@@ -377,7 +455,7 @@
 			if($strCPF == "") {
 				$where = "";
 			} else {
-				$where = "`cpf_dentista` = '".$strCPF."' AND";
+				$where = "`codigo_dentista` = '".$strCPF."' AND";
 			}
 			$saldo_positivo = mysql_fetch_array(mysql_query("SELECT SUM(`valor`) as `saldo_positivo` FROM `".$this->dbase."` WHERE ".$where." `dc` = '+'"));
 			$saldo_negativo = mysql_fetch_array(mysql_query("SELECT SUM(`valor`) as `saldo_negativo` FROM `".$this->dbase."` WHERE ".$where." `dc` = '-'"));
@@ -497,12 +575,12 @@
 	 */
 	class TAgendas {
 		private $dados;
-		function LoadAgenda($datData, $timHora, $intCPF) {
-			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `agenda` WHERE `data` = '".$datData."' AND  `hora` = '".$timHora."' AND  `cpf_dentista` = '".$intCPF."'"));
+		function LoadAgenda($datData, $timHora, $intCodigo) {
+			$row = mysql_fetch_assoc(mysql_query("SELECT * FROM `agenda` WHERE `data` = '".$datData."' AND  `hora` = '".$timHora."' AND  `codigo_dentista` = '".$intCodigo."'"));
 			$this->dados = $row;
 			$this->dados[data] = $datData;
 			$this->dados[hora] = $timHora;
-			$this->dados[cpf_dentista] = $intCPF;
+			$this->dados[codigo_dentista] = $intCodigo;
 		}
 		function RetornaDados($strCampo) {
 			return $this->dados[$strCampo];
@@ -515,13 +593,13 @@
 		}
 		function Salvar() {
 			foreach($this->dados as $chave => $valor) {
-				if($chave != 'data' && $chave != 'hora' && $chave != 'cpf_dentista') {
-					mysql_query("UPDATE `agenda` SET `".$chave."` = '".$valor."' WHERE `data` = '".$this->dados[data]."' AND `hora` = '".$this->dados[hora]."' AND  `cpf_dentista` = '".$this->dados[cpf_dentista]."'");
+				if($chave != 'data' && $chave != 'hora' && $chave != 'codigo_dentista') {
+					mysql_query("UPDATE `agenda` SET `".$chave."` = '".$valor."' WHERE `data` = '".$this->dados[data]."' AND `hora` = '".$this->dados[hora]."' AND  `codigo_dentista` = '".$this->dados[codigo_dentista]."'");
 				}
 			}
 		}
 		function SalvarNovo() {
-			mysql_query("INSERT INTO `agenda` (`data`, `hora`, `cpf_dentista`) VALUES ('".$this->dados[data]."', '".$this->dados[hora]."', '".$this->dados[cpf_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
+			mysql_query("INSERT INTO `agenda` (`data`, `hora`, `codigo_dentista`) VALUES ('".$this->dados[data]."', '".$this->dados[hora]."', '".$this->dados[codigo_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 		}
 		function ListAgenda($sql = "") {
 			$i = 0;
@@ -534,13 +612,13 @@
 				$lista[$i][procedimento] = $row[procedimento];
 				$lista[$i][data] = $row[data];
 				$lista[$i][hora] = $row[hora];
-				$lista[$i][cpf_dentista] = $row[cpf_dentista];
+				$lista[$i][codigo_dentista] = $row[codigo_dentista];
 				$i++;
 			}
 			return $lista;
 		}
 		function ExistHorario() {
-			return(mysql_num_rows(mysql_query("SELECT * FROM `agenda` WHERE `data` = '".$this->dados[data]."' AND `hora` = '".$this->dados[hora]."' AND  `cpf_dentista` = '".$this->dados[cpf_dentista]."'")));
+			return(mysql_num_rows(mysql_query("SELECT * FROM `agenda` WHERE `data` = '".$this->dados[data]."' AND `hora` = '".$this->dados[hora]."' AND  `codigo_dentista` = '".$this->dados[codigo_dentista]."'")));
 		}
 	}
 	/**
@@ -575,7 +653,7 @@
 		}
 		function Salvar() {
 			foreach($this->dados as $chave => $valor) {
-				if($chave != 'codigo' && $chave != 'cpf_dentista') {
+				if($chave != 'codigo' && $chave != 'codigo_dentista') {
 					mysql_query("UPDATE `".$this->dbase."` SET `".$chave."` = '".$valor."' WHERE `codigo` = '".$this->dados[codigo]."'");
 				}
 			}
@@ -583,11 +661,11 @@
 		function SalvarNovo() {
 			$this->dados[codigo] = next_autoindex($this->dbase);
 			if($this->dbase == 'contaspagar_dent') {
-				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `cpf_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[cpf_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
+				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `codigo_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[codigo_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			} elseif($this->dbase == 'contaspagar') {
 				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`) VALUES ('".$this->dados[codigo]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			} elseif($this->dbase == 'contasreceber_dent') {
-				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `cpf_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[cpf_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
+				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `codigo_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[codigo_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			} elseif($this->dbase == 'contasreceber') {
 				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`) VALUES ('".$this->dados[codigo]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			}
@@ -641,7 +719,7 @@
 		function SalvarNovo() {
 			$this->dados[codigo] = next_autoindex($this->dbase);
 			if($this->dbase == 'cheques_dent') {
-				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `cpf_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[cpf_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
+				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `codigo_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[codigo_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			} else {
 				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`) VALUES ('".$this->dados[codigo]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			}
@@ -687,7 +765,7 @@
 		}
 		function Salvar() {
 			foreach($this->dados as $chave => $valor) {
-				if($chave != 'codigo' && $chave != 'cpf_dentista') {
+				if($chave != 'codigo' && $chave != 'codigo_dentista') {
 					mysql_query("UPDATE `".$this->dbase."` SET `".$chave."` = '".$valor."' WHERE `codigo` = '".$this->dados[codigo]."'");
 				}
 			}
@@ -695,7 +773,7 @@
 		function SalvarNovo() {
 			$this->dados[codigo] = next_autoindex($this->dbase);
 			if($this->dbase == 'estoque_dent') {
-				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `cpf_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[cpf_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
+				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`, `codigo_dentista`) VALUES ('".$this->dados[codigo]."', '".$this->dados[codigo_dentista]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			} elseif($this->dbase == 'estoque') {
 				mysql_query("INSERT INTO `".$this->dbase."` (`codigo`) VALUES ('".$this->dados[codigo]."')") or die("Erro em SalvarNovo(): ".mysql_error());
 			}
@@ -866,6 +944,9 @@
 		function SetDados($strCampo, $strValor) {
 			$this->dados[$strCampo] = $strValor;
 		}
+		function ApagaDados() {
+            mysql_query("DELETE FROM evolucao WHERE codigo = ".$this->dados['codigo']);
+		}
 		function Salvar() {
 			foreach($this->dados as $chave => $valor) {
 				if($chave != 'codigo') {
@@ -998,6 +1079,7 @@
         private $cidade;
         private $estado;
         private $cep;
+        private $pais;
         private $fundacao;
         private $telefone1;
         private $telefone2;
@@ -1010,6 +1092,7 @@
         private $banco2;
         private $agencia2;
         private $conta2;
+        private $idioma;
         private $logomarca;
         /**
          * Declara os atributos
@@ -1041,6 +1124,9 @@
 
         function getCEP() { return $this->cep; }
         function setCEP($strCEP) { $this->cep = $strCEP; }
+        
+        function getPais() { return $this->pais; }
+        function setPais($strPais) { $this->pais = $strPais; }
 
         function getFundacao() { return $this->fundacao; }
         function setFundacao($strFundacao) { $this->fundacao = $strFundacao; }
@@ -1077,7 +1163,10 @@
 
         function getConta2() { return $this->conta2; }
         function setConta2($strConta2) { $this->conta2 = $strConta2; }
-        
+
+        function getIdioma() { return $this->idioma; }
+        function setIdioma($strIdioma) { $this->idioma = $strIdioma; }
+
         function getLogomarca() { return $this->logomarca; }
         function setLogomarca($strLogomarca) { $this->logomarca = $strLogomarca; }
         /**
@@ -1095,6 +1184,7 @@
             $this->Cidade = $row['cidade'];
             $this->Estado = $row['estado'];
             $this->Cep = $row['cep'];
+            $this->Pais = $row['pais'];
             $this->Fundacao = $row['fundacao'];
             $this->Telefone1 = $row['telefone1'];
             $this->Telefone2 = $row['telefone2'];
@@ -1107,6 +1197,7 @@
             $this->Banco2 = $row['banco2'];
             $this->Agencia2 = $row['agencia2'];
             $this->Conta2 = $row['conta2'];
+            $this->Idioma = $row['idioma'];
             $this->Logomarca = $row['logomarca'];
 		}
 		function Salvar() {
@@ -1120,6 +1211,7 @@
             $sql .= "cidade = '".$this->Cidade."', ";
             $sql .= "estado = '".$this->Estado."', ";
             $sql .= "cep = '".$this->Cep."', ";
+            $sql .= "pais = '".$this->Pais."', ";
             $sql .= "fundacao = '".$this->Fundacao."', ";
             $sql .= "telefone1 = '".$this->Telefone1."', ";
             $sql .= "telefone2 = '".$this->Telefone2."', ";
@@ -1131,7 +1223,8 @@
             $sql .= "conta1 = '".$this->Conta1."', ";
             $sql .= "banco2 = '".$this->Banco2."', ";
             $sql .= "agencia2 = '".$this->Agencia2."', ";
-            $sql .= "conta2 = '".$this->Conta2."' ";
+            $sql .= "conta2 = '".$this->Conta2."', ";
+            $sql .= "idioma = '".$this->Idioma."'";
             mysql_query($sql) or die('Line 1001: '. mysql_error());
 		}
 	}
@@ -1418,6 +1511,4 @@ Atenciosamente.', ";
             mysql_query($sql) or die('Line 1390: '. mysql_error());
 		}
 	}
-	
-	
 ?>

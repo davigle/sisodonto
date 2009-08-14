@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -85,11 +82,11 @@
 				$odev = $impar;
 			}
 			if($lista[$i][dc] == "-") {
-				$debito = 'R$ '.money_form($lista[$i][valor]);
+				$debito = $LANG['general']['currency'].' '.money_form($lista[$i][valor]);
 				$credito = '';
 			} else {
 				$debito = '';
-				$credito = 'R$ '.money_form($lista[$i][valor]);
+				$credito = $LANG['general']['currency'].' '.money_form($lista[$i][valor]);
 			}
 			$saldo = $caixa->SaldoTotal();
 			for($j = $i-1; $j >= 0; $j--) {
@@ -102,10 +99,11 @@
 ?>
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
       <td width="11%" height="23" align="left"><?=converte_data($lista[$i][data], 2)?></td>
-      <td width="50%" align="left"><?=$lista[$i][descricao]?></td>
+      <td width="41%" align="left"><?=$lista[$i][descricao]?></td>
       <td width="13%" align="right"><?=$debito?></td>
       <td width="13%" align="right"><?=$credito?></td>
       <td width="13%" align="right"></td>
+      <td width="10%" align="center"><a href="javascript:Ajax('caixa/extrato', 'conteudo', 'codigo=<?=$lista[$i]['codigo']?>" onclick="return confirmLink(this)"><img src="imagens/icones/excluir.gif" border="0" /></a></td>
     </tr>
 <?
 		}

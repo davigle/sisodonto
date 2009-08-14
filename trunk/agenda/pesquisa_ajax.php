@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -61,7 +58,7 @@
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
 	<tr bgcolor="#F0F0F0" onmouseout="style.background='#F0F0F0'" onmouseover="style.background='#DDE1E6'">
 <?
-	if(is_date(converte_data($_GET[pesquisa], 1)) && $_GET[cpf_dentista] != "") {
+	if(is_date(converte_data($_GET[pesquisa], 1)) && $_GET[codigo_dentista] != "") {
 		$agenda = new TAgendas();
 		$par = "F0F0F0";
 		$impar = "F8F8F8";
@@ -94,11 +91,11 @@
 			} else {
 				$style = '';
 			}
-			$agenda->LoadAgenda(converte_data($_GET[pesquisa], 1), $horario[$i], $_GET[cpf_dentista]);
+			$agenda->LoadAgenda(converte_data($_GET[pesquisa], 1), $horario[$i], $_GET[codigo_dentista]);
 			if(!$agenda->ExistHorario()) {
 				$agenda->SalvarNovo();
 			}
-			if((converte_data($_GET[pesquisa], 1) < date(Y.'-'.m.'-'.d)) || ($_GET[cpf_dentista] != $_SESSION[cpf] && $_SESSION[nivel] == 'Dentista')) {
+			if((converte_data($_GET[pesquisa], 1) < date(Y.'-'.m.'-'.d)) || ($_GET[codigo_dentista] != $_SESSION[codigo] && $_SESSION[nivel] == 'Dentista')) {
 				$blur = 'onblur';
 				$disable = 'disabled';
 			} else {
@@ -115,20 +112,20 @@
 ?>
       <td width="7%" align="center" height="23">&nbsp;<?=$horario[$i]?></td>
       <td width="24%" align="left">
-        <input type="text" size="30" maxlength="90" name="descricao" onkeyup="searchSuggest(this, 'codigo_pac<?=$i?>', 'search<?=$i?>');" id="descricao<?=$i?>" value="<?=$agenda->RetornaDados('descricao')?>" <?=$disable?> onblur="Ajax('agenda/atualiza', 'agenda_atualiza', 'data=<?=$agenda->RetornaDados('data')?>&hora=<?=$agenda->RetornaDados('hora')?>:00&descricao='%2Bthis.value%2B'&cpf_dentista=<?=$agenda->RetornaDados('cpf_dentista')?>&codigo_paciente='%2Bdocument.getElementById('codigo_pac<?=$i?>').value);"
+        <input type="text" size="30" maxlength="90" name="descricao" onkeyup="searchSuggest(this, 'codigo_pac<?=$i?>', 'search<?=$i?>');" id="descricao<?=$i?>" value="<?=$agenda->RetornaDados('descricao')?>" <?=$disable?> onblur="Ajax('agenda/atualiza', 'agenda_atualiza', 'data=<?=$agenda->RetornaDados('data')?>&hora=<?=$agenda->RetornaDados('hora')?>:00&descricao='%2Bthis.value%2B'&codigo_dentista=<?=$agenda->RetornaDados('codigo_dentista')?>&codigo_paciente='%2Bdocument.getElementById('codigo_pac<?=$i?>').value);"
         onfocus="esconde_itens('searches')" onkeypress="document.getElementById('codigo_pac<?=$i?>').value=''" class="forms" autocomplete="off"><BR>
         <input type="hidden" id="codigo_pac<?=$i?>" value="<?=$agenda->RetornaDados('codigo_paciente')?>">
         <div id='search<?=$i?>' style="position: absolute"></div>
       </td>
-      <td width="13%" align="left"><input type="text" size="13" maxlength="15" name="procedimento" id="procedimento" value="<?=$agenda->RetornaDados('procedimento')?>" <?=$disable?> onblur="Ajax('agenda/atualiza', 'agenda_atualiza', 'data=<?=$agenda->RetornaDados('data')?>&hora=<?=$agenda->RetornaDados('hora')?>:00&procedimento='%2Bthis.value%2B'&cpf_dentista=<?=$agenda->RetornaDados('cpf_dentista')?>')" class="forms" onfocus="esconde_itens('searches')"></td>
-      <td width="6%" align="left" <?=$style?>><input type="checkbox" name="faltou" id="faltou" value="<?=$val_chk?>" <?=$disable.' '.$chk?> onclick="Ajax('agenda/atualiza', 'agenda_atualiza', 'data=<?=$agenda->RetornaDados('data')?>&hora=<?=$agenda->RetornaDados('hora')?>:00&faltou='%2Bthis.value%2B'&cpf_dentista=<?=$agenda->RetornaDados('cpf_dentista')?>'); muda_valor(this);" onfocus="esconde_itens('searches')"></td>
+      <td width="13%" align="left"><input type="text" size="13" maxlength="15" name="procedimento" id="procedimento" value="<?=$agenda->RetornaDados('procedimento')?>" <?=$disable?> onblur="Ajax('agenda/atualiza', 'agenda_atualiza', 'data=<?=$agenda->RetornaDados('data')?>&hora=<?=$agenda->RetornaDados('hora')?>:00&procedimento='%2Bthis.value%2B'&codigo_dentista=<?=$agenda->RetornaDados('codigo_dentista')?>')" class="forms" onfocus="esconde_itens('searches')"></td>
+      <td width="6%" align="left" <?=$style?>><input type="checkbox" name="faltou" id="faltou" value="<?=$val_chk?>" <?=$disable.' '.$chk?> onclick="Ajax('agenda/atualiza', 'agenda_atualiza', 'data=<?=$agenda->RetornaDados('data')?>&hora=<?=$agenda->RetornaDados('hora')?>:00&faltou='%2Bthis.value%2B'&codigo_dentista=<?=$agenda->RetornaDados('codigo_dentista')?>'); muda_valor(this);" onfocus="esconde_itens('searches')"></td>
 <?
 		}
-    $sql = "SELECT `data`, `obs` FROM agenda_obs WHERE data = '".converte_data($_GET['pesquisa'], 1)."' AND cpf_dentista = '".$_GET['cpf_dentista']."'";
-    $query = mysql_query($sql) or die('Line 113: '.mysql_error());
+    $sql = "SELECT `data`, `obs` FROM agenda_obs WHERE data = '".converte_data($_GET['pesquisa'], 1)."' AND codigo_dentista = '".$_GET['codigo_dentista']."'";
+    $query = mysql_query($sql) or die('Line 128: '.mysql_error());
     $row = mysql_fetch_array($query);
     if($row['data'] == '') {
-        mysql_query("INSERT INTO agenda_obs (data, cpf_dentista) VALUES ('".converte_data($_GET['pesquisa'], 1)."', '".$_GET['cpf_dentista']."')") or die('Line 116: '.mysql_error());
+        mysql_query("INSERT INTO agenda_obs (data, codigo_dentista) VALUES ('".converte_data($_GET['pesquisa'], 1)."', '".$_GET['codigo_dentista']."')") or die('Line 116: '.mysql_error());
         $sql = "SELECT data, obs FROM agenda_obs WHERE data = ".converte_data($_GET['pesquisa'], 1);
         $query = mysql_query($sql) or die('Line 118: '.mysql_error());
         $row = mysql_fetch_array($query);
@@ -140,8 +137,8 @@
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr style="background: #F8F8F8">
       <td align="center">
-        <b>OBSERVAÇÕES DO DIA</b><BR>
-        <textarea class="forms" name="observacoes" cols="100" rows="6" style="overflow:hidden" <?=$disable?> onblur='Ajax("agenda/atualizaobs", "agenda_atualiza", "data=<?=converte_data($_GET['pesquisa'], 1)?>&cpf_dentista=<?=$_GET['cpf_dentista']?>&obs="%2Bthis.value.replace(/\n/g, "<br>"))'><?=ereg_replace('<br>', "\n", $row['obs'])?></textarea>
+        <b><?=$LANG['calendar']['comments_of_day']?></b><BR>
+        <textarea class="forms" name="observacoes" cols="100" rows="6" style="overflow:hidden" <?=$disable?> onblur='Ajax("agenda/atualizaobs", "agenda_atualiza", "data=<?=converte_data($_GET['pesquisa'], 1)?>&codigo_dentista=<?=$_GET['codigo_dentista']?>&obs="%2Bthis.value.replace(/\n/g, "<br>"))'><?=ereg_replace('<br>', "\n", $row['obs'])?></textarea>
       </td>
     </tr>
   </table>
@@ -149,7 +146,7 @@
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr style="background: #F8F8F8">
       <td width="610" align="center"></td>
-      <td width="140" align="right"><img src="imagens/icones/imprimir.gif" border=""> <a href="relatorios/agenda_consultas.php?data=<?=converte_data($_GET[pesquisa], 1)?>&cpf_dentista=<?=$_GET[cpf_dentista]?>" target="_blank">Imprimir agenda</a></td>
+      <td width="140" align="right"><img src="imagens/icones/imprimir.gif" border=""> <a href="relatorios/agenda_consultas.php?data=<?=converte_data($_GET[pesquisa], 1)?>&codigo_dentista=<?=$_GET[codigo_dentista]?>" target="_blank"><?=$LANG['calendar']['print_calendar']?></a></td>
     </tr>
   </table>
   <div id="agenda_atualiza"></div>

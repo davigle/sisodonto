@@ -24,7 +24,7 @@
 	background-color:#f3f3f3;
 	border:1px solid #cccccc;
 	width:150px;
-	height:169px;
+	height:217px;
 	visibility: hidden;
 }
 
@@ -96,6 +96,17 @@
 /* Unique ID for item 6 of menu MMMenu0009002858_0 so we can set its position */
 	left:0px;
 	top:145px;
+}
+
+#MMMenu0009002858_0_Item_7 {
+/* Unique ID for item 7 of menu MMMenu0009002858_0 so we can set its position */
+	left:0px;
+	top:169px;
+}
+#MMMenu0009002858_0_Item_8 {
+/* Unique ID for item 8 of menu MMMenu0009002858_0 so we can set its position */
+	left:0px;
+	top:193px;
 }
 
 #MMMenuContainer0009002858_0 img {
@@ -498,7 +509,7 @@
 	background-color:#f3f3f3;
 	border:1px solid #cccccc;
 	width:150px;
-	height:50px;
+	height:73px;
 }
 
 .MMMIFVStyleMMMenu0009003732_4 {
@@ -525,6 +536,12 @@
 /* Unique ID for item 1 of menu MMMenu0009003732_4 so we can set its position */
 	left:0px;
 	top:25px;
+}
+
+#MMMenu0009003732_4_Item_2 {
+/* Unique ID for item 1 of menu MMMenu0009003732_4 so we can set its position */
+	left:0px;
+	top:49px;
 }
 
 #MMMenuContainer0009003732_4 img {
@@ -571,7 +588,7 @@
 	background-color:#f3f3f3;
 	border:1px solid #cccccc;
 	width:180px;
-	height:217px;
+	height:97px;
 }
 
 .MMMIFVStyleMMMenu0009003819_5 {
@@ -624,36 +641,6 @@
 /* Unique ID for item 3 of menu MMMenu0009003819_5 so we can set its position */
 	left:0px;
 	top:73px;
-}
-
-#MMMenu0009003819_5_Item_4 {
-/* Unique ID for item 4 of menu MMMenu0009003819_5 so we can set its position */
-	left:0px;
-	top:97px;
-}
-
-#MMMenu0009003819_5_Item_5 {
-/* Unique ID for item 5 of menu MMMenu0009003819_5 so we can set its position */
-	left:0px;
-	top:121px;
-}
-
-#MMMenu0009003819_5_Item_6 {
-/* Unique ID for item 6 of menu MMMenu0009003819_5 so we can set its position */
-	left:0px;
-	top:145px;
-}
-
-#MMMenu0009003819_5_Item_7 {
-/* Unique ID for item 7 of menu MMMenu0009003819_5 so we can set its position */
-	left:0px;
-	top:169px;
-}
-
-#MMMenu0009003819_5_Item_8 {
-/* Unique ID for item 8 of menu MMMenu0009003819_5 so we can set its position */
-	left:0px;
-	top:193px;
 }
 
 #MMMenuContainer0009003819_5 img {

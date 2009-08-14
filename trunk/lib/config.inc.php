@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,55 +26,42 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
     *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
-    *
     *
     */
-  // Windows
-  //define('PATH_INCLUDE', 'C:\\apache\\htdocs\\gco\\');
-  //
-  // Linux
-  //define('PATH_INCLUDE', '/var/www/htdocs/gco/');
-  define('PATH_INCLUDE', '');
+
+   // Windows
+    //define('PATH_INCLUDE', 'C:\\apache\\htdocs\\gco\\');
+    //
+    // Linux
+    //define('PATH_INCLUDE', '/var/www/htdocs/gco/');
+    define('PATH_INCLUDE', '');
+
+    // Versão desta liberação
+    $version = '3.0';
+
+    // Variáveis do conexão com o BD
+    $server = 'localhost';
+    $user = 'root';
+    $pass = '';
+    $bd = 'sisodonto';
   
-  // Versão desta liberação
-  $version = '2.2';
+    // Quantidade de páginas exibidas nas paginações
+    define('PG_MAX', 15);
+    // Quantidade de páginas exibidas nas paginações menores
+    define('PG_MAX_MEN', 10);
+    // Quantidade de zeros para completar a numeração dos boletos
+    define('ZEROS', 11);
   
-  // Variáveis do conexão com o BD 
-  $server = 'localhost';
-  $user = 'root';
-  $pass = 'root';
-  $bd = 'sisodonto';
-  
-  // Quantidade de páginas exibidas nas paginações
-  define('PG_MAX', 30);
-  // Quantidade de páginas exibidas nas paginações menores
-  define('PG_MAX_MEN', 10);
-  // Quantidade de zeros para completar a numeração dos boletos
-  define('ZEROS', 11);
-  
-  // Define a frase exibida para a pessoa não autenticada
-  $frase_log = "&nbsp;&nbsp;Você precisa estar logado para acessar esta área!";
-  
-  // Define a frase exibida para acesso apenas de administradores
-  $frase_adm = "&nbsp;&nbsp;Área restrita a administradores da clínica!";
-  // Define a frase exibida para acesso apenas de administradores e dentistas
-  $frase_dent_adm = "&nbsp;&nbsp;Área restrita a administradores e profissionais da clínica!";
-  // Define a frase exibida para acesso apenas de administradores e funcionários
-  $frase_adm_func = "&nbsp;&nbsp;Área restrita a administradores e funcionários da clínica!";
-  
-  // Define se está instalado ou não
-  $install = true;
+    // Define se está instalado ou não
+    $install = true;
 
 ?>

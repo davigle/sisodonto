@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,27 +26,25 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
-		die($frase_log);
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
 	}
 	if($_GET[confirm_del] == "delete") {
 		mysql_query("DELETE FROM `caixa` WHERE `codigo` = '".$_GET[codigo]."'") or die(mysql_error());
@@ -63,13 +61,13 @@
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="100%">&nbsp;&nbsp;&nbsp;<img src="caixa/img/caixa.png" alt="Fluxo de Caixa da Clínica" border="0"> <a href="javascript:Ajax('caixa/extrato', 'conteudo', '')"><span class="h3">Fluxo de Caixa da Clínica </span></td>
+      <td width="100%">&nbsp;&nbsp;&nbsp;<img src="caixa/img/caixa.png" alt="<?=$LANG['cash_flow']['professional_cash_flow']?>" border="0"> <a href="javascript:Ajax('caixa/extrato', 'conteudo', '')"><span class="h3"><?=$LANG['cash_flow']['clinic_cash_flow']?></span></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td>&nbsp;&nbsp;&nbsp;<img src="caixa_dent/img/caixa.png" alt="Fluxo de Caixa dos Dentistas" border="0"> <a href="javascript:Ajax('caixa_dent/extrato', 'conteudo', '')"><span class="h3">Fluxo de Caixa dos Dentistas </span></td>
+      <td>&nbsp;&nbsp;&nbsp;<img src="caixa_dent/img/caixa.png" alt="<?=$LANG['cash_flow']['professional_cash_flow']?>" border="0"> <a href="javascript:Ajax('caixa_dent/extrato', 'conteudo', '')"><span class="h3"><?=$LANG['cash_flow']['professional_cash_flow']?></span></td>
     </tr>
   </table>
 </div>

@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,33 +26,31 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
-		die($frase_log);
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
 	}
 	if($_GET[confirm_del] == "delete") {
 		mysql_query("DELETE FROM `contaspagar_dent` WHERE `codigo` = '".$_GET[codigo]."'") or die(mysql_error());
 	}
 	if(isset($_POST[Salvar])) {		
-		$senha = mysql_fetch_array(mysql_query("SELECT * FROM `dentistas` WHERE `cpf` = '".$_SESSION[cpf]."'"));
+		$senha = mysql_fetch_array(mysql_query("SELECT * FROM `dentistas` WHERE `codigo` = '".$_SESSION[codigo]."'"));
 		$obrigatorios[1] = 'datavencimento';
 		$obrigatorios[] = 'descricao';
 		$obrigatorios[] = 'valor';
@@ -69,7 +67,7 @@
 			$caixa->SetDados('datavencimento', converte_data($_POST[datavencimento], 1));
 			$caixa->SetDados('descricao', $_POST[descricao]);
 			$caixa->SetDados('valor', $_POST[valor]);
-			$caixa->SetDados('cpf_dentista', $_SESSION[cpf]);
+			$caixa->SetDados('codigo_dentista', $_SESSION[codigo]);
 			$caixa->SalvarNovo();
 			$caixa->Salvar();
 		}
@@ -83,16 +81,16 @@
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="contaspagar_dent/img/contas.png" alt="Contas a pagar da Clínica"> <span class="h3">Contas a pagar do Dentista </span></td>
+      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="contaspagar_dent/img/contas.png" alt="<?=$LANG['accounts_payable']['professional_accounts_payable']?>"> <span class="h3"><?=$LANG['accounts_payable']['professional_accounts_payable']?> </span></td>
       <td colspan="2" valign="bottom" align="center">
       <input type="hidden" name="peri" id="peri" value="">
-      <input type="radio" name="pesq" id="pesqdia" value="dia" onclick="document.getElementById('peri').value='dia'"><label for="pesqdia"> Dia/Mês/Ano</label>&nbsp;&nbsp;&nbsp;
-      <input type="radio" name="pesq" id="pesqmes" value="mes" onclick="document.getElementById('peri').value='mes'"><label for="pesqmes"> Mês/Ano</label>&nbsp;&nbsp;&nbsp;
-	  Pesquisar <input name="procurar" id="procurar" type="text" class="forms" size="20" maxlength="40" onkeyup="javascript:Ajax('contaspagar_dent/pesquisa', 'pesquisa', 'pesquisa='%2Bthis.value%2B'&peri='%2Bdocument.getElementById('peri').value%2B'&cpf_dentista=<?=$_SESSION[cpf]?>')"
+      <input type="radio" name="pesq" id="pesqdia" value="dia" onclick="document.getElementById('peri').value='dia'"><label for="pesqdia"> <?=$LANG['accounts_payable']['day_month_year']?></label>&nbsp;&nbsp;&nbsp;
+      <input type="radio" name="pesq" id="pesqmes" value="mes" onclick="document.getElementById('peri').value='mes'"><label for="pesqmes"> <?=$LANG['accounts_payable']['month_year']?></label>&nbsp;&nbsp;&nbsp;
+	  <?=$LANG['accounts_payable']['search_for']?> <input name="procurar" id="procurar" type="text" class="forms" size="20" maxlength="40" onkeyup="javascript:Ajax('contaspagar_dent/pesquisa', 'pesquisa', 'pesquisa='%2Bthis.value%2B'&peri='%2Bdocument.getElementById('peri').value%2B'&codigo_dentista=<?=$_SESSION[codigo]?>')"
 				onKeypress="return Ajusta_DMA(this, event, document.getElementById('peri').value);"
       onclick="if(document.getElementById('pesqdia').checked) {abreCalendario(this);}">
 	  <br>
-      <input type="radio" name="pesq" id="pesqmesatual" value="mesatual" onclick="javascript:Ajax('contaspagar_dent/pesquisa', 'pesquisa', 'peri=mesatual')"><label for="pesqmesatual"> Mês atual</label>
+      <input type="radio" name="pesq" id="pesqmesatual" value="mesatual" onclick="javascript:Ajax('contaspagar_dent/pesquisa', 'pesquisa', 'peri=mesatual')"><label for="pesqmesatual"> <?=$LANG['accounts_payable']['current_month']?></label>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </td>
@@ -104,17 +102,17 @@
     <tr>
       <td width="4%">
       </td>
-      <td width="12%">Vencimento <br />
+      <td width="12%"><?=$LANG['accounts_payable']['deadline']?> <br />
         <input type="text" size="13" value="<?=converte_data(hoje(), 2)?>" name="datavencimento" id="datavencimento" class="forms">
       </td>
-      <td width="58%">Descrição <br />
+      <td width="58%"><?=$LANG['accounts_payable']['description']?> <br />
         <input type="text" size="80" name="descricao" id="descricao" class="forms">
       </td>
-      <td width="16%">Valor <br />
+      <td width="16%"><?=$LANG['accounts_payable']['value']?> <br />
         <input type="text" size="20" name="valor" id="valor" class="forms" onKeypress="return Ajusta_Valor(this, event);">
       </td>
       <td width="10%"> <br />
-        <input type="submit" name="Salvar" id="Salvar" value="Salvar" class="forms">
+        <input type="submit" name="Salvar" id="Salvar" value="<?=$LANG['accounts_receivable']['save']?>" class="forms">
       </td>
       <td width="3%">
       </td>
@@ -127,15 +125,15 @@
       <td bgcolor="#009BE6" colspan="5">&nbsp;</td>
     </tr>
     <tr>
-      <td width="11%" height="23" align="left">Vencimento</td>
-      <td width="50%" align="left">Descricao</td>
-      <td width="13%" align="center">Valor</td>
-      <td width="21%" align="center">Data Pagamento</td>
-      <td width="5%" align="center">Apagar</td>
+      <td width="11%" height="23" align="left"><?=$LANG['accounts_payable']['deadline']?></td>
+      <td width="50%" align="left"><?=$LANG['accounts_payable']['description']?></td>
+      <td width="13%" align="center"><?=$LANG['accounts_payable']['value']?></td>
+      <td width="21%" align="center"><?=$LANG['accounts_payable']['payment']?></td>
+      <td width="5%" align="center"><?=$LANG['accounts_payable']['delete']?></td>
     </tr>
   </table>
   <div id="pesquisa"></div>
   <script>
-  Ajax('contaspagar_dent/pesquisa', 'pesquisa', 'cpf_dentista=<?=$_SESSION[cpf]?>&pesquisa=');
+  Ajax('contaspagar_dent/pesquisa', 'pesquisa', 'codigo_dentista=<?=$_SESSION[codigo]?>&pesquisa=');
   </script>
 </div>

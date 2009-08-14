@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -93,8 +90,8 @@
       <td width="325"><font color="<?=$ativo?>"><?=$lista[$i][titulo].' '.$lista[$i][nome]?></td>
       <td width="150"><font color="<?=$ativo?>"><?=$lista[$i][telefone]?></td>
       <td width="150"><font color="<?=$ativo?>"><?=$lista[$i][conselho_tipo].'/'.$lista[$i][conselho_estado].' '.$lista[$i][conselho_numero]?></td>
-      <td width="59" align="center"><a href="javascript:Ajax('dentistas/incluir', 'conteudo', 'cpf=<?=$lista[$i][cpf]?>&acao=editar')"><img src="imagens/icones/editar.gif" alt="Editar" width="16" height="18" border="0"></a></td>
-      <td width="66" align="center"><a <?=$href?>"javascript:Ajax('dentistas/gerenciar', 'conteudo', 'cpf=<?=$lista[$i][cpf]?>" <?=$onclick?>"return confirmLink(this)"><img src="imagens/icones/excluir.gif" alt="Excluir" width="19" height="19" border="0"></a></td>
+      <td width="59" align="center"><a href="javascript:Ajax('dentistas/incluir', 'conteudo', 'codigo=<?=$lista[$i][codigo]?>&acao=editar')"><img src="imagens/icones/editar.gif" alt="" width="16" height="18" border="0"></a></td>
+      <td width="66" align="center"><a <?=$href?>"javascript:Ajax('dentistas/gerenciar', 'conteudo', 'codigo=<?=$lista[$i][codigo]?>" <?=$onclick?>"return confirmLink(this)"><img src="imagens/icones/excluir.gif" alt="" width="19" height="19" border="0"></a></td>
     </tr>
 <?
 	}
@@ -104,7 +101,7 @@
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr bgcolor="#<?=$odev?>" onmouseout="style.background='#<?=$odev?>'" onmouseover="style.background='#DDE1E6'">
       <td width="160">
-      Total de dentistas: <b><?=count($total_regs)?></b>
+      <?=$LANG['professionals']['total_professionals']?>: <b><?=count($total_regs)?></b>
       </td>
       <td width="450" align="center">
 <?
@@ -135,6 +132,6 @@
 	echo $retf;
 ?>
       </td>
-      <td width="140" align="right"><img src="imagens/icones/etiquetas.gif" border=""> <a href="etiquetas/print_etiqueta.php?sql=<?=ajaxurlencode($sql)?>" target="_blank">Imprimir etiquetas</a></td>
+      <td width="140" align="right"><img src="imagens/icones/etiquetas.gif" border=""> <a href="etiquetas/print_etiqueta.php?sql=<?=ajaxurlencode($sql)?>" target="_blank"><?=$LANG['professionals']['print_labels']?></a></td>
     </tr>
   </table>
