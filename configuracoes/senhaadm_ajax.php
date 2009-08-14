@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);	
 	if(checknivel('Dentista') || checknivel('Funcionario')) {
 		die($frase_adm);
@@ -56,14 +53,14 @@
 				$r[2] = '<font color="#FF0000">';
 				$r[3] = '<font color="#FF0000">';
 			}
-			$senha = mysql_fetch_array(mysql_query("SELECT * FROM `funcionarios` WHERE `cpf` = '11111111111'"));
+			$senha = mysql_fetch_array(mysql_query("SELECT * FROM `funcionarios` WHERE `codigo` = '1'"));
 			if(md5($_POST[senhaatual]) != $senha[senha]) {
 				$j++;
 				$r[1] = '<font color="#FF0000">';
 			}
 			if($j == 0) {
-				$funcionario->LoadFuncionario('11111111111');
-				$strScrp = "alert('Senha do administrador atualizada com sucesso!'); Ajax('wallpapers/index', 'conteudo', '');";	
+				$funcionario->LoadFuncionario('1');
+				$strScrp = "alert('".$LANG['admin_password']['password_successfully_changed']."'); Ajax('wallpapers/index', 'conteudo', '');";
 				if($_POST[senha] != "") {
 					$funcionario->SetDados('senha', md5($_POST[senha]));
 				}
@@ -77,7 +74,7 @@
 </script>
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="wallpapers/img/login.png" alt="Alteração de senha"> <span class="h3">ALTERAR SENHA </span></td>
+      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="wallpapers/img/login.png" alt="<?=$LANG['admin_password']['change_admin_password']?>"> <span class="h3"><?=$LANG['admin_password']['change_admin_password']?></span></td>
       <td width="6%" valign="bottom"><a href="#"></a></td>
       <td width="36%" valign="bottom" align="right">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
@@ -86,7 +83,7 @@
 <div class="conteudo" id="table dados"><br>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td height="23">ALTERAÇÃO DE SENHA DO ADMININSTRADOR </td>
+      <td height="23"><?=$LANG['admin_password']['change_admin_password']?></td>
     </tr>
   </table>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela">
@@ -94,25 +91,25 @@
       <td>
       <form id="form2" name="form2" method="POST" action="configuracoes/senhaadm_ajax.php<?=$frmActEdt?>" onsubmit="formSender(this, 'conteudo'); return false;">
         <fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es de Acesso Pessoal </span></legend>
+        <legend><span class="style1"><?=$LANG['admin_password']['personal_access_information']?></span></legend>
         <table width="287" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td><?=$r[1]?>Senha atual:<br />
+            <td><?=$r[1]?><?=$LANG['admin_password']['current_password']?>:<br />
               <input name="senhaatual" value="" type="password" class="forms" id="senhaatual" maxlength="11" />
               <br />
               <br /></td>
           </tr>
           <tr>
-            <td><?=$r[2]?>Nova senha<br />
+            <td><?=$r[2]?><?=$LANG['admin_password']['new_password']?><br />
               <input name="senha" value="" type="password" class="forms" id="senha" maxlength="32" />
               <br />
               <br /></td>
           </tr>
           <tr>
-            <td><?=$r[3]?>Confirmação de nova senha<br />
+            <td><?=$r[3]?><?=$LANG['admin_password']['retype_new_password']?><br />
               <input name="confsenha" value="" type="password" class="forms" id="confsenha" maxlength="32" />
               <br />
               <br /></td>
@@ -123,7 +120,7 @@
         </table>
         </fieldset>
         <div align="center"><br>
-          <input name="login" type="submit" class="forms" id="login" value="Entrar" />
+          <input name="login" type="submit" class="forms" id="login" value="<?=$LANG['admin_password']['save']?>" />
         </div>
       </form>
       </td>

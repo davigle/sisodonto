@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,23 +26,41 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 ?>
 <dl>
+<dt><b>10/05/2009</b><br />
+<dd><ul type="circle">
+  <li>Adicionado o suporte a multi-idiomas;</li>
+  <li>Adicionado o idioma inglês;</li>
+  <li>Adicionado o suporte à Materiais Laboratoriais por pacientes com status de acompanhamento;</li>
+  <li>Adicionada cor vermelha para pacientes em débito;</li>
+  <li>Corrigido bug no orçamento para valores decimais;</li>
+  <li>Adicionada caixa de texto para observações gerais em Fornecedores;</li>
+  <li>Adicionados campos adicionais para correspondência em Contatos Úteis;</li>
+  <li>Adicionada opção de impressão de etiquetas em Contatos Úteis;</li>
+  <li>Adicionados campos bancários adicionais em Fornecedores;</li>
+  <li>Adicionado módulo de cadastro de Convênios/Planos;</li>
+  <li>Adicionado módulo de cadastro de Laboratórios;</li>
+  <li>Corrigido bug inserção de logomarca da clínica;</li>
+  <li>Adicionada possiblidade de editar a Evolução do Tratamento, em Pacientes;</li>
+  <li>Adicionada opção de deletar lançamento do caixa;</li>
+  <li>Adicionada opção de impressão de relatório do fluxo caixa;</li>
+</ul><br /></dd>
+<dt><b>28/02/2009</b><br />
+<dd><ul type="circle">
+  <li>Alterado o banco de dados de forma a desvincular os funcionários e profissionais do CPF, retirando sua obrigatoriedade;</li>
+</ul><br /></dd>
 <dt><b>25/06/2008</b><br />
 <dd><ul type="circle">
   <li>Corrigido o Configurador: fontes e funcionamento de atualizações;</li>

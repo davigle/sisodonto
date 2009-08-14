@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -60,17 +57,17 @@
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="cheques_dent/img/cheques.png" alt="Controle de Cheques"> <span class="h3">Controle de Cheques</span></td>
+      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="cheques_dent/img/cheques.png" alt="<?=$LANG['check_control']['professional_check_control']?>"> <span class="h3"><?=$LANG['check_control']['professional_check_control']?></span></td>
       <td width="27%" valign="bottom">
         <table width="100%" border="0">
       	  <tr>
       	    <td>
-      	      Pesquisar por<br>
+      	      <?=$LANG['check_control']['search_for']?><br>
       	      <select name="campo" id="campo" class="forms">
-      	        <option value="nometitular">Titular do cheque</option>
-      	        <option value="recebidode">Recebido de</option>
-      	        <option value="encaminhadopara">Encaminhado para</option>
-      	        <option value="compensacao">Data de compensação</option>
+      	        <option value="nometitular"><?=$LANG['check_control']['holder']?></option>
+      	        <option value="recebidode"><?=$LANG['check_control']['received_from']?></option>
+      	        <option value="encaminhadopara"><?=$LANG['check_control']['forwarded_to']?></option>
+      	        <option value="compensacao"><?=$LANG['check_control']['compensation_date']?></option>
       	      </select>
       	    </td>
       	    <td>
@@ -81,7 +78,7 @@
       	  </tr>
       	</table>
       </td>
-      <td width="23%" align="right" valign="bottom"><img src="../imagens/icones/novo.gif" alt="Incluir" width="19" height="22" border="0"><a href="javascript:Ajax('cheques_dent/incluir', 'conteudo', 'cpf_dentista=<?=$_SESSION[cpf]?>')">Incluir novo cheque </a></td>
+      <td width="23%" align="right" valign="bottom"><img src="imagens/icones/novo.gif" alt="" width="19" height="22" border="0"><a href="javascript:Ajax('cheques_dent/incluir', 'conteudo', 'codigo_dentista=<?=$_SESSION[codigo]?>')"><?=$LANG['check_control']['include_new_check']?></a></td>
       <td width="2%" valign="bottom">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
     </tr>
@@ -89,19 +86,20 @@
 <div class="conteudo" id="table dados"><br>
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td colspan="6" bgcolor="#009BE6">&nbsp;</td>
+      <td colspan="7" bgcolor="#009BE6">&nbsp;</td>
     </tr>
     <tr>
-      <td width="164" height="23" align="left">Titular do cheque</td>
-      <td width="164" height="23" align="left">Recebido de</td>
-      <td width="164" height="23" align="left">Encaminhado para</td>
-      <td width="80" align="center">Valor</td>
-      <td width="66" align="center">Editar</td>
-      <td width="66" align="center">Excluir</td>
+      <td width="123" height="23" align="left"><?=$LANG['check_control']['holder']?></td>
+      <td width="123" height="23" align="left"><?=$LANG['check_control']['received_from']?></td>
+      <td width="123" height="23" align="left"><?=$LANG['check_control']['forwarded_to']?></td>
+      <td width="123" height="23" align="left"><?=$LANG['check_control']['compensation_date']?></td>
+      <td width="80" align="center"><?=$LANG['check_control']['value']?></td>
+      <td width="66" align="center"><?=$LANG['check_control']['edit_view']?></td>
+      <td width="66" align="center"><?=$LANG['check_control']['delete']?></td>
     </tr>
   </table>  
   <div id="pesquisa"></div>
   <script>
-  Ajax('cheques_dent/pesquisa', 'pesquisa', 'cpf_dentista=<?=$_SESSION[cpf]?>&pesquisa=&campo=nometitular');
+  Ajax('cheques_dent/pesquisa', 'pesquisa', 'codigo_dentista=<?=$_SESSION[codigo]?>&pesquisa=&campo=nometitular');
   </script>
 </div>

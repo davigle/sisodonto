@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,24 +26,21 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
 		die($frase_log);
@@ -64,7 +61,7 @@
 			if($_GET[acao] == "editar") {
 				$cheque->LoadCheque($_GET[codigo]);
 			}
-			$cheque->SetDados('cpf_dentista', $_SESSION[cpf]);
+			$cheque->SetDados('codigo_dentista', $_SESSION[codigo]);
 			$cheque->SetDados('nometitular', $_POST[nometitular]);
 			$cheque->SetDados('valor', $_POST[valor]);
 			$cheque->SetDados('numero', $_POST[numero]);
@@ -80,8 +77,7 @@
 		}
 	}
 	if($_GET[acao] == "editar") {
-		$strUpCase = "ALTERAÇÂO";
-		$strLoCase = "alteração";
+		$strLoCase = $LANG['check_control']['editing'];
 		$frmActEdt = "?acao=editar&codigo=".$_GET[codigo];
 		$cheque->LoadCheque($_GET[codigo]);
 		$row = $cheque->RetornaTodosDados();
@@ -92,18 +88,17 @@
 		} else {
 			$row = $_POST;
 		}
-		$row[cpf_dentista] = $_REQUEST[cpf_dentista];
+		$row[codigo_dentista] = $_REQUEST[codigo_dentista];
 		$row[senha_dentista] = $_REQUEST[senha_dentista];
-		$strUpCase = "INCLUSÂO";
-		$strLoCase = "inclusão";
-		$senha = mysql_fetch_array(mysql_query("SELECT * FROM `dentistas` WHERE `cpf` = '".$_REQUEST[cpf_dentista]."'"));
+		$strLoCase = $LANG['check_control']['including'];
+		$senha = mysql_fetch_array(mysql_query("SELECT * FROM `dentistas` WHERE `codigo` = '".$_REQUEST[codigo_dentista]."'"));
 
 	}
 ?>
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="cheques_dent/img/cheques.png" alt="CHEQUES"> <span class="h3">CHEQUES [<?=$strLoCase?>] </span></td>
+      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="cheques_dent/img/cheques.png" alt="<?=$LANG['check_control']['professional_check_control']?>"> <span class="h3"><?=$LANG['check_control']['professional_check_control']?> [<?=$strLoCase?>] </span></td>
       <td width="6%" valign="bottom"><a href="#"></a></td>
       <td width="36%" valign="bottom" align="right">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
@@ -112,7 +107,7 @@
 <div class="conteudo" id="table dados"><br>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td width="243" height="26"><?=$strUpCase?> DE CHEQUES </td>
+      <td width="243" height="26"><?=$strLoCase?> <?=$LANG['check_control']['check']?> </td>
       <td width="381">&nbsp;</td>
     </tr>
   </table>
@@ -120,42 +115,44 @@
     <tr>
       <td>
       <form id="form2" name="form2" method="POST" action="cheques_dent/incluir_ajax.php<?=$frmActEdt?>" onsubmit="formSender(this, 'conteudo'); return false;"><fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es do Cheque </span></legend>
+        <legend><span class="style1"><?=$LANG['check_control']['check_information']?> </span></legend>
         <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td width="287" height="40">Nome do titular do cheque <br />
+            <td width="287" height="40"><?=$LANG['check_control']['holder']?> <br />
                 <label>
                   <input name="nometitular" value="<?=$row[nometitular]?>" type="text" class="forms" id="nometitular" size="50" maxlength="80" />
                 </label>
                 <br />
               <label></label></td>
-            <td width="210"><?=$r[2]?>* Valor do cheque<br />
+            <td width="210"><?=$r[2]?>* <?=$LANG['check_control']['value']?><br />
               <input name="valor" value="<?=$row[valor]?>" type="text" class="forms" id="valor" onKeypress="return Ajusta_Valor(this, event);" /></td>
           </tr>
           <tr>
-            <td height="40">Número do cheque<br />
+            <td height="40"><?=$LANG['check_control']['check_number']?><br />
               <input name="numero" value="<?=$row[numero]?>" type="text" class="forms" id="numero" size="20" maxlength="150" /></td>
-            <td>Banco<br />
+            <td><?=$LANG['check_control']['bank']?><br />
               <input name="banco" value="<?=$row[banco]?>" type="text" class="forms" id="banco" /></td>
           </tr>
           <tr>
-            <td height="40"><?=$r[5]?>* Recebido de:<br />
-                <input name="recebidode" value="<?=$row[recebidode]?>" type="text" class="forms" id="recebidode" size="40" maxlength="50" />
+            <td height="40"><?=$LANG['check_control']['agency_number']?>:<br />
+                <input name="agencia" value="<?=converte_data($row[agencia], 2)?>" type="text" class="forms" id="agencia" size="20" maxlength="20" />
               <br /></td>
-            <td>Encaminhado para:<br />
-                <input name="encaminhadopara" value="<?=$row[encaminhadopara]?>" type="text" class="forms" id="encaminhadopara" size="40" maxlength="50" />
-                <input name="cpf_dentista" value="<?=$row[cpf_dentista]?>" type="hidden">
-                <input name="senha_dentista" value="<?=$row[senha_dentista]?>" type="hidden"></td>
-          </tr>
-          <tr>
-            <td height="40">Data de compensação:<br />
+            <td><?=$LANG['check_control']['compensation_date']?>:<br />
                 <input name="compensacao" value="<?=converte_data($row[compensacao], 2)?>" type="text" class="forms" id="compensacao" size="14" maxlength="50" onKeypress="return Ajusta_Data(this, event);" />
               <br /></td>
-            <td></td>
+          </tr>
+          <tr>
+            <td height="40"><?=$r[5]?>* <?=$LANG['check_control']['received_from']?>:<br />
+                <input name="recebidode" value="<?=$row[recebidode]?>" type="text" class="forms" id="recebidode" size="40" maxlength="50" />
+              <br /></td>
+            <td><?=$LANG['check_control']['forwarded_to']?>:<br />
+                <input name="encaminhadopara" value="<?=$row[encaminhadopara]?>" type="text" class="forms" id="encaminhadopara" size="40" maxlength="50" />
+                <input name="codigo_dentista" value="<?=$row[codigo_dentista]?>" type="hidden">
+                <input name="senha_dentista" value="<?=$row[senha_dentista]?>" type="hidden"></td>
           </tr>
           <tr>
             <td>&nbsp;</td>

@@ -1,28 +1,15 @@
-ï»¿# phpMyAdmin SQL Dump
-# version 2.11.4
+# phpMyAdmin SQL Dump
+# version 2.13
 # http://www.phpmyadmin.net
 #
 # Servidor: localhost
-# Tempo de Gerao: Fev 15, 2008 as 02:30 PM
-# Verso do Servidor: 5.0.51
-# Verso do PHP: 5.2.5
+# Data de Geração: Mai 9, 2009 as 19:33 PM
+# Versão do Servidor: 5.0.51
+# Versão do PHP: 5.2.5
 
 #
 # Banco de Dados: `gerenciador`
 #
-
-# ############################
-
-#
-# Estrutura da tabela `Dentista procurado relecionado com a tabela pacientes`
-#
-
-CREATE TABLE  `gerenciador`.`dentista_procurado` (
-  `cod_dentista` int(10) unsigned NOT NULL auto_increment,
-  `cod_paciente` int(10) unsigned default NULL,
-  `cpf_dentista` varchar(45) default NULL,
-  PRIMARY KEY  USING BTREE (`cod_dentista`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 # ############################
 
@@ -33,12 +20,12 @@ CREATE TABLE  `gerenciador`.`dentista_procurado` (
 CREATE TABLE IF NOT EXISTS `agenda` (
   `data` date NOT NULL,
   `hora` time NOT NULL,
-  `cpf_dentista` varchar(11) NOT NULL,
+  `codigo_dentista` varchar(11) NOT NULL,
   `codigo_paciente` int(10) default NULL,
   `descricao` varchar(90) default NULL,
   `procedimento` varchar(15) default NULL,
-  `faltou` enum('Sim','No') NOT NULL default 'No',
-  PRIMARY KEY  (`data`,`hora`,`cpf_dentista`)
+  `faltou` enum('Sim','Não') NOT NULL default 'Não',
+  PRIMARY KEY  (`data`,`hora`,`codigo_dentista`)
 ) ENGINE=MyISAM;
 
 # ############################
@@ -49,9 +36,9 @@ CREATE TABLE IF NOT EXISTS `agenda` (
 
 CREATE TABLE IF NOT EXISTS `agenda_obs` (
   `data` date NOT NULL,
-  `cpf_dentista` varchar(11) NOT NULL,
+  `codigo_dentista` varchar(11) NOT NULL,
   `obs` longtext,
-  PRIMARY KEY  (`data`,`cpf_dentista`)
+  PRIMARY KEY  (`data`,`codigo_dentista`)
 ) ENGINE=MyISAM;
 
 # ############################
@@ -84,9 +71,9 @@ CREATE TABLE IF NOT EXISTS `ajuda` (
 #
 
 INSERT INTO `ajuda` (`codigo`, `topico`, `texto`) VALUES
-(1, 'Dentistas', '<b><h3>Incluir Dentista</b></h3>\r\n<br>\r\n<br>\r\n<b>Caminho:</b> Arquivo > Dentistas > Incluir novo dentista\r\n<br>\r\n<br>\r\n<b><h3>Excluir Dentista</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do dentista a ser excludo do sistema. A direita do nmero do CRO, aparecer a opo EXCLUIR. Confirme excluso.\r\n<br>\r\n<br>\r\n<b><h3>Editar dados do Dentista</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do dentista que ir alterar as informaes. A direita do nmero do CRO, aparecer a opo EDITAR. Clique e confirme alteraes.\r\n<br>\r\n<br>\r\n<b><h3>Procurar Dentista Cadastrado</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do dentista a ser procurado do sistema.\r\n<br>\r\n<br>\r\n<b><h3>Relatrio Total dos Dentistas</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nJ aparecer, por padro, todos dentistas cadastrados. Listagem por ordem alfabtica.\r\n'),
-(2, 'Funcionrios', '<b><h3>Incluir Funcionrio</b></h3>\r\n<br>\r\n<br>\r\n<b>Caminho:</b> Arquivo > Funcionrios > Incluir novo funcionrio\r\n<br>\r\n<br>\r\n<b><h3>Excluir Funcionrio</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Funcionrios\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do funcionrio a ser excludo do sistema. A direita da Funo Principal, aparecer a opo EXCLUIR. Confirme excluso.\r\n<br>\r\n<br>\r\n<b><h3>Editar dados do Funcionrio</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Funcionrios\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do funcionrio que ir alterar as informaes. A direita da Funo Principal, aparecer a opo EDITAR. Clique e confirme alteraes.\r\n<br>\r\n<br>\r\n<b><h3>Procurar Funcionrio Cadastrado</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Funcionrios\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do funcionrio a ser procurado do sistema.\r\n<br>\r\n<br>\r\n<b><h3>Relatrio Total dos Funcionrios</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > funcionrios\r\n<br><br>\r\nJ aparecer, por padro, todos funcionrios cadastrados. Listagem por ordem alfabtica.'),
-(3, 'Pacientes', '<b><h3>Incluir Paciente</b></h3>\r\n<br>\r\n<br>\r\n<b>Caminho:</b> Arquivo > Pacientes > Incluir novo paciente\r\n<br>\r\n<br>\r\n<b><h3>Excluir Paciente</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do paciente a ser excludo do sistema. A direita do nmero da ficha clnica \r\n\r\naparecer a opo EXCLUIR. Confirme excluso.\r\n<br>\r\n<br>\r\n<b><h3>Editar dados do Paciente</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do paciente que ir alterar as informaes. A direita do nmero da ficha clnica \r\n\r\naparecer a opo EDITAR. Clique e confirme alteraes.\r\n<br>\r\n<br>\r\n<b><h3>Procurar Paciente Cadastrado</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do paciente a ser procurado do sistema.\r\n<br>\r\n<br>\r\n<b><h3>Relatrio Total dos Pacientes</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nJ aparecer, por padro, todos pacientes cadastrados. Listagem por ordem alfabtica.');
+(1, 'Dentistas', '<b><h3>Incluir Dentista</b></h3>\r\n<br>\r\n<br>\r\n<b>Caminho:</b> Arquivo > Dentistas > Incluir novo dentista\r\n<br>\r\n<br>\r\n<b><h3>Excluir Dentista</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do dentista a ser excluído do sistema. A direita do número do CRO, aparecerá a opção EXCLUIR. Confirme exclusão.\r\n<br>\r\n<br>\r\n<b><h3>Editar dados do Dentista</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do dentista que irá alterar as informações. A direita do número do CRO, aparecerá a opção EDITAR. Clique e confirme alterações.\r\n<br>\r\n<br>\r\n<b><h3>Procurar Dentista Cadastrado</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do dentista a ser procurado do sistema.\r\n<br>\r\n<br>\r\n<b><h3>Relatório Total dos Dentistas</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Dentistas\r\n<br><br>\r\nJá aparecerá, por padrão, todos dentistas cadastrados. Listagem por ordem alfabética.\r\n'),
+(2, 'Funcionários', '<b><h3>Incluir Funcionário</b></h3>\r\n<br>\r\n<br>\r\n<b>Caminho:</b> Arquivo > Funcionários > Incluir novo funcionário\r\n<br>\r\n<br>\r\n<b><h3>Excluir Funcionário</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Funcionários\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do funcionário a ser excluído do sistema. A direita da Função Principal, aparecerá a opção EXCLUIR. Confirme exclusão.\r\n<br>\r\n<br>\r\n<b><h3>Editar dados do Funcionário</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Funcionários\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do funcionário que irá alterar as informações. A direita da Função Principal, aparecerá a opção EDITAR. Clique e confirme alterações.\r\n<br>\r\n<br>\r\n<b><h3>Procurar Funcionário Cadastrado</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Funcionários\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do funcionário a ser procurado do sistema.\r\n<br>\r\n<br>\r\n<b><h3>Relatório Total dos Funcionários</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > funcionários\r\n<br><br>\r\nJá aparecerá, por padrão, todos funcionários cadastrados. Listagem por ordem alfabética.'),
+(3, 'Pacientes', '<b><h3>Incluir Paciente</b></h3>\r\n<br>\r\n<br>\r\n<b>Caminho:</b> Arquivo > Pacientes > Incluir novo paciente\r\n<br>\r\n<br>\r\n<b><h3>Excluir Paciente</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do paciente a ser excluído do sistema. A direita do número da ficha clínica \r\n\r\naparecerá a opção EXCLUIR. Confirme exclusão.\r\n<br>\r\n<br>\r\n<b><h3>Editar dados do Paciente</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do paciente que irá alterar as informações. A direita do número da ficha clínica \r\n\r\naparecerá a opção EDITAR. Clique e confirme alterações.\r\n<br>\r\n<br>\r\n<b><h3>Procurar Paciente Cadastrado</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nDigite no campo "pesquisa" o nome do paciente a ser procurado do sistema.\r\n<br>\r\n<br>\r\n<b><h3>Relatório Total dos Pacientes</b></h3>\r\n<br><br>\r\n<b>Caminho:</b> Arquivo > Pacientes\r\n<br><br>\r\nJá aparecerá, por padrão, todos pacientes cadastrados. Listagem por ordem alfabética.');
 
 # ############################
 
@@ -137,7 +124,7 @@ CREATE TABLE IF NOT EXISTS `caixa` (
 
 CREATE TABLE IF NOT EXISTS `caixa_dent` (
   `codigo` int(15) NOT NULL auto_increment,
-  `cpf_dentista` varchar(11) default NULL,
+  `codigo_dentista` varchar(11) default NULL,
   `data` date default NULL,
   `dc` enum('+','-') default NULL,
   `valor` float default NULL,
@@ -157,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `cheques` (
   `nometitular` varchar(80) default NULL,
   `numero` varchar(50) default NULL,
   `banco` varchar(50) default NULL,
+  `agencia` varchar(20) default NULL,
   `recebidode` varchar(80) default NULL,
   `encaminhadopara` varchar(80) default NULL,
   `compensacao` date default NULL,
@@ -171,11 +159,12 @@ CREATE TABLE IF NOT EXISTS `cheques` (
 
 CREATE TABLE IF NOT EXISTS `cheques_dent` (
   `codigo` int(50) NOT NULL auto_increment,
-  `cpf_dentista` varchar(11) NOT NULL,
+  `codigo_dentista` varchar(11) NOT NULL,
   `valor` float default NULL,
   `nometitular` varchar(80) default NULL,
   `numero` varchar(50) default NULL,
   `banco` varchar(50) default NULL,
+  `agencia` varchar(20) default NULL,
   `recebidode` varchar(80) default NULL,
   `encaminhadopara` varchar(80) default NULL,
   `compensacao` date default NULL,
@@ -205,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `contaspagar` (
 
 CREATE TABLE IF NOT EXISTS `contaspagar_dent` (
   `codigo` int(20) NOT NULL auto_increment,
-  `cpf_dentista` varchar(11) default NULL,
+  `codigo_dentista` varchar(11) default NULL,
   `datavencimento` date default NULL,
   `descricao` varchar(150) default NULL,
   `valor` float default NULL,
@@ -236,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `contasreceber` (
 
 CREATE TABLE IF NOT EXISTS `contasreceber_dent` (
   `codigo` int(20) NOT NULL auto_increment,
-  `cpf_dentista` varchar(11) default NULL,
+  `codigo_dentista` varchar(11) default NULL,
   `datavencimento` date default NULL,
   `descricao` varchar(150) default NULL,
   `valor` float default NULL,
@@ -247,18 +236,56 @@ CREATE TABLE IF NOT EXISTS `contasreceber_dent` (
 # ############################
 
 #
+# Estrutura da tabela `convenios`
+#
+
+CREATE TABLE IF NOT EXISTS `convenios` (
+  `codigo` int(15) NOT NULL auto_increment,
+  `nomefantasia` varchar(80) default NULL,
+  `cpf` varchar(50) NOT NULL default '',
+  `razaosocial` varchar(80) default NULL,
+  `atuacao` varchar(80) default NULL,
+  `endereco` varchar(150) default NULL,
+  `bairro` varchar(40) default NULL,
+  `cidade` varchar(40) default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
+  `cep` varchar(9) default NULL,
+  `celular` varchar(15) default NULL,
+  `telefone1` varchar(15) default NULL,
+  `telefone2` varchar(15) default NULL,
+  `inscricaoestadual` varchar(40) default NULL,
+  `website` varchar(100) default NULL,
+  `email` varchar(100) default NULL,
+  `nomerepresentante` varchar(80) default NULL,
+  `apelidorepresentante` varchar(50) default NULL,
+  `emailrepresentante` varchar(100) default NULL,
+  `celularrepresentante` varchar(15) default NULL,
+  `telefone1representante` varchar(15) default NULL,
+  `telefone2representante` varchar(15) default NULL,
+  `banco` varchar(50) default NULL,
+  `agencia` varchar(15) default NULL,
+  `conta` varchar(15) default NULL,
+  `favorecido` varchar(50) default NULL,
+  PRIMARY KEY  (`codigo`)
+) ENGINE=MyISAM;
+
+# ############################
+
+#
 # Estrutura da tabela `dados_clinica`
 #
 
 CREATE TABLE IF NOT EXISTS `dados_clinica` (
-  `cnpj` varchar(14) default NULL,
+  `cnpj` varchar(50) default NULL,
   `razaosocial` varchar(80) default NULL,
   `fantasia` varchar(90) default NULL,
   `proprietario` varchar(50) default NULL,
   `endereco` varchar(150) default NULL,
   `bairro` varchar(40) default NULL,
   `cidade` varchar(40) default NULL,
-  `estado` enum('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO') default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
   `cep` varchar(9) default NULL,
   `fundacao` varchar(4) default NULL,
   `telefone1` varchar(13) default NULL,
@@ -272,6 +299,7 @@ CREATE TABLE IF NOT EXISTS `dados_clinica` (
   `banco2` varchar(50) default NULL,
   `agencia2` varchar(15) default NULL,
   `conta2` varchar(15) default NULL,
+  `idioma` varchar(50) default NULL,
   `logomarca` blob
 ) ENGINE=MyISAM;
 
@@ -279,8 +307,8 @@ CREATE TABLE IF NOT EXISTS `dados_clinica` (
 # Extraindo dados da tabela `dados_clinica`
 #
 
-INSERT INTO `dados_clinica` (`cnpj`, `razaosocial`, `fantasia`, `proprietario`, `endereco`, `bairro`, `cidade`, `estado`, `cep`, `fundacao`, `telefone1`, `telefone2`, `fax`, `email`, `web`, `banco1`, `agencia1`, `conta1`, `banco2`, `agencia2`, `conta2`, `logomarca`) VALUES
-(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `dados_clinica` (`cnpj`, `razaosocial`, `fantasia`, `proprietario`, `endereco`, `bairro`, `cidade`, `estado`, `pais`, `cep`, `fundacao`, `telefone1`, `telefone2`, `fax`, `email`, `web`, `banco1`, `agencia1`, `conta1`, `banco2`, `agencia2`, `conta2`, `logomarca`) VALUES
+(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 # ############################
 
@@ -289,14 +317,16 @@ INSERT INTO `dados_clinica` (`cnpj`, `razaosocial`, `fantasia`, `proprietario`, 
 #
 
 CREATE TABLE IF NOT EXISTS `dentistas` (
+  `codigo` INT NOT NULL AUTO_INCREMENT,
   `nome` varchar(80) default NULL,
-  `cpf` varchar(11) NOT NULL,
+  `cpf` varchar(50) default NULL,
   `usuario` varchar(15) character set latin7 collate latin7_general_cs default NULL,
   `senha` varchar(32) default NULL,
   `endereco` varchar(150) default NULL,
   `bairro` varchar(50) default NULL,
   `cidade` varchar(50) default NULL,
-  `estado` enum('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO') default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
   `cep` varchar(9) default NULL,
   `nascimento` date default NULL,
   `telefone1` varchar(15) default NULL,
@@ -304,18 +334,18 @@ CREATE TABLE IF NOT EXISTS `dentistas` (
   `telefone2` varchar(15) default NULL,
   `sexo` enum('Masculino','Feminino') NOT NULL,
   `nomemae` varchar(80) default NULL,
-  `rg` varchar(20) default NULL,
+  `rg` varchar(50) default NULL,
   `email` varchar(100) default NULL,
   `comissao` float default NULL,
   `codigo_areaatuacao1` int(5) default NULL,
   `codigo_areaatuacao2` int(5) default NULL,
   `codigo_areaatuacao3` int(5) default NULL,
-  `conselho_tipo` enum('CRO', 'CRM', 'CRFa', 'CREFITO', 'CRP') default NULL,
+  `conselho_tipo` varchar(30) default NULL,
   `conselho_estado` varchar(30) default NULL,
   `conselho_numero` varchar(30) default NULL,
-  `ativo` enum('Sim','No') default NULL,
+  `ativo` enum('Sim','Não') default NULL,
   `foto` blob,
-  PRIMARY KEY  (`cpf`)
+  PRIMARY KEY  (`codigo`)
 ) ENGINE=MyISAM;
 
 # ############################
@@ -348,7 +378,7 @@ CREATE TABLE IF NOT EXISTS `especialidades` (
 
 INSERT INTO `especialidades` (`codigo`, `descricao`) VALUES
 (1, 'Cirurgia e Traumatologia Buco Maxilo Faciais'),
-(2, 'Clnica Geral'),
+(2, 'Clínica Geral'),
 (3, 'Dentistica'),
 (4, 'Dentistica Restauradora'),
 (5, 'Disfuncao Temporo-Mandibular e Dor-Orofacial'),
@@ -370,7 +400,7 @@ INSERT INTO `especialidades` (`codigo`, `descricao`) VALUES
 (21, 'Protese Dentaria'),
 (22, 'Radiologia'),
 (23, 'Radiologia Odontologica e Imaginologia'),
-(24, 'Sade Coletiva');
+(24, 'Saúde Coletiva');
 
 # ############################
 
@@ -393,7 +423,7 @@ CREATE TABLE IF NOT EXISTS `estoque` (
 
 CREATE TABLE IF NOT EXISTS `estoque_dent` (
   `codigo` int(15) NOT NULL auto_increment,
-  `cpf_dentista` varchar(11) default NULL,
+  `codigo_dentista` varchar(11) default NULL,
   `descricao` varchar(150) default NULL,
   `quantidade` varchar(25) default NULL,
   PRIMARY KEY  (`codigo`)
@@ -411,7 +441,7 @@ CREATE TABLE IF NOT EXISTS `evolucao` (
   `procexecutado` varchar(150) default NULL,
   `procprevisto` varchar(150) default NULL,
   `data` date default NULL,
-  `cpf_dentista` varchar(11) default NULL,
+  `codigo_dentista` varchar(11) default NULL,
   PRIMARY KEY  (`codigo`)
 ) ENGINE=MyISAM;
 
@@ -439,7 +469,7 @@ CREATE TABLE IF NOT EXISTS `exameobjetivo` (
   `gengiva` varchar(150) default NULL,
   `higienebucal` varchar(150) default NULL,
   `habitosnocivos` varchar(150) default NULL,
-  `aparelho` enum('Sim','No') default NULL,
+  `aparelho` enum('Sim','Não') default NULL,
   `lesaointra` varchar(150) default NULL,
   `observacoes` text,
   PRIMARY KEY  (`codigo_paciente`)
@@ -467,13 +497,14 @@ CREATE TABLE IF NOT EXISTS `exames` (
 CREATE TABLE IF NOT EXISTS `fornecedores` (
   `codigo` int(15) NOT NULL auto_increment,
   `nomefantasia` varchar(80) default NULL,
-  `cpf` varchar(14) NOT NULL default '',
+  `cpf` varchar(50) NOT NULL default '',
   `razaosocial` varchar(80) default NULL,
   `atuacao` varchar(80) default NULL,
   `endereco` varchar(150) default NULL,
   `bairro` varchar(40) default NULL,
   `cidade` varchar(40) default NULL,
-  `estado` enum('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO') default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
   `cep` varchar(9) default NULL,
   `celular` varchar(15) default NULL,
   `telefone1` varchar(15) default NULL,
@@ -532,16 +563,18 @@ INSERT INTO `foto_padrao` (`foto`) VALUES
 #
 
 CREATE TABLE IF NOT EXISTS `funcionarios` (
+  `codigo` INT NOT NULL AUTO_INCREMENT,
   `nome` varchar(80) default NULL,
-  `cpf` varchar(11) NOT NULL,
+  `cpf` varchar(50) default NULL,
   `usuario` varchar(15) character set latin7 collate latin7_general_cs default NULL,
   `senha` varchar(32) default NULL,
-  `rg` varchar(20) default NULL,
-  `estadocivil` enum('Solteiro(a)','Casado(a)','Separado(a)','Divorciado(a)','Amasiado(a)','Vivo(a)') default NULL,
+  `rg` varchar(50) default NULL,
+  `estadocivil` enum('solteiro','casado','divorciado','viuvo') default NULL,
   `endereco` varchar(150) default NULL,
   `bairro` varchar(50) default NULL,
   `cidade` varchar(50) default NULL,
-  `estado` enum('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO') default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
   `cep` varchar(9) default NULL,
   `nascimento` date default NULL,
   `telefone1` varchar(15) default NULL,
@@ -559,17 +592,17 @@ CREATE TABLE IF NOT EXISTS `funcionarios` (
   `admissao` date default NULL,
   `demissao` date default NULL,
   `observacoes` text,
-  `ativo` enum('Sim','No') default NULL,
+  `ativo` enum('Sim','Não') default NULL,
   `foto` blob,
-  PRIMARY KEY  (`cpf`)
+  PRIMARY KEY  (`codigo`)
 ) ENGINE=MyISAM;
 
 #
 # Extraindo dados da tabela `funcionarios`
 #
 
-INSERT INTO `funcionarios` (`nome`, `cpf`, `usuario`, `senha`, `rg`, `estadocivil`, `endereco`, `bairro`, `cidade`, `estado`, `cep`, `nascimento`, `telefone1`, `telefone2`, `celular`, `sexo`, `email`, `nomemae`, `nascimentomae`, `nomepai`, `nascimentopai`, `enderecofamiliar`, `funcao1`, `funcao2`, `admissao`, `demissao`, `observacoes`, `ativo`, `foto`) VALUES
-('Administrador', '11111111111', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '', 'Solteiro(a)', '', '', '', 'MG', '', NULL, '', '', '', 'Masculino', '', '', NULL, '', NULL, '', 'Administrador da clnica', '', NULL, NULL, '', 'Sim', '');
+INSERT INTO `funcionarios` (`codigo`, `nome`, `cpf`, `usuario`, `senha`, `rg`, `estadocivil`, `endereco`, `bairro`, `cidade`, `estado`, `pais`, `cep`, `nascimento`, `telefone1`, `telefone2`, `celular`, `sexo`, `email`, `nomemae`, `nascimentomae`, `nomepai`, `nascimentopai`, `enderecofamiliar`, `funcao1`, `funcao2`, `admissao`, `demissao`, `observacoes`, `ativo`, `foto`) VALUES
+(1, 'Administrador', '11111111111', 'admin', 'e10adc3949ba59abbe56e057f20f883e', '', 'solteiro', '', '', '', 'MG', 'Brasil', '', NULL, '', '', '', 'Masculino', '', '', NULL, '', NULL, '', 'Administrador da clínica', '', NULL, NULL, '', 'Sim', '');
 
 -- --------------------------------------------------------
 
@@ -589,320 +622,320 @@ CREATE TABLE `honorarios` (
 -- Extraindo dados da tabela `honorarios`
 --
 
-INSERT INTO `honorarios` VALUES('EX001', 'Consulta inicial: exame clnico e plano de tratamento', 61, 0);
-INSERT INTO `honorarios` VALUES('EX002', 'Urgncia: noturna, sbado, domingos e feriados', 116, 45);
-INSERT INTO `honorarios` VALUES('EX003', 'Avaliao tcnica: percia inicial ou final', 45, 0);
+INSERT INTO `honorarios` VALUES('EX001', 'Consulta inicial: exame clínico e plano de tratamento', 61, 0);
+INSERT INTO `honorarios` VALUES('EX002', 'Urgência: noturna, sábado, domingos e feriados', 116, 45);
+INSERT INTO `honorarios` VALUES('EX003', 'Avaliação técnica: perícia inicial ou final', 45, 0);
 INSERT INTO `honorarios` VALUES('EX004', 'Falta a consulta', 49, 30);
-INSERT INTO `honorarios` VALUES('DE001', 'Restaurao de Amlgama - 1 Face', 52, 35);
-INSERT INTO `honorarios` VALUES('DE002', 'Restaurao de Amlgama - 2 Face', 66, 40);
-INSERT INTO `honorarios` VALUES('DE003', 'Restaurao de Amlgama - 3 Faces', 77, 45);
-INSERT INTO `honorarios` VALUES('DE005', 'Restaurao de Amlgama - Pim', 100, 60);
-INSERT INTO `honorarios` VALUES('DE004', 'Restaurao  de almlgama - 4 Faces', 77.5, 50);
-INSERT INTO `honorarios` VALUES('DE006', 'Restaurao Resina Folopolimerizvel - 1 Face', 63, 40);
-INSERT INTO `honorarios` VALUES('DE007', 'Restaurao Resina Fotopolimerizvel - 2 Face', 66, 50);
-INSERT INTO `honorarios` VALUES('DE009', 'Restauraao Resina Fotopolimerizvel - 4 Face', 100, 65);
-INSERT INTO `honorarios` VALUES('DE010', 'Faceta em Resina Fotopolimerizvel', 110, 85);
-INSERT INTO `honorarios` VALUES('DE011', 'Ncleo de Preenchimento em Ionmero de Viddro', 63, 35);
-INSERT INTO `honorarios` VALUES('DE012', 'Ncleo de Preenchimento em Resina Folopolimerizvel', 80, 40);
-INSERT INTO `honorarios` VALUES('DE014', 'Ncleo de Preenchimento em Almlgama', 80, 45);
-INSERT INTO `honorarios` VALUES('DE016', 'Pino de Reteno Intradicular', 171, 70);
+INSERT INTO `honorarios` VALUES('DE001', 'Restauração de Amálgama - 1 Face', 52, 35);
+INSERT INTO `honorarios` VALUES('DE002', 'Restauração de Amálgama - 2 Face', 66, 40);
+INSERT INTO `honorarios` VALUES('DE003', 'Restauração de Amálgama - 3 Faces', 77, 45);
+INSERT INTO `honorarios` VALUES('DE005', 'Restauração de Amálgama - Pim', 100, 60);
+INSERT INTO `honorarios` VALUES('DE004', 'Restauração  de almálgama - 4 Faces', 77.5, 50);
+INSERT INTO `honorarios` VALUES('DE006', 'Restauração Resina Folopolimerizável - 1 Face', 63, 40);
+INSERT INTO `honorarios` VALUES('DE007', 'Restauração Resina Fotopolimerizável - 2 Face', 66, 50);
+INSERT INTO `honorarios` VALUES('DE009', 'Restauraçao Resina Fotopolimerizável - 4 Face', 100, 65);
+INSERT INTO `honorarios` VALUES('DE010', 'Faceta em Resina Fotopolimerizável', 110, 85);
+INSERT INTO `honorarios` VALUES('DE011', 'Núcleo de Preenchimento em Ionômero de Viddro', 63, 35);
+INSERT INTO `honorarios` VALUES('DE012', 'Núcleo de Preenchimento em Resina Folopolimerizável', 80, 40);
+INSERT INTO `honorarios` VALUES('DE014', 'Núcleo de Preenchimento em Almálgama', 80, 45);
+INSERT INTO `honorarios` VALUES('DE016', 'Pino de Retenção Intradicular', 171, 70);
 INSERT INTO `honorarios` VALUES('DE017', 'Clareamento de Dente Vitalizado ( por Elemento )', 40, 35);
-INSERT INTO `honorarios` VALUES('DE018', 'Restaurao Inlay e Onlay (Arglas-Solidex)', 426, 250);
+INSERT INTO `honorarios` VALUES('DE018', 'Restauração Inlay e Onlay (Arglas-Solidex)', 426, 250);
 INSERT INTO `honorarios` VALUES('DE019', 'Clareamento  de Dente Vitalizado e Desvitalizado com Moldeiras de Uso Caseiro (por arcada)', 268, 150);
-INSERT INTO `honorarios` VALUES('DE020', 'Restaurao Metlica Fundida', 219, 140);
-INSERT INTO `honorarios` VALUES('DE021', 'Restaurao Temporria', 46, 35);
-INSERT INTO `honorarios` VALUES('EN002', 'Tratamento Endodntico Pr-Molares (no inclue radiografias)', 220, 180);
-INSERT INTO `honorarios` VALUES('EN003', 'Tratamento Endodntico Molar (no inclue radiografias)', 350, 260);
-INSERT INTO `honorarios` VALUES('EN004', 'Retratamento Endodntico Incisivo ou Canino (no inclue radiografias)', 203, 160);
-INSERT INTO `honorarios` VALUES('EN005', 'Retratamento Endodntico Pr- Molar (no inclue radiografias)', 270, 210);
-INSERT INTO `honorarios` VALUES('EN001', 'Tratamento Endodntico Incisivo ou Canino (no inclue radiografias)', 188, 140);
-INSERT INTO `honorarios` VALUES('DE022', 'Clareamento Dental em Consultrio - Tcnica com perxido de carbamida a 35% - Dente Unitrio', 189, 110);
-INSERT INTO `honorarios` VALUES('OD001', 'Aplicao Tpica de Flor-Verniz ( quatro hemiarcadas )', 35.26, 30);
-INSERT INTO `honorarios` VALUES('OD002', 'Aplicao de Salante ( por elemento)', 35, 30);
-INSERT INTO `honorarios` VALUES('OD003', 'Aplicao de Salante- Torica Invasiva (por elemento)', 42, 35);
-INSERT INTO `honorarios` VALUES('OD004', 'Aplicao Cariosttico 1 Sesso ( quatro hemiarcadas)', 32, 20);
-INSERT INTO `honorarios` VALUES('DE015', 'Ajuste Oclusal ( por sesso )', 64, 45);
-INSERT INTO `honorarios` VALUES('DE008', 'Restauraao Resina Fotopolimerizvel - 3 Face', 94, 55);
-INSERT INTO `honorarios` VALUES('DE013', 'Restaurao Inlay Onlay de Porcelana', 450, 360);
-INSERT INTO `honorarios` VALUES('EN006', 'Retratamento do Molar (no inclue radiografias)', 470, 320);
-INSERT INTO `honorarios` VALUES('EN008', 'Remoo de Ncleo Intrarradicular (por elemento) (no inclue radiografias)', 114, 70);
-INSERT INTO `honorarios` VALUES('EN009', 'Capeamento Pulpar (excluindo restaurao final)', 68, 35);
+INSERT INTO `honorarios` VALUES('DE020', 'Restauração Metálica Fundida', 219, 140);
+INSERT INTO `honorarios` VALUES('DE021', 'Restauração Temporária', 46, 35);
+INSERT INTO `honorarios` VALUES('EN002', 'Tratamento Endodôntico Pré-Molares (não inclue radiografias)', 220, 180);
+INSERT INTO `honorarios` VALUES('EN003', 'Tratamento Endodôntico Molar (não inclue radiografias)', 350, 260);
+INSERT INTO `honorarios` VALUES('EN004', 'Retratamento Endodôntico Incisivo ou Canino (não inclue radiografias)', 203, 160);
+INSERT INTO `honorarios` VALUES('EN005', 'Retratamento Endodôntico Pré- Molar (não inclue radiografias)', 270, 210);
+INSERT INTO `honorarios` VALUES('EN001', 'Tratamento Endodôntico Incisivo ou Canino (não inclue radiografias)', 188, 140);
+INSERT INTO `honorarios` VALUES('DE022', 'Clareamento Dental em Consultório - Técnica com peróxido de carbamida a 35% - Dente Unitário', 189, 110);
+INSERT INTO `honorarios` VALUES('OD001', 'Aplicação Tópica de Flúor-Verniz ( quatro hemiarcadas )', 35.26, 30);
+INSERT INTO `honorarios` VALUES('OD002', 'Aplicação de Salante ( por elemento)', 35, 30);
+INSERT INTO `honorarios` VALUES('OD003', 'Aplicação de Salante- Téorica Invasiva (por elemento)', 42, 35);
+INSERT INTO `honorarios` VALUES('OD004', 'Aplicação Cariostático 1 Sessão ( quatro hemiarcadas)', 32, 20);
+INSERT INTO `honorarios` VALUES('DE015', 'Ajuste Oclusal ( por sessão )', 64, 45);
+INSERT INTO `honorarios` VALUES('DE008', 'Restauraçao Resina Fotopolimerizável - 3 Face', 94, 55);
+INSERT INTO `honorarios` VALUES('DE013', 'Restauração Inlay Onlay de Porcelana', 450, 360);
+INSERT INTO `honorarios` VALUES('EN006', 'Retratamento do Molar (não inclue radiografias)', 470, 320);
+INSERT INTO `honorarios` VALUES('EN008', 'Remoção de Núcleo Intrarradicular (por elemento) (não inclue radiografias)', 114, 70);
+INSERT INTO `honorarios` VALUES('EN009', 'Capeamento Pulpar (excluindo restauração final)', 68, 35);
 INSERT INTO `honorarios` VALUES('EN010', 'Pulpotomia', 79, 40);
-INSERT INTO `honorarios` VALUES('EN011', 'Clareamento Dental em consultrio-Tcnica com perxido de carbamida a 35% por d', 189, 110);
-INSERT INTO `honorarios` VALUES('EN012', 'Preparo para Ncleo Intrarradicular', 52, 35);
-INSERT INTO `honorarios` VALUES('EN014', 'Urgncia Endodntico Pulpectoma (Indenpente da sequncia do tratamento)', 83, 35);
-INSERT INTO `honorarios` VALUES('EN015', 'Apicectomia de Caninos ou Incisivos (no inclue radiografias)', 177, 140);
-INSERT INTO `honorarios` VALUES('EN016', 'Apicectomia de Caninos -Incisivos com Obturao Retrograda (no inclue radiografias)', 202, 180);
-INSERT INTO `honorarios` VALUES('EN013', 'Tratamento de Dentes Rizognese Incompleta (por sesso)', 78, 40);
-INSERT INTO `honorarios` VALUES('EN007', 'Tratademento de Perfurao (no inclue radiografias)', 130, 70);
-INSERT INTO `honorarios` VALUES('EN017', 'Apicectomia Pr-Molares (no inclue radiografias)', 209, 155);
-INSERT INTO `honorarios` VALUES('EN018', 'Apicectomia Pr-Molares com obturao retrograda (no inclue radiografias)', 236, 170);
-INSERT INTO `honorarios` VALUES('EN019', 'Apicectomia de Molares (no inclue radiografias)', 242, 190);
-INSERT INTO `honorarios` VALUES('EN020', 'Apicectomia de Molares com obturao retrogada (no inclue radiografias)', 269, 220);
-INSERT INTO `honorarios` VALUES('EN021', 'Remoo de Corpo estranho intracanal por conduto', 89, 40);
+INSERT INTO `honorarios` VALUES('EN011', 'Clareamento Dental em consultório-Técnica com peróxido de carbamida a 35% por d', 189, 110);
+INSERT INTO `honorarios` VALUES('EN012', 'Preparo para Núcleo Intrarradicular', 52, 35);
+INSERT INTO `honorarios` VALUES('EN014', 'Urgência Endodôntico Pulpectoma (Indenpente da sequência do tratamento)', 83, 35);
+INSERT INTO `honorarios` VALUES('EN015', 'Apicectomia de Caninos ou Incisivos (não inclue radiografias)', 177, 140);
+INSERT INTO `honorarios` VALUES('EN016', 'Apicectomia de Caninos -Incisivos com Obturação Retrograda (não inclue radiografias)', 202, 180);
+INSERT INTO `honorarios` VALUES('EN013', 'Tratamento de Dentes Rizogênese Incompleta (por sessão)', 78, 40);
+INSERT INTO `honorarios` VALUES('EN007', 'Tratademento de Perfuração (não inclue radiografias)', 130, 70);
+INSERT INTO `honorarios` VALUES('EN017', 'Apicectomia Pré-Molares (não inclue radiografias)', 209, 155);
+INSERT INTO `honorarios` VALUES('EN018', 'Apicectomia Pré-Molares com obturação retrograda (não inclue radiografias)', 236, 170);
+INSERT INTO `honorarios` VALUES('EN019', 'Apicectomia de Molares (não inclue radiografias)', 242, 190);
+INSERT INTO `honorarios` VALUES('EN020', 'Apicectomia de Molares com obturação retrogada (não inclue radiografias)', 269, 220);
+INSERT INTO `honorarios` VALUES('EN021', 'Remoção de Corpo estranho intracanal por conduto', 89, 40);
 INSERT INTO `honorarios` VALUES('EN022', 'Curativo de demora', 102, 40);
-INSERT INTO `honorarios` VALUES('EN023', 'Reembasamento provisrio', 34, 20);
-INSERT INTO `honorarios` VALUES('EN024', 'Restaurao Temporria', 46, 30);
-INSERT INTO `honorarios` VALUES('OD005', 'Remineralizao- Fluorterapia (quatro sesses)', 35, 30);
-INSERT INTO `honorarios` VALUES('OD006', 'Adequao do Meio Bucal com Inomero de Vidro (por hemiarcada)', 66, 35);
-INSERT INTO `honorarios` VALUES('OD007', 'Adequao do Meio Bucal com IRM (por hemiarcada)', 65, 30);
-INSERT INTO `honorarios` VALUES('OD008', 'Restaurao a Inomero de vidro (1 face)', 59, 35);
-INSERT INTO `honorarios` VALUES('OD009', 'Restaurao Preventiva (inomero + selante)', 60, 35);
+INSERT INTO `honorarios` VALUES('EN023', 'Reembasamento provisório', 34, 20);
+INSERT INTO `honorarios` VALUES('EN024', 'Restauração Temporária', 46, 30);
+INSERT INTO `honorarios` VALUES('OD005', 'Remineralização- Fluorterapia (quatro sessões)', 35, 30);
+INSERT INTO `honorarios` VALUES('OD006', 'Adequação do Meio Bucal com Iônomero de Vidro (por hemiarcada)', 66, 35);
+INSERT INTO `honorarios` VALUES('OD007', 'Adequação do Meio Bucal com IRM (por hemiarcada)', 65, 30);
+INSERT INTO `honorarios` VALUES('OD008', 'Restauração a Iônomero de vidro (1 face)', 59, 35);
+INSERT INTO `honorarios` VALUES('OD009', 'Restauraão Preventiva (iônomero + selante)', 60, 35);
 INSERT INTO `honorarios` VALUES('OD011', 'Pulpotomia', 78, 40);
-INSERT INTO `honorarios` VALUES('OD012', 'Tratamento Endodntico em Decidios (no inclue as radiografias)', 142, 90);
-INSERT INTO `honorarios` VALUES('OD013', 'Exdontia de Dentes Decdios', 44, 30);
-INSERT INTO `honorarios` VALUES('OD014', 'Mantenedor de Espao', 208, 80);
+INSERT INTO `honorarios` VALUES('OD012', 'Tratamento Endodôntico em Decidios (não inclue as radiografias)', 142, 90);
+INSERT INTO `honorarios` VALUES('OD013', 'Exdontia de Dentes Decídios', 44, 30);
+INSERT INTO `honorarios` VALUES('OD014', 'Mantenedor de Espaço', 208, 80);
 INSERT INTO `honorarios` VALUES('OD015', 'Placa de Mordida', 174, 70);
-INSERT INTO `honorarios` VALUES('OD017', 'Condicionamento Odontopediatria (por sesso)', 47, 30);
+INSERT INTO `honorarios` VALUES('OD017', 'Condicionamento Odontopediatria (por sessão)', 47, 30);
 INSERT INTO `honorarios` VALUES('OD018', 'Ulotomia', 72, 35);
 INSERT INTO `honorarios` VALUES('OD019', 'Utlectomia', 78, 40);
-INSERT INTO `honorarios` VALUES('OD020', 'Restaurao Temporria', 46, 35);
-INSERT INTO `honorarios` VALUES('OD010', 'Coroa de Ao', 125, 60);
+INSERT INTO `honorarios` VALUES('OD020', 'Restauração Temporária', 46, 35);
+INSERT INTO `honorarios` VALUES('OD010', 'Coroa de Aço', 125, 60);
 INSERT INTO `honorarios` VALUES('OD016', 'Plano Inclinado', 176, 80);
-INSERT INTO `honorarios` VALUES('PE001', 'Tratamento No Cirrgico da Periodontite Leve (por segmento) Baixo Risco', 67, 40);
-INSERT INTO `honorarios` VALUES('PE002', 'Tratamento No Cirrgico da Periodontite Moderado  (Por Segmento) Mdio Risco', 78, 45);
-INSERT INTO `honorarios` VALUES('PE003', 'Tramento No Cirrgico da Periodontite Grave (Por Segmento) Alto Risco', 90, 50);
-INSERT INTO `honorarios` VALUES('PE004', 'Tratamento de Processo Agudo (por sesso)', 80, 40);
-INSERT INTO `honorarios` VALUES('PE005', 'Controle de Placa Bacteriana (por sesso)', 32, 20);
-INSERT INTO `honorarios` VALUES('PE006', 'Dessensilizao Dentria (por segmento)', 40, 25);
-INSERT INTO `honorarios` VALUES('PE007', 'Imobilizao Dentria Com Resina Fotopolimerizvel (dentes)', 111, 60);
-INSERT INTO `honorarios` VALUES('PE008', 'Ajuste Oclusal ( por sesso )', 64, 45);
+INSERT INTO `honorarios` VALUES('PE001', 'Tratamento Não Cirúrgico da Periodontite Leve (por segmento) Baixo Risco', 67, 40);
+INSERT INTO `honorarios` VALUES('PE002', 'Tratamento Não Cirúrgico da Periodontite Moderado  (Por Segmento) Médio Risco', 78, 45);
+INSERT INTO `honorarios` VALUES('PE003', 'Tramento Não Cirúrgico da Periodontite Grave (Por Segmento) Alto Risco', 90, 50);
+INSERT INTO `honorarios` VALUES('PE004', 'Tratamento de Processo Agudo (por sessão)', 80, 40);
+INSERT INTO `honorarios` VALUES('PE005', 'Controle de Placa Bacteriana (por sessão)', 32, 20);
+INSERT INTO `honorarios` VALUES('PE006', 'Dessensilização Dentária (por segmento)', 40, 25);
+INSERT INTO `honorarios` VALUES('PE007', 'Imobilização Dentária Com Resina Fotopolimerizável (dentes)', 111, 60);
+INSERT INTO `honorarios` VALUES('PE008', 'Ajuste Oclusal ( por sessão )', 64, 45);
 INSERT INTO `honorarios` VALUES('PE010', 'Placa de  Mordida Miorelaxante', 177, 120);
-INSERT INTO `honorarios` VALUES('PE011', 'Proservao Pr-Cirrgia (por segmento)', 61, 30);
+INSERT INTO `honorarios` VALUES('PE011', 'Proservação Pré-Cirúrgia (por segmento)', 61, 30);
 INSERT INTO `honorarios` VALUES('PE012', 'Gegivectomia (por segmento)', 140, 70);
-INSERT INTO `honorarios` VALUES('PE013', 'Cirrgia Retalho ( por segmento)', 150, 100);
+INSERT INTO `honorarios` VALUES('PE013', 'Cirúrgia Retalho ( por segmento)', 150, 100);
 INSERT INTO `honorarios` VALUES('PE014', 'Sepultamento Radicular (por raiz)', 148, 100);
 INSERT INTO `honorarios` VALUES('PE015', 'Cunha distal', 139, 80);
-INSERT INTO `honorarios` VALUES('PE016', 'Extenso de Vestbulo (por Segmento)', 154, 80);
+INSERT INTO `honorarios` VALUES('PE016', 'Extensão de Vestíbulo (por Segmento)', 154, 80);
 INSERT INTO `honorarios` VALUES('PE017', 'Enxerto Pediculado (por segmento)', 147, 90);
 INSERT INTO `honorarios` VALUES('PE018', 'Enxerto Livre ( por segmento)', 175, 100);
 INSERT INTO `honorarios` VALUES('PE019', 'Enxerto Conjuntivo Subepitelial', 175, 100);
 INSERT INTO `honorarios` VALUES('PE020', 'Frenectomia ou  Bridectomia', 126, 90);
-INSERT INTO `honorarios` VALUES('PE021', 'Odonto-Sesso ( por elemento)', 143, 80);
-INSERT INTO `honorarios` VALUES('PE022', 'Amputao Radicular Sem Obturao Retrograda- por Raiz', 179, 110);
-INSERT INTO `honorarios` VALUES('PE023', 'Amputao Radicular Com Obturao Retrograda- por Raiz', 205, 140);
-INSERT INTO `honorarios` VALUES('PE025', 'Tratamento Periodico de Manuteno para periodontite leve de 6 em 6 meses', 159, 80);
-INSERT INTO `honorarios` VALUES('PE026', 'Tratamento Periodico de Manuteno para periodontite leve de 4 em 4 meses', 159, 80);
-INSERT INTO `honorarios` VALUES('PE027', 'Tratamento Periodico de Manuteno para periodontite leve de 2 em 2 meses', 159, 80);
+INSERT INTO `honorarios` VALUES('PE021', 'Odonto-Sessão ( por elemento)', 143, 80);
+INSERT INTO `honorarios` VALUES('PE022', 'Amputação Radicular Sem Obturação Retrograda- por Raiz', 179, 110);
+INSERT INTO `honorarios` VALUES('PE023', 'Amputação Radicular Com Obturação Retrograda- por Raiz', 205, 140);
+INSERT INTO `honorarios` VALUES('PE025', 'Tratamento Periodico de Manutenção para periodontite leve de 6 em 6 meses', 159, 80);
+INSERT INTO `honorarios` VALUES('PE026', 'Tratamento Periodico de Manutenção para periodontite leve de 4 em 4 meses', 159, 80);
+INSERT INTO `honorarios` VALUES('PE027', 'Tratamento Periodico de Manutenção para periodontite leve de 2 em 2 meses', 159, 80);
 INSERT INTO `honorarios` VALUES('PR001', 'Profilaxia: Pol. Coron. (4 hemiarcadas) e Apl. de Jato de Bicarbonato - Tartarec', 56, 40);
-INSERT INTO `honorarios` VALUES('PR002', 'Aplicao de Jato de Bicabornato', 80, 40);
-INSERT INTO `honorarios` VALUES('PR003', 'Or. de Higiene Bucal.:crie d.,doen. period.,cncer b.,manut. de prtese.,uso de dentif. e enxaguat.', 40, 30);
-INSERT INTO `honorarios` VALUES('PR004', 'Aplicao Tpica de Flor (excluindo profilaxia )', 40, 30);
-INSERT INTO `honorarios` VALUES('PR005', 'Controle de Placa Bacteriana ( por sesso )', 32, 15);
-INSERT INTO `honorarios` VALUES('PR006', 'Tratamento de Gengivite-Teraputica bsica ( duas hemiarcadas)', 74, 40);
-INSERT INTO `honorarios` VALUES('TE001', 'Teste de Risco de Crie', 40, 30);
+INSERT INTO `honorarios` VALUES('PR002', 'Aplicação de Jato de Bicabornato', 80, 40);
+INSERT INTO `honorarios` VALUES('PR003', 'Or. de Higiene Bucal.:cárie d.,doen. period.,câncer b.,manut. de prótese.,uso de dentif. e enxaguat.', 40, 30);
+INSERT INTO `honorarios` VALUES('PR004', 'Aplicação Tópica de Flúor (excluindo profilaxia )', 40, 30);
+INSERT INTO `honorarios` VALUES('PR005', 'Controle de Placa Bacteriana ( por sessão )', 32, 15);
+INSERT INTO `honorarios` VALUES('PR006', 'Tratamento de Gengivite-Terapêutica básica ( duas hemiarcadas)', 74, 40);
+INSERT INTO `honorarios` VALUES('TE001', 'Teste de Risco de Cárie', 40, 30);
 INSERT INTO `honorarios` VALUES('TE002', 'Ph', 40, 30);
-INSERT INTO `honorarios` VALUES('TE003', 'Capacidade Tampo', 40, 30);
+INSERT INTO `honorarios` VALUES('TE003', 'Capacidade Tampão', 40, 30);
 INSERT INTO `honorarios` VALUES('TE004', 'Fluxo Salivar', 40, 30);
-INSERT INTO `honorarios` VALUES('TE005', 'Bipsia de Leses Sugestivas (Acrescentar os Honorrios do Laboratrio)', 230, 110);
-INSERT INTO `honorarios` VALUES('TE006', 'Citologia Esfoliativa (acrescentar honorrios do laboratrio)', 200, 90);
+INSERT INTO `honorarios` VALUES('TE005', 'Biópsia de Lesões Sugestivas (Acrescentar os Honorários do Laboratório)', 230, 110);
+INSERT INTO `honorarios` VALUES('TE006', 'Citologia Esfoliativa (acrescentar honorários do laboratório)', 200, 90);
 INSERT INTO `honorarios` VALUES('RA001', 'Periapical', 10, 7);
 INSERT INTO `honorarios` VALUES('RA002', 'Interproximal ( Bite-Wing )', 10, 7);
 INSERT INTO `honorarios` VALUES('RA003', 'Oclusal', 23, 15);
 INSERT INTO `honorarios` VALUES('RA004', 'RX Postero Anterior', 51, 30);
-INSERT INTO `honorarios` VALUES('RA005', 'RX da ATM Srie Completa ( trs incidncias )', 98, 50);
-INSERT INTO `honorarios` VALUES('RA006', 'Panormica', 46, 30);
-INSERT INTO `honorarios` VALUES('RA007', 'Telerradiografia com Traado Computadorizado', 62, 40);
-INSERT INTO `honorarios` VALUES('RA008', 'Telerradiografia sem Traados Computadorizado', 51, 30);
-INSERT INTO `honorarios` VALUES('RA009', 'RX de Mo ( Carpal )', 56, 30);
-INSERT INTO `honorarios` VALUES('RA010', 'Modelos Ortodnticos (par)', 54, 25);
+INSERT INTO `honorarios` VALUES('RA005', 'RX da ATM Série Completa ( três incidências )', 98, 50);
+INSERT INTO `honorarios` VALUES('RA006', 'Panorâmica', 46, 30);
+INSERT INTO `honorarios` VALUES('RA007', 'Telerradiografia com Traçado Computadorizado', 62, 40);
+INSERT INTO `honorarios` VALUES('RA008', 'Telerradiografia sem Traçados Computadorizado', 51, 30);
+INSERT INTO `honorarios` VALUES('RA009', 'RX de Mão ( Carpal )', 56, 30);
+INSERT INTO `honorarios` VALUES('RA010', 'Modelos Ortodônticos (par)', 54, 25);
 INSERT INTO `honorarios` VALUES('RA011', 'Slides ( unidade )', 10, 7);
 INSERT INTO `honorarios` VALUES('RA012', 'Fotografia ( unidade )', 10, 6);
-INSERT INTO `honorarios` VALUES('PO023', 'Prtese Fixa Adesiva Direta (por elemento)', 189, 100);
-INSERT INTO `honorarios` VALUES('PO001', 'Planejamento em Prtese-modelo de est. par. montagem em articul. semi ajustvel', 85, 40);
-INSERT INTO `honorarios` VALUES('PO002', 'Enceramento de Diagnstico (por elemento)', 92, 50);
-INSERT INTO `honorarios` VALUES('PO003', 'Ajuste Oclusal(por sesso)', 64, 45);
-INSERT INTO `honorarios` VALUES('PO004', 'Restaurao Metlica Fundida', 219, 140);
-INSERT INTO `honorarios` VALUES('PO005', 'Restaurao Inlay e Onlay de Porcelana', 440, 400);
-INSERT INTO `honorarios` VALUES('PO006', 'Remoo de Restauraes Metlicas ou Coroas', 39, 20);
-INSERT INTO `honorarios` VALUES('PO007', 'Recolocao de Restaurao Metlica Fundida ou Coras', 50, 35);
-INSERT INTO `honorarios` VALUES('PO008', 'Ncleo Metlico Fundido', 154, 70);
-INSERT INTO `honorarios` VALUES('PO009', 'Coroa Provisria em Dente de Estoque', 86, 45);
-INSERT INTO `honorarios` VALUES('PO010', 'Coroa Provisria Prensada em Acrlico no Laboratrio', 176, 90);
-INSERT INTO `honorarios` VALUES('PO011', 'Reembasamento Provisrio', 34, 20);
-INSERT INTO `honorarios` VALUES('PO012', 'Coroa de Jaqueta Acrlica', 215, 100);
+INSERT INTO `honorarios` VALUES('PO023', 'Prótese Fixa Adesiva Direta (por elemento)', 189, 100);
+INSERT INTO `honorarios` VALUES('PO001', 'Planejamento em Prótese-modelo de est. par. montagem em articul. semi ajustável', 85, 40);
+INSERT INTO `honorarios` VALUES('PO002', 'Enceramento de Diagnóstico (por elemento)', 92, 50);
+INSERT INTO `honorarios` VALUES('PO003', 'Ajuste Oclusal(por sessão)', 64, 45);
+INSERT INTO `honorarios` VALUES('PO004', 'Restauração Metálica Fundida', 219, 140);
+INSERT INTO `honorarios` VALUES('PO005', 'Restauração Inlay e Onlay de Porcelana', 440, 400);
+INSERT INTO `honorarios` VALUES('PO006', 'Remoção de Restaurações Metálicas ou Coroas', 39, 20);
+INSERT INTO `honorarios` VALUES('PO007', 'Recolocação de Restauração Metálica Fundida ou Coras', 50, 35);
+INSERT INTO `honorarios` VALUES('PO008', 'Núcleo Metálico Fundido', 154, 70);
+INSERT INTO `honorarios` VALUES('PO009', 'Coroa Provisória em Dente de Estoque', 86, 45);
+INSERT INTO `honorarios` VALUES('PO010', 'Coroa Provisória Prensada em Acrílico no Laboratório', 176, 90);
+INSERT INTO `honorarios` VALUES('PO011', 'Reembasamento Provisório', 34, 20);
+INSERT INTO `honorarios` VALUES('PO012', 'Coroa de Jaqueta Acrílica', 215, 100);
 INSERT INTO `honorarios` VALUES('PO013', 'Coroa de Porcelana  Pura', 508, 410);
-INSERT INTO `honorarios` VALUES('PO014', 'Coroa Metalo Cermica', 448, 350);
+INSERT INTO `honorarios` VALUES('PO014', 'Coroa Metalo Cerâmica', 448, 350);
 INSERT INTO `honorarios` VALUES('PO016', 'Coroa de Venner', 363, 170);
-INSERT INTO `honorarios` VALUES('PO017', 'Coroa Total Metlica', 256, 150);
+INSERT INTO `honorarios` VALUES('PO017', 'Coroa Total Metálica', 256, 150);
 INSERT INTO `honorarios` VALUES('PO018', 'Coroa 3/4 ou 4/5', 252, 150);
 INSERT INTO `honorarios` VALUES('PO019', 'Faceta Laminada de Porcelana', 441, 400);
-INSERT INTO `honorarios` VALUES('PO020', 'Prtese Fixa em Metalo Cermica(por elemento)', 602, 350);
-INSERT INTO `honorarios` VALUES('PO021', 'Prtese Fixa em Metalo Pstica(por elemento)', 459, 200);
-INSERT INTO `honorarios` VALUES('PO025', 'Prtese Fixa Adesiva Indireta em Metalo Plstica(3 elementos)', 578, 310);
-INSERT INTO `honorarios` VALUES('PO024', 'Prtese Fixa  Adesiva Indireta em Metalo Cermica(3 elementos)', 808, 630);
-INSERT INTO `honorarios` VALUES('PO026', 'Prtese Parcial Removvel Provisria em Acrlico ou sem Grampos', 427, 180);
-INSERT INTO `honorarios` VALUES('PO027', 'Prtese Parcial Removvel com grampos Bilateral', 751, 360);
-INSERT INTO `honorarios` VALUES('PO028', 'Prtese Parcial Removvel para Encaixes', 1013, 650);
-INSERT INTO `honorarios` VALUES('PO029', 'Encaixe Fmea (por elemento)', 432, 290);
+INSERT INTO `honorarios` VALUES('PO020', 'Prótese Fixa em Metalo Cerâmica(por elemento)', 602, 350);
+INSERT INTO `honorarios` VALUES('PO021', 'Prótese Fixa em Metalo Pástica(por elemento)', 459, 200);
+INSERT INTO `honorarios` VALUES('PO025', 'Prótese Fixa Adesiva Indireta em Metalo Plástica(3 elementos)', 578, 310);
+INSERT INTO `honorarios` VALUES('PO024', 'Prótese Fixa  Adesiva Indireta em Metalo Cerâmica(3 elementos)', 808, 630);
+INSERT INTO `honorarios` VALUES('PO026', 'Prótese Parcial Removível Provisória em Acrílico ou sem Grampos', 427, 180);
+INSERT INTO `honorarios` VALUES('PO027', 'Prótese Parcial Removível com grampos Bilateral', 751, 360);
+INSERT INTO `honorarios` VALUES('PO028', 'Prótese Parcial Removível para Encaixes', 1013, 650);
+INSERT INTO `honorarios` VALUES('PO029', 'Encaixe Fêmea (por elemento)', 432, 290);
 INSERT INTO `honorarios` VALUES('PO030', 'Encaixe Macho(por elemento)', 432, 290);
-INSERT INTO `honorarios` VALUES('PO031', 'Reembasamento de Prtese Total ou Parcial', 221, 110);
-INSERT INTO `honorarios` VALUES('PO032', 'Prtese Total', 962, 290);
-INSERT INTO `honorarios` VALUES('PO033', 'Prtese Total Caracterizada', 1205, 350);
-INSERT INTO `honorarios` VALUES('PO034', 'Prtese Total Imediata', 618, 230);
+INSERT INTO `honorarios` VALUES('PO031', 'Reembasamento de Prótese Total ou Parcial', 221, 110);
+INSERT INTO `honorarios` VALUES('PO032', 'Prótese Total', 962, 290);
+INSERT INTO `honorarios` VALUES('PO033', 'Prótese Total Caracterizada', 1205, 350);
+INSERT INTO `honorarios` VALUES('PO034', 'Prótese Total Imediata', 618, 230);
 INSERT INTO `honorarios` VALUES('PO035', 'Casquete de Moldagem', 71, 40);
 INSERT INTO `honorarios` VALUES('PO036', 'Ponto de solda', 151, 90);
-INSERT INTO `honorarios` VALUES('PO037', 'Guia Cirrgico para Prtese Imediata ou para Cirurgia de Implante', 215, 120);
+INSERT INTO `honorarios` VALUES('PO037', 'Guia Cirúrgico para Prótese Imediata ou para Cirurgia de Implante', 215, 120);
 INSERT INTO `honorarios` VALUES('PO038', 'Placa de Mordida Miorrelaxante', 170, 140);
-INSERT INTO `honorarios` VALUES('PO040', 'Jig ou Front Plat', 84, 50);
-INSERT INTO `honorarios` VALUES('PO041', 'Conserto em Prtese Total ou Parcial', 127, 45);
-INSERT INTO `honorarios` VALUES('PO042', 'Reparo ou substituio de dentes em Prtese total ou Parcial', 61, 40);
-INSERT INTO `honorarios` VALUES('PO043', 'Clareamento Dental consultrio-Tcnica com Perxido de carbamida e 35%(Por Elemento)', 189, 110);
+INSERT INTO `honorarios` VALUES('PO040', 'Jig ou Front Platô', 84, 50);
+INSERT INTO `honorarios` VALUES('PO041', 'Conserto em Prótese Total ou Parcial', 127, 45);
+INSERT INTO `honorarios` VALUES('PO042', 'Reparo ou substituição de dentes em Prótese total ou Parcial', 61, 40);
+INSERT INTO `honorarios` VALUES('PO043', 'Clareamento Dental consultório-Técnica com Peróxido de carbamida e 35%(Por Elemento)', 189, 110);
 INSERT INTO `honorarios` VALUES('PO044', 'Claream. Dent. com Moldeira de uso cas. para Dentes Vital. e Desvit.(por arcada)', 268, 150);
-INSERT INTO `honorarios` VALUES('PO045', 'Restaurao Inlay e Onlay(Artglas/Solidex)', 426, 250);
-INSERT INTO `honorarios` VALUES('PO046', 'Prtese Fixa em Metalo(Artglas/Solidex)(Por Elemento)', 430, 250);
-INSERT INTO `honorarios` VALUES('PO047', 'Prtese Fixa Adesiva Indireta em Metalo(Artglas/Solidex)(3 elementos)', 580, 450);
-INSERT INTO `honorarios` VALUES('PO048', 'Restaurao Temporria', 46, 35);
-INSERT INTO `honorarios` VALUES('OR001', 'Aparelho Ortodntico Fixo Metlico - 1 arcada', 368, 0);
-INSERT INTO `honorarios` VALUES('OR002', 'Aparelho Ortodntico Fixo Esttico (POLICARBOXILATO) :: 1 arcada', 580, 300);
-INSERT INTO `honorarios` VALUES('OR003', 'Manuteno de Ap. Ortodntico :: 20%  30% Salrio Mnimo :: Apresentao em 22% Salrio', 120, 77);
-INSERT INTO `honorarios` VALUES('OR004', 'Placa Lbio Ativa', 190, 120);
+INSERT INTO `honorarios` VALUES('PO045', 'Restauração Inlay e Onlay(Artglas/Solidex)', 426, 250);
+INSERT INTO `honorarios` VALUES('PO046', 'Prótese Fixa em Metalo(Artglas/Solidex)(Por Elemento)', 430, 250);
+INSERT INTO `honorarios` VALUES('PO047', 'Prótese Fixa Adesiva Indireta em Metalo(Artglas/Solidex)(3 elementos)', 580, 450);
+INSERT INTO `honorarios` VALUES('PO048', 'Restauração Temporária', 46, 35);
+INSERT INTO `honorarios` VALUES('OR001', 'Aparelho Ortodôntico Fixo Metálico - 1 arcada', 368, 0);
+INSERT INTO `honorarios` VALUES('OR002', 'Aparelho Ortodôntico Fixo Estético (POLICARBOXILATO) :: 1 arcada', 580, 300);
+INSERT INTO `honorarios` VALUES('OR003', 'Manutenção de Ap. Ortodôntico :: 20% à 30% Salário Mínimo :: Apresentação em 22% Salário', 120, 77);
+INSERT INTO `honorarios` VALUES('OR004', 'Placa Lábio Ativa', 190, 120);
 INSERT INTO `honorarios` VALUES('OR005', 'Aparelho Extra Bucal', 247, 130);
 INSERT INTO `honorarios` VALUES('OR006', 'Arco Lingual', 217, 120);
-INSERT INTO `honorarios` VALUES('OR007', 'Boto de Nance', 225, 120);
+INSERT INTO `honorarios` VALUES('OR007', 'Botão de Nance', 225, 120);
 INSERT INTO `honorarios` VALUES('OR008', 'Barra Transpalatina Fixa', 223, 120);
-INSERT INTO `honorarios` VALUES('OR009', 'Barra Transpalatina Removvel', 136, 80);
-INSERT INTO `honorarios` VALUES('OR010', 'Quadrihlice', 225, 120);
+INSERT INTO `honorarios` VALUES('OR009', 'Barra Transpalatina Removível', 136, 80);
+INSERT INTO `honorarios` VALUES('OR010', 'Quadrihélice', 225, 120);
 INSERT INTO `honorarios` VALUES('OR011', 'Grade Palatina FIxa', 225, 120);
 INSERT INTO `honorarios` VALUES('OR012', 'Pendulum de Hilgers com mola de TMA', 254, 120);
 INSERT INTO `honorarios` VALUES('OR013', 'Pendex de Hilgers com mola de TMA', 280, 120);
 INSERT INTO `honorarios` VALUES('OR014', 'Distalizador de Molar, tipo Jones Jig', 251, 120);
 INSERT INTO `honorarios` VALUES('OR015', 'Herbst Encapsulado', 378, 180);
-INSERT INTO `honorarios` VALUES('OR016', 'Mascara Facial-Delaire, trao reversa( sem o diajuntor )', 209, 120);
+INSERT INTO `honorarios` VALUES('OR016', 'Mascara Facial-Delaire, tração reversa( sem o diajuntor )', 209, 120);
 INSERT INTO `honorarios` VALUES('OR017', 'Mentoneira', 114, 70);
 INSERT INTO `honorarios` VALUES('OR018', 'Disjuntor Palatino tipo Haas, Hirax', 258, 120);
 INSERT INTO `honorarios` VALUES('OR019', 'Disjuntor Palatino tipo McNammara, Faltin', 221, 120);
 INSERT INTO `honorarios` VALUES('OR020', 'Frankel', 291, 120);
 INSERT INTO `honorarios` VALUES('OR021', 'Bimier', 291, 120);
 INSERT INTO `honorarios` VALUES('OR022', 'Planas', 291, 120);
-INSERT INTO `honorarios` VALUES('OR023', 'Aparelho Removvel com Ala de Binator Invertida', 286, 120);
-INSERT INTO `honorarios` VALUES('OR024', 'Aparelho Removvel com ala de Escheler', 237, 120);
+INSERT INTO `honorarios` VALUES('OR023', 'Aparelho Removível com Alça de Binator Invertida', 286, 120);
+INSERT INTO `honorarios` VALUES('OR024', 'Aparelho Removível com alça de Escheler', 237, 120);
 INSERT INTO `honorarios` VALUES('OR025', 'Bionator de Baiters', 274, 120);
 INSERT INTO `honorarios` VALUES('OR027', 'Aparelho de Thurow', 264, 120);
-INSERT INTO `honorarios` VALUES('OR028', 'Placa de Hawley (Aparelho de Conteno Superior)', 160, 120);
+INSERT INTO `honorarios` VALUES('OR028', 'Placa de Hawley (Aparelho de Contenção Superior)', 160, 120);
 INSERT INTO `honorarios` VALUES('OR029', 'Placa de Hawley com torno expansor', 180, 130);
-INSERT INTO `honorarios` VALUES('OR030', 'Grade Palatina Removvel', 149, 80);
+INSERT INTO `honorarios` VALUES('OR030', 'Grade Palatina Removível', 149, 80);
 INSERT INTO `honorarios` VALUES('OR031', 'Planejamento em Ortodontia', 222, 100);
 INSERT INTO `honorarios` VALUES('OR026', 'Blaca dupla de Sanders', 286, 120);
 INSERT INTO `honorarios` VALUES('CO001', 'Exodontia (por elemento de permanente)', 77, 30);
 INSERT INTO `honorarios` VALUES('CO002', 'Exodontia a Retalho', 100, 45);
 INSERT INTO `honorarios` VALUES('CO003', 'Exodontia (Raiz Residual)', 78, 35);
 INSERT INTO `honorarios` VALUES('CO004', 'Alveoloplastia(por segmento)', 106, 65);
-INSERT INTO `honorarios` VALUES('CO006', 'Bipsia de Leses Sugestivas  (acrescentar valor cobrado em laboratrio)', 230, 110);
+INSERT INTO `honorarios` VALUES('CO006', 'Biópsia de Lesões Sugestivas  (acrescentar valor cobrado em laboratório)', 230, 110);
 INSERT INTO `honorarios` VALUES('CO005', 'Ulotomia', 71, 30);
 INSERT INTO `honorarios` VALUES('CO007', 'Sulcoplastia ( por arcada )', 117, 60);
 INSERT INTO `honorarios` VALUES('CO008', 'Cirurgia para Torus Palatino', 138, 80);
 INSERT INTO `honorarios` VALUES('CO009', 'Cirurgia para Torus Mandibular-Unilateral', 111, 100);
 INSERT INTO `honorarios` VALUES('CO010', 'Cirurgia para Torus Mandibular-Bilateral', 168, 130);
 INSERT INTO `honorarios` VALUES('CO011', 'Apicectomia de Caninos ou Incisivos', 177, 140);
-INSERT INTO `honorarios` VALUES('CO012', 'Apcectomia Caninos/Incisivos com Obturao Retrograda', 202, 180);
-INSERT INTO `honorarios` VALUES('CO013', 'Apcectomia Pr-Molares', 209, 155);
-INSERT INTO `honorarios` VALUES('CO014', 'Apcectomia Pr-Molares com obturao retrograda', 236, 170);
+INSERT INTO `honorarios` VALUES('CO012', 'Apcectomia Caninos/Incisivos com Obturação Retrograda', 202, 180);
+INSERT INTO `honorarios` VALUES('CO013', 'Apcectomia Prè-Molares', 209, 155);
+INSERT INTO `honorarios` VALUES('CO014', 'Apcectomia Pré-Molares com obturação retrograda', 236, 170);
 INSERT INTO `honorarios` VALUES('CO015', 'Apcectomia de Molares', 242, 190);
 INSERT INTO `honorarios` VALUES('CO017', 'Frenetomia ou Bridectomia', 126, 90);
-INSERT INTO `honorarios` VALUES('CO018', 'Remoo de Dentes Inclusos ou Impactados', 188, 100);
-INSERT INTO `honorarios` VALUES('CO019', 'Cirurgia de Tumores Intra-ssea', 188, 120);
-INSERT INTO `honorarios` VALUES('CO020', 'Tratamento de Leso Cstica(enucaleao)', 210, 150);
-INSERT INTO `honorarios` VALUES('CO021', 'Tratamento de Leso Cstica(marzupializao e enucleao final)', 243, 190);
-INSERT INTO `honorarios` VALUES('CO022', 'Remoo de Corpo Estranho no Selo Maxilar', 232, 190);
-INSERT INTO `honorarios` VALUES('CO023', 'Tratamento Cirrgico de Fstula Buo-Sinucal ou Buco-Nasal com Retalho', 188, 140);
-INSERT INTO `honorarios` VALUES('CO024', 'Exciso de Glndula Sublingual', 424, 350);
-INSERT INTO `honorarios` VALUES('CO025', 'Exciso de Glndula Submandibular', 688, 510);
-INSERT INTO `honorarios` VALUES('CO026', 'Exciso de Glndula Partida', 562.19, 400);
-INSERT INTO `honorarios` VALUES('CO027', 'Exciso de Rnula', 457, 360);
-INSERT INTO `honorarios` VALUES('CO028', 'Exciso de Tumor de Glndula Salivar', 424, 310);
-INSERT INTO `honorarios` VALUES('CO029', 'Retirada de Clculo Salivar', 172, 110);
-INSERT INTO `honorarios` VALUES('CO030', 'Exciso de Mucocele de Desenvolvimento', 117, 90);
+INSERT INTO `honorarios` VALUES('CO018', 'Remoção de Dentes Inclusos ou Impactados', 188, 100);
+INSERT INTO `honorarios` VALUES('CO019', 'Cirurgia de Tumores Intra-Óssea', 188, 120);
+INSERT INTO `honorarios` VALUES('CO020', 'Tratamento de Lesão Cística(enucaleação)', 210, 150);
+INSERT INTO `honorarios` VALUES('CO021', 'Tratamento de Lesão Cística(marzupialização e enucleação final)', 243, 190);
+INSERT INTO `honorarios` VALUES('CO022', 'Remoção de Corpo Estranho no Selo Maxilar', 232, 190);
+INSERT INTO `honorarios` VALUES('CO023', 'Tratamento Cirúrgico de Fístula Buço-Sinucal ou Buco-Nasal com Retalho', 188, 140);
+INSERT INTO `honorarios` VALUES('CO024', 'Excisão de Glândula Sublingual', 424, 350);
+INSERT INTO `honorarios` VALUES('CO025', 'Excisão de Glândula Submandibular', 688, 510);
+INSERT INTO `honorarios` VALUES('CO026', 'Excisão de Glândula Parótida', 562.19, 400);
+INSERT INTO `honorarios` VALUES('CO027', 'Excisão de Rânula', 457, 360);
+INSERT INTO `honorarios` VALUES('CO028', 'Excisão de Tumor de Glândula Salivar', 424, 310);
+INSERT INTO `honorarios` VALUES('CO029', 'Retirada de Cálculo Salivar', 172, 110);
+INSERT INTO `honorarios` VALUES('CO030', 'Excisão de Mucocele de Desenvolvimento', 117, 90);
 INSERT INTO `honorarios` VALUES('CO031', 'Drenagem de Abcesso', 63, 35);
 INSERT INTO `honorarios` VALUES('CO032', 'Ulectomia', 78, 35);
 INSERT INTO `honorarios` VALUES('CO033', 'Sinusotomia', 193, 180);
-INSERT INTO `honorarios` VALUES('CO034', 'Plstico do Canal de Stenon', 359, 240);
+INSERT INTO `honorarios` VALUES('CO034', 'Plástico do Canal de Stenon', 359, 240);
 INSERT INTO `honorarios` VALUES('CO035', 'Palentolabioplastia Bilateral', 433, 310);
-INSERT INTO `honorarios` VALUES('CO036', 'Tratamento Cirrgico do Lbio Leporino', 337, 250);
-INSERT INTO `honorarios` VALUES('CO037', 'Recosntruo Parcial do Lbio Traumatizado', 337, 250);
-INSERT INTO `honorarios` VALUES('CO038', 'Reconstruo Total de Lbio Traumatizado', 484, 400);
-INSERT INTO `honorarios` VALUES('CO039', 'Reduo Cirrgica de Luxao de ATM', 330, 250);
-INSERT INTO `honorarios` VALUES('CO040', 'Tratamento Cirrgico para Aniquilose de ATM(por lado)', 550, 410);
-INSERT INTO `honorarios` VALUES('CO041', 'Tratamento Cirrgico para Osteomelite dos Ossos da Face', 411, 350);
-INSERT INTO `honorarios` VALUES('CO042', 'Exciso de Sutura de Leso da Boca com Rotao de Retalho', 448, 300);
+INSERT INTO `honorarios` VALUES('CO036', 'Tratamento Cirúrgico do Lábio Leporino', 337, 250);
+INSERT INTO `honorarios` VALUES('CO037', 'Recosntrução Parcial do Lábio Traumatizado', 337, 250);
+INSERT INTO `honorarios` VALUES('CO038', 'Reconstrução Total de Lábio Traumatizado', 484, 400);
+INSERT INTO `honorarios` VALUES('CO039', 'Redução Cirúrgica de Luxação de ATM', 330, 250);
+INSERT INTO `honorarios` VALUES('CO040', 'Tratamento Cirúrgico para Aniquilose de ATM(por lado)', 550, 410);
+INSERT INTO `honorarios` VALUES('CO041', 'Tratamento Cirúrgico para Osteomelite dos Ossos da Face', 411, 350);
+INSERT INTO `honorarios` VALUES('CO042', 'Excisão de Sutura de Lesão da Boca com Rotação de Retalho', 448, 300);
 INSERT INTO `honorarios` VALUES('CO043', 'Suturas Simples de Face', 73, 45);
-INSERT INTO `honorarios` VALUES('CO044', 'Suturas Mltiplas de Face', 91.2, 60);
-INSERT INTO `honorarios` VALUES('CO045', 'Maxilectomia com ou sem Esvaziamento Orbitrio', 440, 320);
-INSERT INTO `honorarios` VALUES('CO047', 'Osteotomia e Osteoplastia de Mandbula para Micrognatismo', 765, 600);
-INSERT INTO `honorarios` VALUES('CO046', 'Osteotomia e Osteoplastia de Mandbula para Prognatismo', 765, 600);
-INSERT INTO `honorarios` VALUES('CO048', 'Osteotomia e Osteoplastia de Mandbula para Laterognostismo', 765, 600);
+INSERT INTO `honorarios` VALUES('CO044', 'Suturas Múltiplas de Face', 91.2, 60);
+INSERT INTO `honorarios` VALUES('CO045', 'Maxilectomia com ou sem Esvaziamento Orbitário', 440, 320);
+INSERT INTO `honorarios` VALUES('CO047', 'Osteotomia e Osteoplastia de Mandíbula para Micrognatismo', 765, 600);
+INSERT INTO `honorarios` VALUES('CO046', 'Osteotomia e Osteoplastia de Mandíbula para Prognatismo', 765, 600);
+INSERT INTO `honorarios` VALUES('CO048', 'Osteotomia e Osteoplastia de Mandíbula para Laterognostismo', 765, 600);
 INSERT INTO `honorarios` VALUES('CO049', 'Osteotomia e Osteoplastia de Maxila Tipo Le Fort I', 550, 400);
 INSERT INTO `honorarios` VALUES('CO050', 'Osteotomia e Osteoplastia de Maxila Tipo Le Fort II', 789, 610);
 INSERT INTO `honorarios` VALUES('CO051', 'Osteotomia e Osteplastia de Maxila Tipo Le Fort III', 936, 710);
-INSERT INTO `honorarios` VALUES('CO052', 'Reconstruo Total da Mandbula com Enxerto sseo/Prtese', 1138, 930);
-INSERT INTO `honorarios` VALUES('CO053', 'Reconstruo Parcial da Mandbula com Enxerto sseo/Prtese', 716, 545);
-INSERT INTO `honorarios` VALUES('CO054', 'Reconstruo de Sulco Gengivo-Labial', 152, 110);
-INSERT INTO `honorarios` VALUES('CO055', 'Exciso em Cunha de Lbio Sutura', 156, 115);
-INSERT INTO `honorarios` VALUES('CO056', 'Cirurgia de Hipertrofia do Lbio', 264, 195);
+INSERT INTO `honorarios` VALUES('CO052', 'Reconstrução Total da Mandíbula com Enxerto Ósseo/Prótese', 1138, 930);
+INSERT INTO `honorarios` VALUES('CO053', 'Reconstrução Parcial da Mandíbula com Enxerto Ósseo/Prótese', 716, 545);
+INSERT INTO `honorarios` VALUES('CO054', 'Reconstrução de Sulco Gengivo-Labial', 152, 110);
+INSERT INTO `honorarios` VALUES('CO055', 'Excisão em Cunha de Lábio Sutura', 156, 115);
+INSERT INTO `honorarios` VALUES('CO056', 'Cirurgia de Hipertrofia do Lábio', 264, 195);
 INSERT INTO `honorarios` VALUES('CO057', 'Cirurgia para Microstomia', 440, 360);
-INSERT INTO `honorarios` VALUES('CO058', 'Reduo de Fratura de Osso Prprios do Nariz', 440, 350);
-INSERT INTO `honorarios` VALUES('CO059', 'Reduo Incluenta de Fratura Unilateral de Mandibula', 205, 130);
-INSERT INTO `honorarios` VALUES('CO060', 'Reduo Cruenta de Fratura Unilateral Mandbula', 477, 340);
-INSERT INTO `honorarios` VALUES('CO061', 'Reduo Incluenta de Fratura Bilateral de Mandbula', 249, 190);
-INSERT INTO `honorarios` VALUES('CO062', 'Reduo Cruenta de Fratura Bilateral de Mandbula', 789, 410);
-INSERT INTO `honorarios` VALUES('CO063', 'Reduo Cruenta de Fratura Cominutiva de Mandibula', 703, 520);
-INSERT INTO `honorarios` VALUES('CO064', 'Reduo de Fratura de Cndido Mandbula', 455, 320);
-INSERT INTO `honorarios` VALUES('CO065', 'Fraturas Alvolo-Dentrias-Reduo Cruenta', 132, 110);
-INSERT INTO `honorarios` VALUES('CO066', 'Fraturas Alvolo-Dentrias-Reduo Incruenta', 73, 45);
+INSERT INTO `honorarios` VALUES('CO058', 'Redução de Fratura de Osso Próprios do Nariz', 440, 350);
+INSERT INTO `honorarios` VALUES('CO059', 'Redução Incluenta de Fratura Unilateral de Mandibula', 205, 130);
+INSERT INTO `honorarios` VALUES('CO060', 'Redução Cruenta de Fratura Unilateral Mandíbula', 477, 340);
+INSERT INTO `honorarios` VALUES('CO061', 'Redução Incluenta de Fratura Bilateral de Mandíbula', 249, 190);
+INSERT INTO `honorarios` VALUES('CO062', 'Redução Cruenta de Fratura Bilateral de Mandíbula', 789, 410);
+INSERT INTO `honorarios` VALUES('CO063', 'Redução Cruenta de Fratura Cominutiva de Mandibula', 703, 520);
+INSERT INTO `honorarios` VALUES('CO064', 'Redução de Fratura de Côndido Mandíbula', 455, 320);
+INSERT INTO `honorarios` VALUES('CO065', 'Fraturas Alvéolo-Dentárias-Redução Cruenta', 132, 110);
+INSERT INTO `honorarios` VALUES('CO066', 'Fraturas Alvéolo-Dentárias-Redução Incruenta', 73, 45);
 INSERT INTO `honorarios` VALUES('CO067', 'Reimplante de Dente (por elemento)', 117, 60);
-INSERT INTO `honorarios` VALUES('CO068', 'Reduo Inoruenta de Fratura de Le Fort I', 356, 300);
-INSERT INTO `honorarios` VALUES('CO069', 'Reduo Incruenta de Fratura Le Fort II', 356, 300);
-INSERT INTO `honorarios` VALUES('CO070', 'Reduo Incruenta de Fratura Le Fort III', 411, 310);
-INSERT INTO `honorarios` VALUES('CO071', 'Reduo Cruenta de Fratura Le Fort I', 550, 450);
-INSERT INTO `honorarios` VALUES('CO072', 'Reduo Cruenta de Fratura Le Fort II', 765, 500);
+INSERT INTO `honorarios` VALUES('CO068', 'Redução Inoruenta de Fratura de Le Fort I', 356, 300);
+INSERT INTO `honorarios` VALUES('CO069', 'Redução Incruenta de Fratura Le Fort II', 356, 300);
+INSERT INTO `honorarios` VALUES('CO070', 'Redução Incruenta de Fratura Le Fort III', 411, 310);
+INSERT INTO `honorarios` VALUES('CO071', 'Redução Cruenta de Fratura Le Fort I', 550, 450);
+INSERT INTO `honorarios` VALUES('CO072', 'Redução Cruenta de Fratura Le Fort II', 765, 500);
 INSERT INTO `honorarios` VALUES('CO074', 'Fraturas Complexas do Segmento Fixo da Face', 411, 300);
-INSERT INTO `honorarios` VALUES('CO073', 'Reduo Cruenta de Fratura Le Fort III', 765, 510);
-INSERT INTO `honorarios` VALUES('CO075', 'Fraturas Complexas do Segmento da Face com Fixao Pericraniana', 1138, 800);
-INSERT INTO `honorarios` VALUES('CO077', 'Fratura do Arco Zigomtico - Reduo cirrgica sem fixao', 337, 250);
-INSERT INTO `honorarios` VALUES('CO078', 'Fratura do Osso Zigomtico - Reduo Cirrgica e Fixao', 440, 320);
-INSERT INTO `honorarios` VALUES('CO079', 'Retirada de Fios Intra ou Trans-sseos', 44, 35);
+INSERT INTO `honorarios` VALUES('CO073', 'Redução Cruenta de Fratura Le Fort III', 765, 510);
+INSERT INTO `honorarios` VALUES('CO075', 'Fraturas Complexas do Segmento da Face com Fixação Pericraniana', 1138, 800);
+INSERT INTO `honorarios` VALUES('CO077', 'Fratura do Arco Zigomático - Redução cirúrgica sem fixação', 337, 250);
+INSERT INTO `honorarios` VALUES('CO078', 'Fratura do Osso Zigomático - Redução Cirúrgica e Fixação', 440, 320);
+INSERT INTO `honorarios` VALUES('CO079', 'Retirada de Fios Intra ou Trans-Ósseos', 44, 35);
 INSERT INTO `honorarios` VALUES('CO080', 'Retirada de Bloqueio Maxilo-Mandibular', 41, 35);
 INSERT INTO `honorarios` VALUES('CO081', 'Retirada de Ancoragem e Cerclagens', 41, 35);
 INSERT INTO `honorarios` VALUES('CO082', 'Cirurgia de Cisto', 108, 100);
-INSERT INTO `honorarios` VALUES('CO083', 'Artroplastia para Luxao Rescidivante da ATM', 752, 550);
-INSERT INTO `honorarios` VALUES('CO084', 'Resseco Parcial da Mandbula', 514, 400);
-INSERT INTO `honorarios` VALUES('CO085', 'Resseco Parcial de Mandbula com enxerto sseo', 624, 490);
+INSERT INTO `honorarios` VALUES('CO083', 'Artroplastia para Luxação Rescidivante da ATM', 752, 550);
+INSERT INTO `honorarios` VALUES('CO084', 'Ressecção Parcial da Mandíbula', 514, 400);
+INSERT INTO `honorarios` VALUES('CO085', 'Ressecção Parcial de Mandíbula com enxerto ósseo', 624, 490);
 INSERT INTO `honorarios` VALUES('CO086', 'Hemimandibuloctomia', 587, 430);
-INSERT INTO `honorarios` VALUES('CO087', 'Hemimandibulectomia com colao de prtese', 716, 510);
-INSERT INTO `honorarios` VALUES('CO088', 'Hemimandibulectomia com enxerto sseo', 789, 590);
-INSERT INTO `honorarios` VALUES('CO089', 'Mnadibulectomias com Reconstruo Microcirrgica', 1138, 900);
-INSERT INTO `honorarios` VALUES('CO090', 'Mandibulectomia com Reconstruo de osteomicutana', 936, 705);
-INSERT INTO `honorarios` VALUES('CO091', 'Osteoplastia de Etmido Orbitrias', 862, 650);
-INSERT INTO `honorarios` VALUES('CO092', 'Osteoplastia de Mandbula', 789, 600);
-INSERT INTO `honorarios` VALUES('CO093', 'Osteoplastia de rbita', 936, 710);
-INSERT INTO `honorarios` VALUES('CO094', 'Resseco do Meso Infra Estrutura do Maxila Superior', 466, 300);
-INSERT INTO `honorarios` VALUES('CO095', 'Resseco Total de Maxila Inclinada Exenter de rbita', 826, 600);
-INSERT INTO `honorarios` VALUES('CO096', 'Resseco Maxilar Superior Reconstruo  custa Retalhos', 991, 735);
-INSERT INTO `honorarios` VALUES('IM001', 'Ato Cirrgico de Insero do Pino de Titnio', 850, 600);
-INSERT INTO `honorarios` VALUES('IM002', 'Planejamento Cirrgico e Prottico com modelos de estudo', 120, 60);
+INSERT INTO `honorarios` VALUES('CO087', 'Hemimandibulectomia com colação de prótese', 716, 510);
+INSERT INTO `honorarios` VALUES('CO088', 'Hemimandibulectomia com enxerto ósseo', 789, 590);
+INSERT INTO `honorarios` VALUES('CO089', 'Mnadibulectomias com Reconstrução Microcirúrgica', 1138, 900);
+INSERT INTO `honorarios` VALUES('CO090', 'Mandibulectomia com Reconstrução de osteomicutanêa', 936, 705);
+INSERT INTO `honorarios` VALUES('CO091', 'Osteoplastia de Etmóido Orbitárias', 862, 650);
+INSERT INTO `honorarios` VALUES('CO092', 'Osteoplastia de Mandíbula', 789, 600);
+INSERT INTO `honorarios` VALUES('CO093', 'Osteoplastia de Órbita', 936, 710);
+INSERT INTO `honorarios` VALUES('CO094', 'Ressecção do Meso Infra Estrutura do Maxila Superior', 466, 300);
+INSERT INTO `honorarios` VALUES('CO095', 'Ressecção Total de Maxila Inclinada Exenter de Órbita', 826, 600);
+INSERT INTO `honorarios` VALUES('CO096', 'Ressecção Maxilar Superior Reconstrução à custa Retalhos', 991, 735);
+INSERT INTO `honorarios` VALUES('IM001', 'Ato Cirúrgico de Inserção do Pino de Titânio', 850, 600);
+INSERT INTO `honorarios` VALUES('IM002', 'Planejamento Cirúrgico e Protético com modelos de estudo', 120, 60);
 INSERT INTO `honorarios` VALUES('IM003', 'Coroa Total sobre Implante em Metalo Artglas/Solidex', 530, 420);
-INSERT INTO `honorarios` VALUES('IM004', 'Coroa Total sobre Implante em Metalo Cermica (Porcelana)', 720, 530);
-INSERT INTO `honorarios` VALUES('IM005', 'Barra para Prtese Total Fixa ou Removvel Sobre Implante (Over Dental0', 430, 350);
-INSERT INTO `honorarios` VALUES('IM006', 'Interm. e Adapt. para prtese sobre implante:Oring. Munhes,Uclas etc(unitrios)', 240, 130);
-INSERT INTO `honorarios` VALUES('IM007', 'Coroa Total Provisria sobre Implante em Acrlico', 320, 250);
-INSERT INTO `honorarios` VALUES('OR032', 'Manuteno de Ap. Ortodntico :: 20%  30% Salrio Mnimo :: Apresentao em 30% Salrio', 140, 105);
-INSERT INTO `honorarios` VALUES('DE023', 'Clareamento Dental em Consultrio a Layser :: Por Arcada', 490, 300);
-INSERT INTO `honorarios` VALUES('EX005', 'Urgncia Horrio Normal (independente da sequncia do tratamento)', 70, 35);
-INSERT INTO `honorarios` VALUES('OR033', 'Aparelho Ortodntico Fixo Esttico (CERMICA) :: 1 Arcada', 850, 600);
-INSERT INTO `honorarios` VALUES('CO097', 'Aumento de Coroa Clnica', 132, 80);
-INSERT INTO `honorarios` VALUES('CO098', 'Enxerto sseo Autgeno em Bloco para Ganho de Volume - Por Segmento', 700, 500);
+INSERT INTO `honorarios` VALUES('IM004', 'Coroa Total sobre Implante em Metalo Cerâmica (Porcelana)', 720, 530);
+INSERT INTO `honorarios` VALUES('IM005', 'Barra para Prótese Total Fixa ou Removível Sobre Implante (Over Dental0', 430, 350);
+INSERT INTO `honorarios` VALUES('IM006', 'Interm. e Adapt. para prótese sobre implante:Oring. Munhões,Uclas etc(unitários)', 240, 130);
+INSERT INTO `honorarios` VALUES('IM007', 'Coroa Total Provisória sobre Implante em Acrílico', 320, 250);
+INSERT INTO `honorarios` VALUES('OR032', 'Manutenção de Ap. Ortodôntico :: 20% à 30% Salário Mínimo :: Apresentação em 30% Salário', 140, 105);
+INSERT INTO `honorarios` VALUES('DE023', 'Clareamento Dental em Consultório a Layser :: Por Arcada', 490, 300);
+INSERT INTO `honorarios` VALUES('EX005', 'Urgência Horário Normal (independente da sequência do tratamento)', 70, 35);
+INSERT INTO `honorarios` VALUES('OR033', 'Aparelho Ortodôntico Fixo Estético (CERÂMICA) :: 1 Arcada', 850, 600);
+INSERT INTO `honorarios` VALUES('CO097', 'Aumento de Coroa Clínica', 132, 80);
+INSERT INTO `honorarios` VALUES('CO098', 'Enxerto Ósseo Autôgeno em Bloco para Ganho de Volume - Por Segmento', 700, 500);
 INSERT INTO `honorarios` VALUES('CO099', 'Enxertos Utilizando Bio-Materiais (Acrescentar o Valor do Bio-Material)', 420, 210);
 INSERT INTO `honorarios` VALUES('CO100', 'Exodontia de CISO ''Incluso ou Impactado''', 188, 100);
-INSERT INTO `honorarios` VALUES('EN025', 'Tratamento Endodntico de Molar acima de 3 condutos (no inclue radiografias)', 400, 290);
-INSERT INTO `honorarios` VALUES('EN026', 'Retratamento Endodntico de Molar acima de 3 condutos (no inlcue radiografias)', 450, 350);
+INSERT INTO `honorarios` VALUES('EN025', 'Tratamento Endodôntico de Molar acima de 3 condutos (não inclue radiografias)', 400, 290);
+INSERT INTO `honorarios` VALUES('EN026', 'Retratamento Endodôntico de Molar acima de 3 condutos (não inlcue radiografias)', 450, 350);
 INSERT INTO `honorarios` VALUES('IM008', 'Elemento de Porcelana para Ponte Sobre Implante', 600, 430);
-INSERT INTO `honorarios` VALUES('CO101', 'Apicectomia de Molares - Com obturao retrograda', 269, 220);
-INSERT INTO `honorarios` VALUES('CO102', 'Osteoplastia Zigomtico - Maxilar', 441, 310);
-INSERT INTO `honorarios` VALUES('PE009', 'Remoo  de Fatores de Reteno', 62, 30);
-INSERT INTO `honorarios` VALUES('PE028', 'Manuteno do Tratamento Cirrgico', 65, 35);
-INSERT INTO `honorarios` VALUES('PE029', 'Aumento de Coroa Clnica (por elemento)', 132, 80);
+INSERT INTO `honorarios` VALUES('CO101', 'Apicectomia de Molares - Com obturação retrograda', 269, 220);
+INSERT INTO `honorarios` VALUES('CO102', 'Osteoplastia Zigomático - Maxilar', 441, 310);
+INSERT INTO `honorarios` VALUES('PE009', 'Remoção  de Fatores de Retenção', 62, 30);
+INSERT INTO `honorarios` VALUES('PE028', 'Manutenção do Tratamento Cirúrgico', 65, 35);
+INSERT INTO `honorarios` VALUES('PE029', 'Aumento de Coroa Clínica (por elemento)', 132, 80);
 INSERT INTO `honorarios` VALUES('PE030', 'Tratamento Regenerativo com uso de Barreia', 445, 300);
-INSERT INTO `honorarios` VALUES('IM009', 'Guia Cirrgico para Cirurgia de Implante Unitrio ou Mltiplos', 215, 120);
+INSERT INTO `honorarios` VALUES('IM009', 'Guia Cirúrgico para Cirurgia de Implante Unitário ou Múltiplos', 215, 120);
 
 # ############################
 
@@ -912,12 +945,12 @@ INSERT INTO `honorarios` VALUES('IM009', 'Guia Cirrgico para Cirurgia de Implant
 
 CREATE TABLE IF NOT EXISTS `implantodontia` (
   `codigo_paciente` int(10) NOT NULL,
-  `tratamento` enum('Sim','No') default NULL,
+  `tratamento` enum('Sim','Não') default NULL,
   `regioes` varchar(200) default NULL,
   `expectativa` varchar(200) default NULL,
   `areas` varchar(200) default NULL,
   `marca` varchar(200) default NULL,
-  `enxerto` enum('Sim','No') default NULL,
+  `enxerto` enum('Sim','Não') default NULL,
   `tipoenxerto` varchar(200) default NULL,
   `observacoes` text default NULL,
   PRIMARY KEY  (`codigo_paciente`)
@@ -931,27 +964,93 @@ CREATE TABLE IF NOT EXISTS `implantodontia` (
 
 CREATE TABLE IF NOT EXISTS `inquerito` (
   `codigo_paciente` int(10) NOT NULL,
-  `tratamento` enum('Sim','No') default NULL,
+  `tratamento` enum('Sim','Não') default NULL,
   `motivotrat` varchar(150) default NULL,
-  `hospitalizado` enum('Sim','No') default NULL,
+  `hospitalizado` enum('Sim','Não') default NULL,
   `motivohosp` varchar(150) default NULL,
-  `cardiovasculares` enum('Sim','No') default NULL,
-  `sanguineo` enum('Sim','No') default NULL,
-  `reumatico` enum('Sim','No') default NULL,
-  `respiratorio` enum('Sim','No') default NULL,
+  `cardiovasculares` enum('Sim','Não') default NULL,
+  `sanguineo` enum('Sim','Não') default NULL,
+  `reumatico` enum('Sim','Não') default NULL,
+  `respiratorio` enum('Sim','Não') default NULL,
   `qualresp` varchar(150) default NULL,
-  `gastro` enum('Sim','No') default NULL,
+  `gastro` enum('Sim','Não') default NULL,
   `qualgastro` varchar(150) default NULL,
-  `renal` enum('Sim','No') default NULL,
-  `diabetico` enum('Sim','No') default NULL,
-  `contagiosa` enum('Sim','No') default NULL,
+  `renal` enum('Sim','Não') default NULL,
+  `diabetico` enum('Sim','Não') default NULL,
+  `contagiosa` enum('Sim','Não') default NULL,
   `qualcont` varchar(150) default NULL,
-  `anestesia` enum('Sim','No') default NULL,
+  `anestesia` enum('Sim','Não') default NULL,
   `complicacoesanest` varchar(150) default NULL,
-  `alergico` enum('Sim','No') default NULL,
+  `alergico` enum('Sim','Não') default NULL,
   `qualalergico` varchar(150) default NULL,
   `observacoes` text,
   PRIMARY KEY  (`codigo_paciente`)
+) ENGINE=MyISAM;
+
+# ############################
+
+#
+# Estrutura da tabela `laboratorios`
+#
+
+CREATE TABLE IF NOT EXISTS `laboratorios` (
+  `codigo` int(15) NOT NULL auto_increment,
+  `nomefantasia` varchar(80) default NULL,
+  `cpf` varchar(50) NOT NULL default '',
+  `razaosocial` varchar(80) default NULL,
+  `atuacao` varchar(80) default NULL,
+  `endereco` varchar(150) default NULL,
+  `bairro` varchar(40) default NULL,
+  `cidade` varchar(40) default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
+  `cep` varchar(9) default NULL,
+  `celular` varchar(15) default NULL,
+  `telefone1` varchar(15) default NULL,
+  `telefone2` varchar(15) default NULL,
+  `inscricaoestadual` varchar(40) default NULL,
+  `website` varchar(100) default NULL,
+  `email` varchar(100) default NULL,
+  `nomerepresentante` varchar(80) default NULL,
+  `apelidorepresentante` varchar(50) default NULL,
+  `emailrepresentante` varchar(100) default NULL,
+  `celularrepresentante` varchar(15) default NULL,
+  `telefone1representante` varchar(15) default NULL,
+  `telefone2representante` varchar(15) default NULL,
+  `banco` varchar(50) default NULL,
+  `agencia` varchar(15) default NULL,
+  `conta` varchar(15) default NULL,
+  `favorecido` varchar(50) default NULL,
+  PRIMARY KEY  (`codigo`)
+) ENGINE=MyISAM;
+
+# ############################
+
+#
+# Estrutura da tabela `laboratorios_procedimentos`
+#
+
+CREATE TABLE IF NOT EXISTS laboratorios_procedimentos (
+  codigo int NOT NULL auto_increment,
+  codigo_paciente int NOT NULL,
+  codigo_dentista int NOT NULL,
+  procedimento TEXT NOT NULL,
+  datahora DATETIME NOT NULL,
+  PRIMARY KEY (codigo)
+) ENGINE=MyISAM;
+
+# ############################
+
+#
+# Estrutura da tabela `laboratorios_procedimentos_status`
+#
+
+CREATE TABLE IF NOT EXISTS laboratorios_procedimentos_status (
+  codigo int NOT NULL auto_increment,
+  codigo_procedimento int NOT NULL,
+  `status` TEXT NOT NULL,
+  datahora DATETIME NOT NULL,
+  PRIMARY KEY (codigo)
 ) ENGINE=MyISAM;
 
 # ############################
@@ -989,16 +1088,16 @@ CREATE TABLE IF NOT EXISTS `orcamento` (
   `codigo` int(10) NOT NULL auto_increment,
   `codigo_paciente` int(10) NOT NULL,
   `data` date default NULL,
-  `formapagamento` enum(' vista','Cheque pr-datado','Promissria','Desconto em folha','Carto') default NULL,
-  `aserpago` enum('Particular','Convnio') default NULL,
+  `formapagamento` enum('À vista','Cheque pré-datado','Promissória','Desconto em folha','Cartão') default NULL,
+  `aserpago` enum('Particular','Convênio') default NULL,
   `valortotal` float default NULL,
   `parcelas` enum('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20') default NULL,
   `desconto` float default NULL,
-  `cpf_dentista` varchar(11) default NULL,
-  `confirmado` enum('Sim','No') NOT NULL default 'No',
+  `codigo_dentista` varchar(11) default NULL,
+  `confirmado` enum('Sim','Não') NOT NULL default 'Não',
   `entrada` float default '0',
   `entrada_tipo` enum('R$','%') NOT NULL default 'R$',
-  `baixa` enum('Sim','No') NOT NULL default 'No',
+  `baixa` enum('Sim','Não') NOT NULL default 'Não',
   PRIMARY KEY  (`codigo`)
 ) ENGINE=MyISAM;
 
@@ -1010,7 +1109,7 @@ CREATE TABLE IF NOT EXISTS `orcamento` (
 
 CREATE TABLE IF NOT EXISTS `ortodontia` (
   `codigo_paciente` int(10) NOT NULL,
-  `tratamento` enum('Sim','No') default NULL,
+  `tratamento` enum('Sim','Não') default NULL,
   `previsao` varchar(200) default NULL,
   `razoes` varchar(200) default NULL,
   `motivacao` varchar(200) default NULL,
@@ -1039,11 +1138,11 @@ CREATE TABLE IF NOT EXISTS `ortodontia` (
 CREATE TABLE IF NOT EXISTS `pacientes` (
   `codigo` int(10) NOT NULL,
   `nome` varchar(80) default NULL,
-  `cpf` varchar(11) default NULL,
-  `rg` varchar(15) default NULL,
-  `estadocivil` enum('Solteiro(a)','Casado(a)','Separado(a)','Divorciado(a)','Amasiado(a)','Vivo(a)') default NULL,
+  `cpf` varchar(50) default NULL,
+  `rg` varchar(50) default NULL,
+  `estadocivil` enum('solteiro','casado','divorciado','viuvo') default NULL,
   `sexo` enum('Masculino','Feminino') default NULL,
-  `etnia` enum('Branco','Moreno','Negro','Pardo','Amarelo') default NULL,
+  `etnia` enum('africano','asiatico','caucasiano','latino','orientemedio','multietnico') default NULL,
   `profissao` varchar(80) default NULL,
   `naturalidade` varchar(80) default NULL,
   `nacionalidade` varchar(80) default NULL,
@@ -1051,7 +1150,8 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
   `endereco` varchar(150) default NULL,
   `bairro` varchar(40) default NULL,
   `cidade` varchar(40) default NULL,
-  `estado` enum('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO') default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
   `cep` varchar(9) default NULL,
   `celular` varchar(15) default NULL,
   `telefone1` varchar(15) default NULL,
@@ -1060,10 +1160,10 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
   `indicadopor` varchar(80) default NULL,
   `email` varchar(100) default NULL,
   `obs_etiqueta` varchar(90) default NULL,
-  `tratamento` set('Ortodontia', 'Implantodontia', 'Dentstica', 'Prtese', 'Odontopediatria', 'Cirurgia', 'Endodontia', 'Periodontia', 'Radiologia', 'DTM', 'Odontogeriatria', 'Ortopedia') default NULL,
-  `cpf_dentistaprocurado` varchar(11) default NULL,
-  `cpf_dentistaatendido` varchar(11) default NULL,
-  `cpf_dentistaencaminhado` varchar(11) default NULL,
+  `tratamento` set('Ortodontia', 'Implantodontia', 'Dentística', 'Prótese', 'Odontopediatria', 'Cirurgia', 'Endodontia', 'Periodontia', 'Radiologia', 'DTM', 'Odontogeriatria', 'Ortopedia') default NULL,
+  `codigo_dentistaprocurado` int default NULL,
+  `codigo_dentistaatendido` int default NULL,
+  `codigo_dentistaencaminhado` int default NULL,
   `nomemae` varchar(80) default NULL,
   `nascimentomae` date default NULL,
   `profissaomae` varchar(150) default NULL,
@@ -1075,10 +1175,10 @@ CREATE TABLE IF NOT EXISTS `pacientes` (
   `enderecofamiliar` varchar(150) default NULL,
   `datacadastro` date default NULL,
   `dataatualizacao` date default NULL,
-  `status` enum('Avaliao','Em tratamento','Concludo','Em reviso') default NULL,
+  `status` enum('Avaliação','Em tratamento','Concluído','Em revisão') default NULL,
   `objetivo` text,
   `observacoes` text,
-  `convenio` enum('Rede SmilePrev','Particular','Outros') default NULL,
+  `convenio` int NOT NULL,
   `outros` varchar(100) default NULL,
   `matricula` varchar(20) default NULL,
   `titular` varchar(80) default NULL,
@@ -1098,7 +1198,7 @@ CREATE TABLE IF NOT EXISTS `parcelas_orcamento` (
   `codigo_orcamento` int(10) NOT NULL,
   `datavencimento` date default NULL,
   `valor` float default NULL,
-  `pago` enum('Sim','No') NOT NULL default 'No',
+  `pago` enum('Sim','Não') NOT NULL default 'Não',
   `datapgto` date default NULL,
   PRIMARY KEY  (`codigo`)
 ) ENGINE=MyISAM;
@@ -1166,7 +1266,8 @@ CREATE TABLE IF NOT EXISTS `telefones` (
   `endereco` varchar(50) default NULL,
   `bairro` varchar(50) default NULL,
   `cidade` varchar(50) default NULL,
-  `estado` enum('AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO') default NULL,
+  `estado` varchar(50) default NULL,
+  `pais` varchar(50) default NULL,
   `cep` varchar(9) default NULL,
   `celular` varchar(15) default NULL,
   `telefone1` varchar(15) default NULL,
@@ -1182,7 +1283,7 @@ CREATE TABLE IF NOT EXISTS `telefones` (
 # Estrutura para visualizar `v_agenda`
 #
 
-CREATE VIEW v_agenda AS ( SELECT tp.codigo AS codigo_paciente, ta.data AS data, ta.hora AS hora, ta.descricao AS descricao, ta.procedimento AS procedimento, ta.faltou AS faltou, td.nome AS nome_dentista, td.sexo AS sexo_dentista FROM agenda ta INNER JOIN pacientes tp ON tp.codigo = ta.codigo_paciente INNER JOIN dentistas td ON td.cpf = ta.cpf_dentista );
+CREATE VIEW v_agenda AS ( SELECT tp.codigo AS codigo_paciente, ta.data AS data, ta.hora AS hora, ta.descricao AS descricao, ta.procedimento AS procedimento, ta.faltou AS faltou, td.nome AS nome_dentista, td.sexo AS sexo_dentista FROM agenda ta INNER JOIN pacientes tp ON tp.codigo = ta.codigo_paciente INNER JOIN dentistas td ON td.codigo = ta.codigo_dentista );
 
 # ############################
 
@@ -1190,7 +1291,7 @@ CREATE VIEW v_agenda AS ( SELECT tp.codigo AS codigo_paciente, ta.data AS data, 
 # Estrutura para visualizar `v_evolucao`
 #
 
-CREATE VIEW v_evolucao AS ( SELECT tp.codigo AS codigo_paciente, tp.nome AS paciente, td.sexo AS sexo_dentista, td.nome AS dentista, te.procexecutado AS executado, te.procprevisto AS previsto, te.data AS data FROM evolucao te INNER JOIN dentistas td ON te.cpf_dentista = td.cpf INNER JOIN pacientes tp ON te.codigo_paciente = tp.codigo );
+CREATE VIEW v_evolucao AS ( SELECT tp.codigo AS codigo_paciente, tp.nome AS paciente, td.sexo AS sexo_dentista, td.nome AS dentista, te.procexecutado AS executado, te.procprevisto AS previsto, te.data AS data FROM evolucao te INNER JOIN dentistas td ON te.codigo_dentista = td.codigo INNER JOIN pacientes tp ON te.codigo_paciente = tp.codigo );
 
 # ############################
 
@@ -1198,4 +1299,5 @@ CREATE VIEW v_evolucao AS ( SELECT tp.codigo AS codigo_paciente, tp.nome AS paci
 # Estrutura para visualizar `v_orcamento`
 #
 
-CREATE VIEW v_orcamento AS ( SELECT tpo.codigo_orcamento AS codigo_orcamento, tor.parcelas AS parcelas, tor.confirmado AS confirmado, tor.baixa AS baixa, tpo.codigo AS codigo_parcela, tpo.datavencimento AS data, tpo.valor AS valor, tpo.pago AS pago, tpo.datapgto AS datapgto, tp.codigo AS codigo_paciente, tp.nome AS paciente, td.nome AS dentista, td.sexo AS sexo_dentista FROM parcelas_orcamento tpo INNER JOIN orcamento tor ON tpo.codigo_orcamento = tor.codigo INNER JOIN pacientes tp ON tor.codigo_paciente = tp.codigo JOIN dentistas td ON tor.cpf_dentista = td.cpf );
+CREATE VIEW v_orcamento AS ( SELECT tpo.codigo_orcamento AS codigo_orcamento, tor.parcelas AS parcelas, tor.confirmado AS confirmado, tor.baixa AS baixa, tpo.codigo AS codigo_parcela, tpo.datavencimento AS data, tpo.valor AS valor, tpo.pago AS pago, tpo.datapgto AS datapgto, tp.codigo AS codigo_paciente, tp.nome AS paciente, td.nome AS dentista, td.sexo AS sexo_dentista FROM parcelas_orcamento tpo INNER JOIN orcamento tor ON tpo.codigo_orcamento = tor.codigo INNER JOIN pacientes tp ON tor.codigo_paciente = tp.codigo JOIN dentistas td ON tor.codigo_dentista = td.codigo );
+

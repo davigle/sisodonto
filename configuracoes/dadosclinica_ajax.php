@@ -1,7 +1,7 @@
 <?
    /**
     * Gerenciador Clínico Odontológico
-    * Copyright (C) 2006 - 2008
+    * Copyright (C) 2006 - 2009
     * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
     *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
     *
@@ -26,27 +26,25 @@
     * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
     * endereço eletrônico ou envie-nos um e-mail:
     *
-    * http://www.smileprev.com/gco
-    * smileprev@smileprev.com
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
     *
     * Ou envie sua carta para o endereço:
     *
-    * SmilePrev Clínicas Odontológicas
+    * Smile Odontolóogia
     * Rua Laudemira Maria de Jesus, 51 - Lourdes
     * Arcos - MG - CEP 35588-000
-    *
-    * Ou nos contate pelo telefone:
-    *
-    * Tel.: 0800-285-8787
     *
     *
     */
 	include "../lib/config.inc.php";
 	include "../lib/func.inc.php";
 	include "../lib/classes.inc.php";
+	require_once '../lang/'.$idioma.'.php';
 	header("Content-type: text/html; charset=ISO-8859-1", true);
 	if(!checklog()) {
-		die($frase_log);
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
 	}
 	$clinica = new TClinica();
     $clinica->LoadInfo();
@@ -87,6 +85,7 @@
             $clinica->Cidade = $_POST['cidade'];
             $clinica->Estado = $_POST['estado'];
             $clinica->Cep = $_POST['cep'];
+            $clinica->Pais = $_POST['pais'];
             $clinica->Fundacao = $_POST['fundacao'];
             $clinica->Telefone1 = $_POST['telefone1'];
             $clinica->Telefone2 = $_POST['telefone2'];
@@ -100,11 +99,9 @@
             $clinica->Agencia2 = $_POST['agencia2'];
             $clinica->Conta2 = $_POST['conta2'];
 			$clinica->Salvar();
-			$strScrp = 'alert("Dados alterados com sucesso!"); Ajax(\'wallpapers/index\', \'conteudo\', \'\')';
+			$strScrp = 'Ajax(\'wallpapers/index\', \'conteudo\', \'\')';
 		}
     }
-	$strUpCase = "ALTERAÇÂO";
-	$strLoCase = "alteração";
     if($j == 0) {
         $row = "";
     } else {
@@ -117,20 +114,11 @@
 	if(checknivel('Dentista') || checknivel('Funcionario')) {
 		$disable = 'disabled';
 	}
-    if(strlen($clinica->CNPJ) == 11 || $clinica->CNPJ == '') {
-        $cpf_cnpj = 'cpf';
-        $clinica->CNPJ = ajusta_cpf($clinica->CNPJ, 2);
-        $chk['cpfcnpj']['cpf'] = 'checked';
-    } elseif(strlen($clinica->CNPJ) == 14) {
-        $cpf_cnpj = 'cnpj';
-        $clinica->CNPJ = ajusta_cnpj($clinica->CNPJ, 2);
-        $chk['cpfcnpj']['cnpj'] = 'checked';
-    }
 ?>
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="configuracoes/img/clinica.png" alt="Dados da clínica"> <span class="h3">DADOS DA CLÍNICA [<?=$strLoCase?>] </span></td>
+      <td width="56%">&nbsp;&nbsp;&nbsp;<img src="configuracoes/img/clinica.png" alt="<?=$LANG['clinic_information']['clinic_information']?>"> <span class="h3"><?=$LANG['clinic_information']['clinic_information']?> </span></td>
       <td width="6%" valign="bottom"></td>
       <td width="36%" valign="bottom" align="right">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
@@ -139,7 +127,7 @@
 <div class="conteudo" id="table dados"><br>
   <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" class="tabela_titulo">
     <tr>
-      <td width="243" height="26"><?=$strUpCase?> DE DADOS </td>
+      <td width="243" height="26"><?=$LANG['clinic_information']['editing_clinic_information']?> </td>
       <td width="381">&nbsp;</td>
     </tr>
   </table>
@@ -147,74 +135,68 @@
     <tr>
       <td>
       <form id="form2" name="form2" method="POST" action="configuracoes/dadosclinica_ajax.php" onsubmit="formSender(this, 'conteudo'); return false;"><fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es da Clínica </span></legend>
+        <legend><span class="style1"><?=$LANG['clinic_information']['clinic_information']?></span></legend>
         <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td width="287"><?=$r[1]?>* Nome Fantasia <br />
+            <td width="287"><?=$r[1]?>* <?=$LANG['clinic_information']['company_name']?> <br />
                 <label>
                   <input name="fantasia" value="<?=$clinica->Fantasia?>" <?=$disable?> type="text" class="forms" id="fantasia" size="50" maxlength="80" />
                 </label>
                 <br />
                 <label></label></td>
-            <td width="210"><?=$r[3]?><input type="radio" name="cpfcnpj" <?=$disable?> value="cpf" <?=$chk['cpfcnpj']['cpf']?> onclick="document.getElementById('cpf_cnpj').value=this.value"> CPF&nbsp;&nbsp;&nbsp;&nbsp;
-                                      <input type="radio" name="cpfcnpj" <?=$disable?> value="cnpj" <?=$chk['cpfcnpj']['cnpj']?> onclick="document.getElementById('cpf_cnpj').value=this.value"> CNPJ
-              <input type="hidden" name="cpf_cnpj" id="cpf_cnpj" value="<?=$cpf_cnpj?>"><br />
-              <input name="cnpj" value="<?=$clinica->CNPJ?>" <?=$disable?> type="text" class="forms" id="cnpj" size="30" maxlength="18" onKeypress="return Ajusta_CPFCNPJ(this, event, document.getElementById('cpf_cnpj').value);" />
+            <td width="210"><?=$r[3]?><?=$LANG['clinic_information']['document1']?><br />
+              <input name="cnpj" value="<?=$clinica->CNPJ?>" <?=$disable?> type="text" class="forms" id="cnpj" size="30" maxlength="18" />
             </td>
           </tr>
           <tr>
-            <td>Raz&atilde;o Social <br />
+            <td><?=$LANG['clinic_information']['legal_name']?><br />
               <input name="razaosocial" value="<?=$clinica->RazaoSocial?>" <?=$disable?> type="text" class="forms" id="razaosocial" size="50" /></td>
-            <td><?=$r[2]?>* Proprietário<br />
+            <td><?=$r[2]?>* <?=$LANG['clinic_information']['owner']?><br />
               <input name="proprietario" value="<?=$clinica->Proprietario?>" <?=$disable?> type="text" class="forms" id="proprietario" size="40" /></td>
           </tr>
           <tr>
-            <td>Endere&ccedil;o<br />
+            <td><?=$LANG['clinic_information']['address1']?><br />
               <input name="endereco" value="<?=$clinica->Endereco?>" <?=$disable?> type="text" class="forms" id="endereco" size="50" maxlength="150" /></td>
-            <td>Bairro<br />
+            <td><?=$LANG['clinic_information']['address2']?><br />
               <input name="bairro" value="<?=$clinica->Bairro?>" <?=$disable?> type="text" class="forms" id="bairro" /></td>
           </tr>
           <tr>
-            <td>Cidade<br />
+            <td><?=$LANG['clinic_information']['city']?><br />
                 <input name="cidade" value="<?=$clinica->Cidade?>" <?=$disable?> type="text" class="forms" id="cidade" size="30" maxlength="50" />
               <br /></td>
-            <td>Estado<br /><select name="estado" <?=$disable?> class="forms" id="estado">
-<?
-	$estados = array('AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO');
-	foreach($estados as $uf) {
-		if($clinica->Estado == $uf || ($clinica->Estado == '' && $uf == 'MG')) {
-			echo '<option value="'.$uf.'" selected>'.$uf.'</option>';
-		} else {
-			echo '<option value="'.$uf.'">'.$uf.'</option>';
-		}
-	}
-?>       
-			 </select>   </td>
+            <td><?=$LANG['clinic_information']['state']?><br />
+                <input name="estado" value="<?=$clinica->Estado?>" <?=$disable?> type="text" class="forms" id="estado" /></td>
           </tr>
           <tr>
-            <td>CEP<br />
+            <td><?=$LANG['clinic_information']['country']?><br />
+                <input name="pais" value="<?=$clinica->Pais?>" <?=$disable?> type="text" class="forms" id="pais" size="30" maxlength="50" />
+              <br /></td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td><?=$LANG['clinic_information']['zip']?><br />
               <input name="cep" value="<?=$clinica->Cep?>" <?=$disable?> type="text" class="forms" id="cep" size="10" maxlength="9" onKeypress="return Ajusta_CEP(this, event);" /></td>
-            <td>Ano de fundação<br />
+            <td><?=$LANG['clinic_information']['year_of_foundation']?><br />
               <input name="fundacao" value="<?=$clinica->Fundacao?>" <?=$disable?> type="text" class="forms" id="fundacao" maxlength="4" /></td>
           </tr>
           <tr>
-            <td>Telefone 1 <br />
+            <td><?=$LANG['clinic_information']['phone1']?><br />
               <input name="telefone1" value="<?=$clinica->Telefone1?>" <?=$disable?> type="text" class="forms" id="telefone1" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
-            <td>Telefone 2 <br />
+            <td><?=$LANG['clinic_information']['phone2']?><br />
               <input name="telefone2" value="<?=$clinica->Telefone2?>" <?=$disable?> type="text" class="forms" id="telefone2" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
           </tr>
           <tr>
-            <td>Fax <br />
+            <td><?=$LANG['clinic_information']['fax']?> <br />
               <input name="fax" value="<?=$clinica->Fax?>" <?=$disable?> type="text" class="forms" id="fax" size="25" maxlength="13" onKeypress="return Ajusta_Telefone(this, event);" /></td>
-            <td>Web Site <br />
+            <td><?=$LANG['clinic_information']['website']?><br />
               <input name="web" value="<?=$clinica->Web?>" <?=$disable?> type="text" class="forms" id="web" size="40" /></td>
           </tr>
           <tr>
-            <td>E-mail<br />
+            <td><?=$LANG['clinic_information']['email']?><br />
               <input name="email" value="<?=$clinica->Email?>" <?=$disable?> type="text" class="forms" id="email" size="40" /></td>
             <td>&nbsp;</td>
           </tr>
@@ -226,14 +208,14 @@
         </fieldset>
         <br />
 		<fieldset>
-        <legend><span class="style1">Informa&ccedil;&otilde;es Bancárias </span></legend>
+        <legend><span class="style1"><?=$LANG['clinic_information']['bank_information']?></span></legend>
         <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td width="287">Banco <br />
+            <td width="287"><?=$LANG['clinic_information']['bank']?> <br />
                 <label>
                   <input name="banco1" value="<?=$clinica->Banco1?>" <?=$disable?> type="text" class="forms" id="banco1" size="50" maxlength="80" />
                 </label>
@@ -243,9 +225,9 @@
               </td>
           </tr>
           <tr>
-            <td>Agência<br />
+            <td><?=$LANG['clinic_information']['agency']?><br />
                 <input name="agencia1" value="<?=$clinica->Agencia1?>" <?=$disable?> type="text" class="forms" id="agencia1" size="50" maxlength="100" /></td>
-            <td>Conta<br />
+            <td><?=$LANG['clinic_information']['account']?><br />
                 <input name="conta1" value="<?=$clinica->Conta1?>" <?=$disable?> type="text" class="forms" id="conta1" /></td>
           </tr>
           
@@ -254,7 +236,7 @@
             <td>&nbsp;</td>
           </tr>
           <tr>
-            <td width="287">Banco <br />
+            <td width="287"><?=$LANG['clinic_information']['bank']?> <br />
                 <label>
                   <input name="banco2" value="<?=$clinica->Banco2?>" <?=$disable?> type="text" class="forms" id="banco2" size="50" maxlength="80" />
                 </label>
@@ -264,9 +246,9 @@
               </td>
           </tr>
           <tr>
-            <td>Agência<br />
+            <td><?=$LANG['clinic_information']['agency']?><br />
                 <input name="agencia2" value="<?=$clinica->Agencia2?>" <?=$disable?> type="text" class="forms" id="agencia2" size="50" maxlength="100" /></td>
-            <td>Conta<br />
+            <td><?=$LANG['clinic_information']['account']?><br />
                 <input name="conta2" value="<?=$clinica->Conta2?>" <?=$disable?> type="text" class="forms" id="conta2" /></td>
           </tr>
 
@@ -278,7 +260,7 @@
         </fieldset>
         <br />
 		<fieldset>
-        <legend><span class="style1">Logomarca da clínica </span></legend>
+        <legend><span class="style1"><?=$LANG['clinic_information']['clinic_logotype']?></span></legend>
         <table width="497" border="0" align="center" cellpadding="0" cellspacing="0" class="texto">
           <tr>
             <td>&nbsp;</td>
@@ -295,7 +277,7 @@
         </fieldset>
 		<br />
         <div align="center"><br />
-          <input name="Salvar" type="submit" <?=$disable?> class="forms" id="Salvar" value="Salvar" />
+          <input name="Salvar" type="submit" <?=$disable?> class="forms" id="Salvar" value="<?=$LANG['clinic_information']['save']?>" />
         </div>
       </form>      </td>
     </tr>

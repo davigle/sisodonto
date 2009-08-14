@@ -1,38 +1,55 @@
 <?
-/**
- * Gerenciador Clínico Odontológico
- * Copyright (C) 2006  
- * Autores: Ivis Silva Andrade (ivis@expandweb.com)
- *          Pedro Henrique Braga Moreira (ikkinet@gmail.com)
- *
- * Este arquivo é parte do programa Gerenciador Clínico Odontológico
- * 
- * Gerenciador Clínico Odontológico é um software livre; você pode 
- * redistribuí-lo e/ou modificá-lo dentro dos termos da Licença  
- * Pública Geral GNU como publicada pela Fundação do Software Livre  
- * (FSF); na versão 2 da Licença ou suas próximas versões.
- * 
- * Este programa é distribuído na esperança que possa ser útil, 
- * mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÂO 
- * a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
- * Licença Pública Geral GNU para maiores detalhes.
- * 
- * Você recebeu uma cópia da Licença Pública Geral GNU,
- * que está localizada na raíz do programa no arquivo
- * COPYING ou COPYING.TXT
- * junto com este programa, se não, escreva para:
- *
- * Fundação do Software Livre(FSF) Inc.
- * 51 Franklin St, Fifth Floor
- * Boston - MA - 02110-1301
- * USA
- *
- */
+   /**
+    * Gerenciador Clínico Odontológico
+    * Copyright (C) 2006 - 2009
+    * Autores: Ivis Silva Andrade - Engenharia e Design(ivis@expandweb.com)
+    *          Pedro Henrique Braga Moreira - Engenharia e Programação(ikkinet@gmail.com)
+    *
+    * Este arquivo é parte do programa Gerenciador Clínico Odontológico
+    *
+    * Gerenciador Clínico Odontológico é um software livre; você pode
+    * redistribuí-lo e/ou modificá-lo dentro dos termos da Licença
+    * Pública Geral GNU como publicada pela Fundação do Software Livre
+    * (FSF); na versão 2 da Licença invariavelmente.
+    *
+    * Este programa é distribuído na esperança que possa ser útil,
+    * mas SEM NENHUMA GARANTIA; sem uma garantia implícita de ADEQUAÇÂO
+    * a qualquer MERCADO ou APLICAÇÃO EM PARTICULAR. Veja a
+    * Licença Pública Geral GNU para maiores detalhes.
+    *
+    * Você recebeu uma cópia da Licença Pública Geral GNU,
+    * que está localizada na raíz do programa no arquivo COPYING ou COPYING.TXT
+    * junto com este programa. Se não, visite o endereço para maiores informações:
+    * http://www.gnu.org/licenses/old-licenses/gpl-2.0.html (Inglês)
+    * http://www.magnux.org/doc/GPL-pt_BR.txt (Português - Brasil)
+    *
+    * Em caso de dúvidas quanto ao software ou quanto à licença, visite o
+    * endereço eletrônico ou envie-nos um e-mail:
+    *
+    * http://www.smileodonto.com.br/gco
+    * smile@smileodonto.com.br
+    *
+    * Ou envie sua carta para o endereço:
+    *
+    * Smile Odontolóogia
+    * Rua Laudemira Maria de Jesus, 51 - Lourdes
+    * Arcos - MG - CEP 35588-000
+    *
+    *
+    */
+	include "../../lib/config.inc.php";
+	include "../../lib/func.inc.php";
+	include "../../lib/classes.inc.php";
+	require_once '../../lang/'.$idioma.'.php';
+	if(!checklog()) {
+        echo '<script>Ajax("wallpapers/index", "conteudo", "");</script>';
+        die();
+	}
 ?>
 <div class="conteudo" id="conteudo_central">
   <table width="100%" border="0" cellpadding="0" cellspacing="0" class="conteudo">
     <tr>
-      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="arquivos/img/arquivos.png" alt="Arquivos"> <span class="h3">ARQUIVOS - MANUAIS E C&Oacute;DIGOS </span></td>
+      <td width="46%">&nbsp;&nbsp;&nbsp;<img src="arquivos/img/arquivos.png" alt="Arquivos"> <span class="h3"><?=$LANG['manuals_and_codes']['manuals_and_codes']?></span></td>
       <td width="2%" valign="bottom">&nbsp;</td>
       <td width="2%" valign="bottom">&nbsp;</td>
     </tr>
@@ -46,8 +63,8 @@
       <td width="230" bgcolor="#009BE6">&nbsp;</td>
     </tr>
     <tr>
-      <td colspan="3" height="23" align="left">ARQUIVO      </td>
-      <td width="230" align="center">VISUALIZAR</td>
+      <td colspan="3" height="23" align="left"><?=$LANG['manuals_and_codes']['file']?></td>
+      <td width="230" align="center"><?=$LANG['manuals_and_codes']['view']?></td>
     </tr>
   </table>  
   <table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
